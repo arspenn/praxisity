@@ -6,8 +6,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **Name:** Praxisity Framework
 **Type:** Development Framework / Tooling
-**Version:** 0.2.0
-**Status:** Active Development - Week 1 Complete
+**Version:** 0.3.0
+**Status:** Active Development - Week 2 Complete
 
 **Mission:** Build a design-first workflow framework enabling consistent, structured planning and execution for multi-disciplinary projects through AI-assisted tooling.
 
@@ -43,6 +43,7 @@ CLAUDE.md                - AI guidance (stable configuration)
   templates/             - Document templates
     claude.template.md   - CLAUDE.md for new projects
     charter.template.md  - CHARTER.md for new projects
+    changelog.template.md - CHANGELOG.md for new projects
     spec.template.md     - Specification template
     design.template.md   - Design document template
     dip.template.md      - Detailed Implementation Prompt template
@@ -84,6 +85,17 @@ tags: [relevant, tags]
 5. **Template-driven** - Commands generate from templates
 6. **Error handling** - Graceful failures with helpful messages
 7. **PLANNING.md integration** - Read state on start, update during execution, record completion
+
+**Command Authoring for Opus 4.5:**
+
+Commands are optimized for Opus 4.5's improved instruction-following:
+
+- **Explicit constraints section** - Every command includes a "Constraints" section with simplicity guardrails
+- **Calmer language** - Avoid MUST/CRITICAL/REQUIRED; use normal prose
+- **Condensed pre-flight** - Numbered lists, not verbose subsections
+- **Let Claude infer** - Describe goals, not micro-steps; Opus 4.5 fills in intermediate steps
+- **15,000 char budget** - Keep commands under ~300 lines to avoid truncation
+- **Single outcome** - Each command produces one clear result
 
 ### Template Design Principles
 
@@ -359,7 +371,3 @@ Framework resources in `.praxisity/` separate from project resources because:
 - **Templates:** `.praxisity/templates/`
 - **ADRs:** `.plans/decisions/` (includes ADR-005 for PLANNING.md)
 
----
-
-*Last updated: 2025-12-19*
-*Current Phase: Week 2 - Core Workflow*
