@@ -9,6 +9,7 @@ Build a design-first workflow framework that enables consistent, structured plan
 3. **Minimal cognitive overhead** - ADHD-informed design with micro-chunked tasks
 4. **Self-documenting** - Git-versioned documents with professional PDF outputs
 5. **Safety-first** - Git safety controls prevent accidental commits
+6. **Dual-use design** - All templates, commands, and outputs optimized for both human understanding and AI agent consumption
 
 ## Scope
 

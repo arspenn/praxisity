@@ -26,18 +26,15 @@ Focus on high-level architecture and workflow rules that require multiple files 
 
 ## Current Focus
 
-<!-- Update this section frequently to guide AI attention -->
+**For current tasks and session state, see `PLANNING.md`.**
 
-**Active Phase:** [specification | design | implementation | delivery | maintenance]
+PLANNING.md contains dynamic session state:
+- Active command/task context
+- Gathered state during command execution
+- Completed work this session
+- Next steps
 
-**Priority Tasks:**
-<!-- Link to specific Todoist tasks or .plans/ documents -->
-- [Current sprint/milestone focus]
-- [Key blockers or decisions needed]
-
-**Recent Context:**
-<!-- 2-3 sentences about recent work to provide continuity -->
-[What was just completed? What's the current state?]
+This separation keeps CLAUDE.md stable (loaded at conversation start) while PLANNING.md handles dynamic state that changes during work sessions. PLANNING.md is archived to `.plans/archive/` at session end.
 
 ## Workflow Rules
 
@@ -214,17 +211,22 @@ feat, fix, docs, style, refactor, test, chore, data (for data updates)
 
 ## References
 
-- **Governance:** See `CHARTER.md` for mission, principles, and scope
+- **Session State:** `PLANNING.md` (read this for current context)
+- **Governance:** `CHARTER.md` for mission, principles, and scope
 - **Tasks:** Todoist project "[TODOIST_PROJECT_NAME]"
-- **Planning:** See `.plans/` for specifications, designs, and DIPs
-- **Decisions:** See `.plans/decisions/` for ADRs
+- **Planning:** `.plans/` for specifications, designs, and DIPs
+- **Decisions:** `.plans/decisions/` for ADRs
+- **Archive:** `.plans/archive/` for previous session PLANNING.md files
 - **Dependencies:** [Package manager file, requirements.txt, etc.]
 
 ---
 
-<!-- Keep this file updated as the project evolves.
-     When architecture changes significantly, update the Architecture Overview.
-     When workflow rules need adjustment, update Workflow Rules.
-     When starting new work phases, update Current Focus. -->
+<!-- CLAUDE.md should remain STABLE - avoid frequent updates.
+     Dynamic state (current tasks, session context) belongs in PLANNING.md.
+     Only update CLAUDE.md when:
+     - Architecture changes significantly
+     - Workflow rules need adjustment
+     - Project identity changes
+     Update at session END, not during active work. -->
 
 *Last updated: [DATE]*

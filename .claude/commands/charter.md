@@ -26,6 +26,27 @@ A well-crafted charter:
 
 ## Pre-Flight Checks
 
+### Read PLANNING.md
+
+```bash
+cat PLANNING.md 2>/dev/null
+```
+
+**If PLANNING.md exists:**
+- Parse current session context
+- Note any prior charter work
+
+**If PLANNING.md doesn't exist:**
+- Create fresh PLANNING.md
+
+**Update PLANNING.md:**
+```markdown
+## Session Context
+- **Active Command:** /charter
+- **Started:** [timestamp]
+- **Task:** Create/update project charter
+```
+
 ### Check if charter already exists
 
 ```bash
@@ -559,6 +580,20 @@ This charter guides:
 📚 The charter is a living document. Review $(REVIEW_SCHEDULE).
 ```
 
+### Update PLANNING.md
+
+```markdown
+## Completed
+
+- **Charter:** [Created/Updated] CHARTER.md
+- **Mission:** [First 50 chars of mission]...
+- **Timestamp:** [completion time]
+
+## Next Steps
+- [ ] Share charter with stakeholders
+- [ ] Create first specification: /spec
+```
+
 ---
 
 ## Command Behavior Notes
@@ -583,3 +618,9 @@ This charter guides:
 - Domain-specific examples
 - Review before saving
 - Ability to edit after review
+
+**PLANNING.md Integration:**
+- Reads existing context on start
+- Updates with command start
+- Records completion and next steps
+- Enables session recovery if interrupted

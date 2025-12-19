@@ -19,26 +19,25 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Current Focus
 
-**Active Phase:** Foundation (Week 1 of 4)
-**Priority:** Template design and core command implementation
+**For current tasks and session state, see `PLANNING.md`.**
 
-**Current Tasks:**
-- ✅ Directory structure
-- ✅ CLAUDE.md and CHARTER.md templates
-- ✅ /new-project and /charter commands
-- ✅ ADR documentation (4 ADRs)
-- ⏳ Todoist MCP integration (user setup required)
+PLANNING.md contains:
+- Active command/task context
+- Gathered state during command execution
+- Completed work this session
+- Next steps
 
-**Next Steps:**
-1. Create remaining templates (spec, design, DIP)
-2. Implement `/spec`, `/architect`, `/breakdown`, `/define` commands
-3. Test full workflow: spec → architect → breakdown → define
+This separation keeps CLAUDE.md stable (loaded at conversation start) while PLANNING.md handles dynamic session state.
 
 ## Architecture Overview
 
 ### Framework Structure
 
 ```
+PLANNING.md              - Active session state (dynamic, see below)
+CHARTER.md               - Project constitution (governance)
+CLAUDE.md                - AI guidance (stable configuration)
+
 .claude/commands/         - Slash command implementations (markdown)
 .praxisity/              - Framework resources (user-facing)
   templates/             - Document templates
@@ -49,11 +48,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
     dip.template.md      - Detailed Implementation Prompt template
     pandoc/              - LaTeX templates for PDF generation
   safety/                - Git safety validation scripts/logic
-.plans/                  - Praxisity's own planning docs
-  specs/                 - Framework specifications
-  designs/               - Framework designs
-  prompts/               - DIPs for framework features
-  decisions/             - ADRs for framework architecture
+.plans/                  - Planning artifacts
+  specs/                 - Specifications (WHAT)
+  designs/               - Design documents (HOW)
+  prompts/               - DIPs (implementation instructions)
+  decisions/             - ADRs (architecture decisions)
+  archive/               - Archived PLANNING.md files
 ```
 
 ### Command Architecture
@@ -83,6 +83,7 @@ tags: [relevant, tags]
 4. **Idempotent** - Running twice should be safe
 5. **Template-driven** - Commands generate from templates
 6. **Error handling** - Graceful failures with helpful messages
+7. **PLANNING.md integration** - Read state on start, update during execution, record completion
 
 ### Template Design Principles
 
@@ -95,6 +96,7 @@ Templates in `.praxisity/templates/` guide users in creating project artifacts.
 4. **Domain-flexible** - Support software/public health/research use cases
 5. **Remove guidance** - Comments should be removed in final docs
 6. **Opinionated but adaptable** - Strong defaults, clear override points
+7. **Dual-use design** - Structured for both human readability and AI parsing (use section IDs like REQ-1, UC-1 for traceability)
 
 **Template Testing:**
 - Can a new user understand what to fill in?
@@ -171,6 +173,28 @@ DIPs solve AI variability by providing complete context for each task:
 
 This means instead of: "Implement user authentication"
 You get: "Implement OAuth2 authentication per spec section 3.2 and design section 2.1, using PKCE flow, with explicit exclusions for password-based auth..."
+
+### PLANNING.md State Management
+
+PLANNING.md provides session state persistence (ADR-005):
+
+**Purpose:**
+- Survives context window closes and auto-compaction
+- Provides audit trail of framework usage
+- Enables session recovery
+- Keeps CLAUDE.md stable (no dynamic state here)
+
+**Lifecycle:**
+1. Commands read PLANNING.md on start
+2. Commands update it during execution with gathered state
+3. Commands record completion and next steps
+4. Archived to `.plans/archive/PLANNING-[timestamp].md` at task end or new session
+
+**Philosophy:**
+- Records and trails, not polished outputs
+- Trains of thought for both user and agent
+- Duplication acceptable (storage cheap, compute expensive)
+- Don't over-invest in formatting
 
 ### Git Safety
 
@@ -286,32 +310,28 @@ Framework resources in `.praxisity/` separate from project resources because:
 3. Verify placeholders are obvious
 4. Test with different domains (software/health/research)
 
-## MVP Timeline
+## MVP Structure
 
-**Week 1 (Complete):** Foundation
-- ✅ Repository structure
-- ✅ CLAUDE.md and CHARTER.md templates
-- ✅ README and ADR templates
-- ✅ `/new-project` command
-- ✅ `/charter` command
-- ✅ 4 Architecture Decision Records
+**Week 1: Foundation**
+- Repository structure, CLAUDE.md, CHARTER.md templates
+- `/new-project` and `/charter` commands
+- ADR documentation
 
-**Week 2:** Core Workflow
-- `/spec` command + template
-- `/architect` command + template
-- `/breakdown` command (Todoist integration)
-- `/define` command + DIP template
+**Week 2: Core Workflow**
+- `/spec`, `/architect`, `/breakdown`, `/define` commands
+- Spec, design, and DIP templates
+- PLANNING.md state management
 
-**Week 3:** Execution & Output
+**Week 3: Execution & Output**
 - `/build` command with git safety
-- Pandoc templates (basic)
+- Pandoc templates for PDF generation
 - `/deliver` command
-- End-to-end testing
 
-**Week 4:** Polish
-- Self-documentation (use framework for itself)
-- Portfolio documentation
-- Refinement and validation
+**Week 4: Polish**
+- Self-documentation, portfolio documentation
+- End-to-end testing and refinement
+
+*For current progress, see PLANNING.md and Todoist.*
 
 ## Important Files
 
@@ -332,12 +352,14 @@ Framework resources in `.praxisity/` separate from project resources because:
 
 ## References
 
+- **Session State:** `PLANNING.md` (read this for current context)
 - **Foundation Plan:** `praxisity-foundation-plan.md`
 - **Charter:** `CHARTER.md`
 - **Tasks:** Todoist project "Praxisity Development"
 - **Templates:** `.praxisity/templates/`
+- **ADRs:** `.plans/decisions/` (includes ADR-005 for PLANNING.md)
 
 ---
 
-*Last updated: 2025-12-18*
-*Current Phase: Week 1 Complete, Ready for Week 2*
+*Last updated: 2025-12-19*
+*Current Phase: Week 2 - Core Workflow*
