@@ -1,232 +1,99 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to Claude Code when working with code in this repository.
 
 <!--
-This template is part of the Praxisity framework.
-Fill in [BRACKETED] sections and remove comments before use.
-Keep this file under 300 lines - minimize length but don't exclude critical information.
-Focus on high-level architecture and workflow rules that require multiple files to understand.
+ABOUT THIS FILE
+
+This is NOT a place to describe your codebase. It is a place for behavioral
+corrections -- things the agent consistently gets wrong that you want to steer.
+
+If the agent can discover it by reading your code, it does not belong here.
+The agent already reads your package.json, directory structure, config files,
+and source code. Repeating that information here wastes context tokens, biases
+the agent toward mentioned patterns (even irrelevant ones), and goes stale
+as your codebase evolves.
+
+Research shows comprehensive context files increase agent costs by 20%+ with
+only marginal benefit to task success (+4% developer-written, -3% LLM-generated).
+Source: Gloaguen et al., 2026 - "Evaluating AGENTS.md"
+
+WHAT BELONGS HERE:
+- Mental model shifts the agent cannot infer from code
+  (e.g., "this repo is a framework, not a project using the framework")
+- Workflow constraints that override default behavior
+  (e.g., "always run /spec before /architect")
+- Behavioral corrections for repeated mistakes
+  (e.g., "use Convex, not TRPC -- TRPC is legacy")
+- Pointers to non-obvious files the agent wouldn't find on its own
+
+WHAT DOES NOT BELONG HERE:
+- Directory trees (the agent can ls/glob)
+- Dependency lists (the agent reads package.json/requirements.txt)
+- Architecture descriptions (the agent reads your code)
+- Code style rules (use linters/formatters instead)
+- Setup instructions (put these in README.md)
+- Git workflow details (the agent knows conventional commits)
+
+START MINIMAL. Add content only when you observe the agent consistently
+getting something wrong. Remove content when new model releases fix the issue.
 -->
 
 ## Project Identity
 
 **Name:** [PROJECT_NAME]
-**Domain:** [software | public-health | research | other]
-**Version:** [SEMVER]
-**Status:** [planning | active-development | maintenance | archived]
-
+**Type:** [software | public-health | research | other]
 **Mission:** [One sentence - what does this project accomplish?]
-
-## Framework
-
-**Praxisity Version:** [X.Y.Z]
-**Commands Location:** `.claude/commands/`
-**Task Management:** Todoist via MCP
 
 ## Current Focus
 
 **For current tasks and session state, see `PLANNING.md`.**
 
-PLANNING.md contains dynamic session state:
+PLANNING.md contains:
 - Active command/task context
 - Gathered state during command execution
 - Completed work this session
 - Next steps
 
-This separation keeps CLAUDE.md stable (loaded at conversation start) while PLANNING.md handles dynamic state that changes during work sessions. PLANNING.md is archived to `.plans/archive/` at session end.
+This separation keeps CLAUDE.md stable while PLANNING.md handles dynamic session state.
 
-## Workflow Rules
+Commands read PLANNING.md on start, update it during execution, record completion and next steps. It is archived to `.plans/archive/PLANNING-[timestamp].md` at task end or new session.
 
-### Design-First Mandate
-1. Always create specifications before designs
-2. Always create designs before implementation
-3. Use `/spec` → `/architect` → `/breakdown` → `/define` → `/build` flow
-4. Never skip directly to code without documentation
+## Workflow
 
-### Task Management
-- All tasks tracked in Todoist project: "[TODOIST_PROJECT_NAME]"
-- Use `/breakdown` to create micro-chunked tasks (<30min each)
-- Use `/define` to generate DIPs before implementing complex tasks
-- Mark Todoist tasks complete when work is done
+<!-- Keep this section. The command dependency chain is a non-obvious constraint
+     that the agent cannot infer from reading individual commands. -->
 
-### Documentation Requirements
-- Update CHARTER.md when scope/principles change
-- Create ADRs in `.plans/decisions/` for architectural choices
-- Use `/deliver` to generate PDF deliverables for stakeholders
+Every project follows: Specify -> Design -> Breakdown -> Implement
 
-## Architecture Overview
+This framework enforces that workflow through command dependencies:
+- `/spec` creates specifications
+- `/architect` requires specs to exist
+- `/breakdown` requires designs to exist
+- `/define` requires both specs and designs
+- `/build` requires DIPs to exist
 
-<!-- Describe the big-picture structure that requires reading multiple files to understand.
-     Do NOT list every file - focus on conceptual architecture.
-     Remove domain sections below that don't apply to your project. -->
+All tasks tracked in Todoist project: "[TODOIST_PROJECT_NAME]"
 
-### [Domain-Specific Architecture Section]
+## Behavioral Corrections
 
-<!-- For software projects: -->
-**System Architecture:**
-[Monolith? Microservices? Client-server? Key components?]
+<!-- Add entries here ONLY when you observe the agent repeatedly making the
+     same mistake. Remove entries when they're no longer needed.
 
-**Tech Stack:**
-- [Language/framework]
-- [Database/storage]
-- [Key dependencies]
+     Format:
+     **[Short description]:** [What to do instead and why]
 
-**Code Organization:**
-```
-[High-level directory structure with brief explanations]
-```
+     Example:
+     **Use Convex, not TRPC:** TRPC is legacy in this codebase. All new
+     server functions should use Convex actions/queries in the /convex directory.
+-->
 
-<!-- For public health projects: -->
-**Program Model:**
-[Theory of change? Intervention framework? Logic model?]
+## Non-Obvious Context
 
-**Stakeholder Map:**
-[Who are the key actors? How do they interact?]
+<!-- Add pointers to files or concepts the agent wouldn't discover through
+     normal codebase exploration. Remove if they become obvious.
 
-**Data Architecture:**
-[What data flows through the system? How is it collected/analyzed?]
-
-<!-- For research projects: -->
-**Research Design:**
-[Methodology? Study design? Analysis approach?]
-
-**Theoretical Framework:**
-[What theories/models guide this research?]
-
-**Data Pipeline:**
-[How does data flow from collection to analysis to publication?]
-
-### Key Patterns
-
-<!-- Project-specific patterns that Claude should follow -->
-
-**[Pattern Name]:**
-[When to use it, how it works, example location]
-
-**[Pattern Name]:**
-[When to use it, how it works, example location]
-
-## Development Commands
-
-<!-- Customize based on project type -->
-
-**Build/Test:**
-```bash
-[How to build the project]
-[How to run tests]
-[How to run linter/formatter]
-```
-
-**Development Server:**
-```bash
-[How to run locally]
-[How to access/test]
-```
-
-**Database/Data:**
-```bash
-[How to set up database]
-[How to run migrations]
-[How to seed test data]
-```
-
-## Domain Conventions
-
-<!-- Customize based on domain.
-     Remove domain sections below that don't apply to your project. -->
-
-### [Domain-Specific Section]
-
-<!-- For software projects: -->
-**Code Style:**
-- [Naming conventions]
-- [File organization rules]
-- [Comment/documentation standards]
-
-**Testing Requirements:**
-- [When to write tests]
-- [Coverage expectations]
-- [Testing patterns to follow]
-
-<!-- For public health projects: -->
-**Terminology:**
-- [Key terms and their project-specific meanings]
-
-**Compliance:**
-- [IRB requirements]
-- [HIPAA/privacy considerations]
-- [Regulatory frameworks]
-
-<!-- For research projects: -->
-**Citation Style:**
-[APA/Chicago/MLA/Domain-specific]
-
-**Reproducibility:**
-- [Code organization for reproducible research]
-- [Data versioning approach]
-- [Environment management]
-
-## Git Safety
-
-**Never:**
-- Use `git add .` or `git add -A` (stage files explicitly)
-- Commit sensitive data (.env files, credentials, PII, PHI)
-- Force push to main/master branch
-- Skip pre-commit safety checks
-
-**Always:**
-- Use conventional commit format: `type(scope): description`
-- Review diffs before committing
-- Reference Todoist task IDs in commit messages
-- Run tests before pushing (if applicable)
-
-**Commit Types:**
-feat, fix, docs, style, refactor, test, chore, data (for data updates)
-
-## Critical Context
-
-<!-- Project-specific knowledge that Claude must know to work effectively -->
-
-### Important Files
-
-**[File/Directory Path]:**
-[Why it's important, when Claude should read/modify it]
-
-**[File/Directory Path]:**
-[Why it's important, when Claude should read/modify it]
-
-### Known Constraints
-
-<!-- Technical debt, limitations, things that seem wrong but are intentional -->
-
-**[Constraint Name]:**
-[What it is, why it exists, what to avoid]
-
-### Domain-Specific Notes
-
-<!-- Context that's unique to this project's domain -->
-
-[Critical knowledge that Claude needs to work effectively in this domain]
-
-## References
-
-- **Session State:** `PLANNING.md` (read this for current context)
-- **Governance:** `CHARTER.md` for mission, principles, and scope
-- **Tasks:** Todoist project "[TODOIST_PROJECT_NAME]"
-- **Planning:** `.plans/` for specifications, designs, and DIPs
-- **Decisions:** `.plans/decisions/` for ADRs
-- **Archive:** `.plans/archive/` for previous session PLANNING.md files
-- **Dependencies:** [Package manager file, requirements.txt, etc.]
-
----
-
-<!-- CLAUDE.md should remain STABLE - avoid frequent updates.
-     Dynamic state (current tasks, session context) belongs in PLANNING.md.
-     Only update CLAUDE.md when:
-     - Architecture changes significantly
-     - Workflow rules need adjustment
-     - Project identity changes
-     Update at session END, not during active work. -->
-
-*Last updated: [DATE]*
+     Example:
+     **data-dictionary.xlsx** - Source of truth for field names. Located in
+     /docs/ but not referenced by any code. Check before creating new schemas.
+-->

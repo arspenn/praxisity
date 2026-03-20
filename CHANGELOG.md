@@ -21,6 +21,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.4.0] - 2026-03-20
+
+### Changed
+
+**CLAUDE.md Minimization (SPEC-001, DESIGN-001, DIP-001):**
+
+Reduced CLAUDE.md from 373 to 44 lines (88% reduction) based on research showing comprehensive context files increase agent costs by 20%+ with marginal benefit (Gloaguen et al., 2026).
+
+- CLAUDE.md now contains only corrective/non-obvious content: project identity, framework development context, PLANNING.md state management, design-first workflow constraint, and non-obvious file pointers
+- Relocated human-facing content (template principles, design decisions, development workflow, testing commands, roadmap) to README.md
+- Rewrote `claude.template.md` with "corrections only" philosophy — template now guides users toward minimal behavioral corrections instead of comprehensive codebase descriptions
+- Fixed `/architect` command: changed "domain" to "type" for field name consistency with CLAUDE.md and template
+
+---
+
 ## [0.3.0] - 2025-12-19
 
 ### Added

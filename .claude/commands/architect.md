@@ -25,7 +25,7 @@ Create a design document that defines HOW to implement a specification.
 6. Check for existing design for this spec - if found, offer to (v)iew, (c)reate new version, or (a)bort
 7. Verify design template exists at `.praxisity/templates/design.template.md`
 8. Determine next design number from `.plans/designs/`
-9. Detect project domain from CLAUDE.md or ask (software/public-health/research/other)
+9. Detect project type from CLAUDE.md or ask (software/public-health/research/other)
 
 ## Design Flow
 
