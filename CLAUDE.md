@@ -42,3 +42,6 @@ This framework enforces that workflow through command dependencies:
 ## Important Files
 
 **praxisity-foundation-plan.md** - Source of truth for MVP scope. Reference when making decisions. Will be removed by `/new-project` for end users.
+
+## Hints from the developer
+- Just because a template or example has a certain number of items, there is no requirement for your output to contain the same number of items filled out. It might be less, it might be more, use the right ammount based on the relevant material and your judgement, not the example pattern.
