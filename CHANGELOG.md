@@ -5,19 +5,45 @@ All notable changes to the Praxisity framework will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.5.0] - 2026-03-21
 
 ### Added
 
+**Commands:**
+- `/build` - Execute DIPs with sequential step verification, git safety controls, and state tracking (SPEC-002, DESIGN-002, DIP-002)
+  - Verification duality: automatable checks run automatically, subjective checks prompt user
+  - Halt-and-ask on failure — never retries or guesses
+  - Resume support via PLANNING.md halt state detection
+  - Context-aware reading: skips re-reading documents already in current session
+- `/deliver` - Generate professional PDFs from markdown documents using ReportLab (SPEC-003, DESIGN-003, DIP-003)
+  - Uses `praxisity_style.py` for consistent IEEE-inspired formatting
+  - Sans-serif body (Liberation Sans), left-aligned, 1" margins, minimal table rules
+  - No external dependencies (no Pandoc, no LaTeX)
+
+**Style Module:**
+- `.praxisity/praxisity_style.py` - ReportLab style definitions for PDF output
+  - Font registration with Liberation Sans/Mono (Helvetica/Courier fallback)
+  - 10 paragraph styles (Title, Subtitle, Heading1-3, BodyText, BulletItem, CodeBlock, Caption, Metadata)
+  - IEEE-inspired table style (minimal horizontal rules, no vertical lines)
+  - Builder functions: `create_document()`, `build_table()`, `code_block()`, `title_block()`
+
+**Planning Artifacts:**
+- SPEC-002: Build Command specification (11 requirements, 3 use cases, 7 acceptance criteria)
+- SPEC-003: Deliver Command specification (10 requirements, 2 use cases, 4 acceptance criteria)
+- DESIGN-002: Build Command design (3 components, 4 interfaces, 3 data entities, 4 design decisions)
+- DESIGN-003: Deliver Command design (2 components, 2 interfaces, 1 data entity, 4 design decisions)
+- DIP-002: Build Command implementation prompt
+- DIP-003: Deliver Command implementation prompt
+- `.plans/references/` directory for external reference documents
+
 ### Changed
+
+- PLANNING.md archived and refreshed for Week 3
+- CLAUDE.md updated with `/build` dependency chain and developer hints
 
 ### Deprecated
 
-### Removed
-
-### Fixed
-
-### Security
+- `.praxisity/templates/pandoc/` directory — replaced by ReportLab approach via `praxisity_style.py`
 
 ---
 
