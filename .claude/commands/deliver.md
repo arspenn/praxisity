@@ -19,8 +19,15 @@ Generate a professional PDF from a project markdown document using the Praxisity
 
 1. Read PLANNING.md for session context; create if missing
 2. Update PLANNING.md with /deliver as active command
-3. Verify `.praxisity/praxisity_style.py` exists — if missing, halt with message: "Style module not found. Ensure praxisity_style.py exists in .praxisity/"
-4. If argument provided, use it as source file path
+3. Check if ReportLab is installed: `python3 -c "import reportlab"`
+   - If missing, ask user: "ReportLab is required for PDF generation. Install it?"
+   - Suggest installation options:
+     - `sudo apt install python3-reportlab` (Debian/Ubuntu system package)
+     - `pip install reportlab` or `pip3 install reportlab` (pip)
+     - `python3 -m pip install reportlab` (if pip not on PATH)
+   - If user declines or install fails, halt
+4. Verify `.praxisity/praxisity_style.py` exists — if missing, halt with message: "Style module not found. Ensure praxisity_style.py exists in .praxisity/"
+5. If argument provided, use it as source file path
 5. If no argument: list project markdown files and prompt for selection
    - Include files from: project root, `.plans/specs/`, `.plans/designs/`, `docs/`
    - Exclude: PLANNING.md, CLAUDE.md, node_modules, .git
