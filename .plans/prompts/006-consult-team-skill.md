@@ -286,7 +286,7 @@ git commit -m "feat(agents): add consult-team skill (DIP-006)
 
 Implements DIP-006: agent index, snapshot/delta decision gate,
 Mode 2 and Mode 3 dispatch guidance, session management.
-Satisfies: REQ-F3, REQ-F10, REQ-F11, REQ-N2, REQ-N3"
+Satisfies: REQ-F3, REQ-F10, REQ-F11, REQ-N1, REQ-N2, REQ-N3"
 ```
 
 **Commit type:** feat
