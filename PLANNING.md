@@ -2,8 +2,8 @@
 
 ## Active Context
 
-**Last Command:** /architect
-**Status:** Complete — DESIGN-004: Agent Consultation System Design
+**Last Command:** /define
+**Status:** In Progress — generating DIPs for DESIGN-004: Agent Consultation System
 **Date:** 2026-03-28
 **Version:** 0.5.0
 
