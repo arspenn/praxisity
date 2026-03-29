@@ -15,13 +15,14 @@
 
 | Spec ID | Title | Requirements Addressed |
 |---------|-------|------------------------|
-| [SPEC-005](../specs/005-agent-consultation-system.md) | Agent Consultation System | REQ-F1 through REQ-F10, REQ-N1 through REQ-N4 |
+| [SPEC-005](../specs/005-agent-consultation-system.md) | Agent Consultation System | REQ-F1 through REQ-F12, REQ-N1 through REQ-N4 |
 
 ### Related Documents
 
 | Document | Relationship |
 |----------|--------------|
 | [D4C Bug Report: ISSUE-004](../references/d4c-praxisity-bug-report.md) | Depends on — identified need for persistent agent teams |
+| [Claude Code Sub-agents docs](https://code.claude.com/docs/en/sub-agents) | Reference — native subagent format, Modes 1 & 2 |
 | [Claude Code Agent Teams docs](https://code.claude.com/docs/en/agent-teams) | Reference — platform capabilities for Mode 3 |
 
 ---
@@ -32,7 +33,7 @@
 
 This design implements a prompt-based agent consultation system — no runtime code, no automation logic. The entire deliverable is authored files: 8 agent definition prompts, 1 skill document, 1 collaborative mode extension, 1 flexible report template, 1 context block template, a directory structure, and minor edits to 3 existing command files.
 
-The architecture follows a 3-tier progressive loading model where content enters the agent's context only when needed. Tier 1 is 2 lines embedded in thinking commands. Tier 2 is the consult-team skill loaded on demand. Tier 3 is individual agent files loaded only when that specific agent is dispatched. Three dispatch modes (single expert consult, parallel perspectives, collaborative team) serve different needs, with a decision gate in the skill that forces explicit consideration of snapshot vs. delta tradeoffs.
+The architecture follows a 3-tier progressive loading model where content enters the agent's context only when needed. Tier 1 is ~4 lines (heading + guidance) embedded in thinking commands. Tier 2 is the consult-team skill loaded on demand. Tier 3 is individual agent files loaded only when that specific agent is dispatched. Three dispatch modes (single expert consult, parallel perspectives, collaborative team) serve different needs, with a decision gate in the skill that forces explicit consideration of snapshot vs. delta tradeoffs.
 
 The main agent is always the coordinator. The skill provides knowledge of how to coordinate but contains no control flow. Agent files are immutable at dispatch time — customization is appended, never edited in. For collaborative teams (Mode 3), agents are full parallel sessions that write their own reports, maintain their own perspective, and can interact directly with the user.
 
@@ -51,12 +52,14 @@ The main agent is always the coordinator. The skill provides knowledge of how to
 | REQ-F2 | COMP-1, COMP-2, DATA-2, DATA-3, INT-1 | Layered prompt assembly: agent file (immutable) + collab-mode (Mode 3) + context block (appended) |
 | REQ-F3 | COMP-3 | consult-team skill with agent index, decision gate, dispatch guidance, session management |
 | REQ-F4 | COMP-1 | 8 agent files across 4 categories |
-| REQ-F5 | COMP-4 | 2-line pointers in /spec, /architect, /charter |
+| REQ-F5 | COMP-4 | ~4-line pointers in /spec, /architect, /charter |
 | REQ-F6 | COMP-4 | No pointers in /build, /deliver, /breakdown, /define |
 | REQ-F7 | COMP-1, DATA-1 | Self-Evaluation section in every agent file's output instructions |
 | REQ-F8 | COMP-2, DATA-4, INT-3 | Flexible session report template; reports saved to .plans/reviews/ |
-| REQ-F9 | COMP-1 | agents/resources/ directory with per-agent subdirectories (empty initially) |
+| REQ-F9 | COMP-1 | Native Claude Code persistent memory (`memory: project`) replaces custom Tier 3 resources; agents accumulate knowledge in `.claude/agent-memory/<name>/` |
 | REQ-F10 | COMP-3 | Skill name and description emphasize perspective consultation vs. independent parallel tasks |
+| REQ-F11 | COMP-3, DEC-1 | Three dispatch modes defined in skill with decision gate; Mode 3 uses TeamCreate |
+| REQ-F12 | COMP-2 (collab-mode), DEC-3, INT-3 | Mode 3 teammates are full parallel sessions with self-authored reports and direct user interaction |
 | REQ-N1 | All | All files authored for dual consumption (human-readable + AI-effective) |
 | REQ-N2 | COMP-3, DEC-4 | Skill provides guidance and decision frameworks, not execution sequences |
 | REQ-N3 | COMP-3, COMP-4 | Consultation always optional; pointers suggest, never require |
@@ -145,7 +148,7 @@ Mode 3: [agent.md] + [collab-mode.md] + [customization]
 
 | Layer/Concern | Technology | Rationale |
 |---------------|------------|-----------|
-| Snapshot dispatch (Modes 1 & 2) | Claude Code Agent tool | Built-in subagent capability; lightweight, results return to caller |
+| Snapshot dispatch (Modes 1 & 2) | Claude Code Agent tool + native subagent format | Built-in subagent capability with tool restrictions, model selection, persistent memory; results return to caller |
 | Persistent dispatch (Mode 3) | Claude Code TeamCreate (experimental) | Full agent team with shared task list, messaging, persistent context |
 | Inter-agent communication | Claude Code SendMessage / team mailbox | Platform-native; Mode 3 agents can challenge each other directly |
 | Quality gates | Claude Code hooks (TeammateIdle, TaskCreated, TaskCompleted) | Available for future enforcement of standards on agent work |
@@ -161,25 +164,31 @@ Mode 3: [agent.md] + [collab-mode.md] + [customization]
 
 ### COMP-1: Agent Definition Files
 
-**Purpose:** Define the 8 agent personas in a standardized, immutable format that supports progressive loading through frontmatter.
+**Purpose:** Define the 8 agent personas as native Claude Code subagent files, gaining platform capabilities (tool restrictions, persistent memory, @-mention, `--agent` mode) for free while maintaining the progressive loading architecture.
 
 **Satisfies:** REQ-F1, REQ-F2, REQ-F4, REQ-F7, REQ-F9, REQ-N1
 
 **Responsibilities:**
-- Define each agent's identity, reasoning approach, output format, and self-evaluation instructions
-- Provide frontmatter (name, category, purpose) readable without loading the full file
+- Define each agent using the standard Claude Code subagent format (YAML frontmatter + markdown body)
+- Frontmatter configures platform capabilities: `name`, `description`, `tools`, `model`, `memory`, etc.
+- Markdown body contains the persona: Identity, Reasoning Approach, Output Format, Self-Evaluation
 - Remain immutable at dispatch time — never edited, only appended to with additional layers
 - Function standalone without assuming any content will be appended
+- Be invocable via Agent tool dispatch, @-mention, or `--agent` flag
 
 **Dependencies:**
-- None — standalone files
+- None — standalone files; Claude Code subagent infrastructure is built-in
 
 **Key Design Decisions:**
-- 8 files, one per agent: `critic.md`, `skeptic.md`, `user-advocate.md`, `stakeholder.md`, `designer.md`, `project-manager.md`, `prompt-engineer.md`, `fresh-eyes-reviewer.md`
-- Each file follows identical section structure (Identity, Reasoning Approach, Output Format, Self-Evaluation)
-- `agents/resources/` subdirectories created per-agent but left empty initially (Tier 3 infrastructure)
-- Self-evaluation section is part of the agent's instructions, not a separate mechanism
+- 8 files in `.claude/agents/`: `critic.md`, `skeptic.md`, `user-advocate.md`, `stakeholder.md`, `designer.md`, `project-manager.md`, `prompt-engineer.md`, `fresh-eyes-reviewer.md`
+- Uses native Claude Code subagent format — not a custom format. This gives us @-mention, `--agent`, tool restrictions, persistent memory, hooks, and model selection for free
+- Frontmatter includes `memory: project` — agents accumulate knowledge across sessions in `.claude/agent-memory/<name>/` (replaces the custom Tier 3 resources concept with platform-native persistent memory)
+- Review-focused agents (Critic, Skeptic, Fresh Eyes Reviewer) use restricted tool access: `tools: Read, Grep, Glob, Write` — read-only for project files, Write for `.plans/reviews/` reports only
+- Action-oriented agents (Designer, Project Manager) may need broader tool access
+- `description` field doubles as the index entry for the consult-team skill — no separate index needed
+- Self-evaluation section is part of the markdown body instructions
 - Files must be focused and concise — establish perspective and expectations, not exhaustive instructions
+- Custom frontmatter field `category` added for grouping (evaluative, perspective, structural, meta) — Claude Code ignores unrecognized fields
 
 **Agent Roster:**
 
@@ -215,13 +224,13 @@ Mode 3: [agent.md] + [collab-mode.md] + [customization]
 - Collab-mode.md is a single shared file, not per-agent — avoids 7x duplication; contains only what's different about being a persistent teammate vs. a one-shot subagent
 - One flexible session report template covers all modes — sections left empty when not applicable rather than maintaining separate templates
 - Context block provides structure but the main agent writes naturally within it; the main agent identifies the customization section explicitly when it writes it
-- Report naming: `[ARTIFACT-ID]-agent-review.md` (Mode 2), `[ARTIFACT-ID]-[agent-name]-report.md` (Mode 3 teammates), `[ARTIFACT-ID]-lead-review.md` (Mode 3 lead)
+- Report naming: `[ARTIFACT-ID]-[agent-name]-report.md` (every dispatched agent, all modes), `[ARTIFACT-ID]-lead-review.md` (main agent synthesis for Modes 2 & 3)
 
 ---
 
 ### COMP-3: consult-team Skill
 
-**Purpose:** Provide the main agent with on-demand guidance for multi-agent dispatch — the decision gate between Mode 2 (parallel perspectives) and Mode 3 (collaborative team), plus session management for both.
+**Purpose:** Provide the main agent with on-demand guidance for multi-agent dispatch — covering Mode 2 (parallel perspectives) and Mode 3 (collaborative team) with a decision gate between them, plus session management for both. Mode 1 (single consult) is handled inline by COMP-4.
 
 **Satisfies:** REQ-F3, REQ-F10, REQ-N2, REQ-N3
 
@@ -254,7 +263,7 @@ Mode 3: [agent.md] + [collab-mode.md] + [customization]
 **Satisfies:** REQ-F5, REQ-F6, REQ-N3
 
 **Responsibilities:**
-- Add 2-line pointer to `/spec`, `/architect`, `/charter`: Mode 1 (single consult) inline, Modes 2 & 3 via consult-team skill
+- Add ~4-line pointer (heading + 2 guidance lines) to `/spec`, `/architect`, `/charter`: Mode 1 (single consult) inline, Modes 2 & 3 via consult-team skill
 - List natural-fit agents per command (just names)
 - Do NOT add pointers to `/build`, `/deliver`, `/breakdown`, `/define`
 
@@ -282,24 +291,35 @@ Mode 3: [agent.md] + [collab-mode.md] + [customization]
 
 **Contract:**
 ```
-Prompt assembly by mode:
+Mode 1 & 2 — Native subagent dispatch (preferred):
+  1. Main agent dispatches via Agent tool:
+       subagent_type: "[agent-name]"   (e.g., "critic")
+       prompt: [customization/context block]
+  2. Platform loads .claude/agents/[agent-name].md as system prompt
+  3. Customization becomes the task prompt
+  4. Mode 2: dispatch N agents in parallel, same mechanism
 
-Mode 1 (single consult):
-  1. Main agent reads agent file verbatim (e.g., agents/critic.md)
-  2. Main agent writes customization section, identifying it as such
-  3. Dispatch prompt = [agent file] + [customization]
-  4. Dispatch via Agent tool
+  NOTE: This assumes custom agents in .claude/agents/ are available
+  as subagent_type values. Plugin agents (e.g., superpowers:code-reviewer)
+  are confirmed to work this way. See DQ-3.
 
-Mode 2 (parallel perspectives):
-  Same as Mode 1, repeated for each selected agent
-  All dispatched via Agent tool in parallel
+Mode 1 & 2 — Fallback (if native dispatch unavailable):
+  1. Main agent reads agent file verbatim
+  2. Main agent writes customization section
+  3. Dispatch via Agent tool (general-purpose) with
+     prompt: [agent file content] + [customization]
 
-Mode 3 (collaborative team):
+Mode 3 — Manual assembly (TeamCreate):
   1. Main agent reads agent file verbatim
   2. Main agent reads collab-mode.md
   3. Main agent writes customization section
   4. Spawn prompt = [agent file] + [collab-mode.md] + [customization]
   5. Dispatch via TeamCreate
+  (TeamCreate does not reference subagent definitions;
+   teammates get spawn prompts from the lead)
+
+All modes: subagents cannot spawn other subagents.
+Our agents analyze and report only — this is not a constraint.
 ```
 
 ---
@@ -338,33 +358,31 @@ Modes 2 & 3: Main agent invokes consult-team skill via Skill tool,
 
 **Contract:**
 ```
-Mode 2 (parallel subagents):
-  Main agent writes consolidated session report using template:
-    .plans/reviews/[ARTIFACT-ID]-agent-review.md
-  Contains: metadata, findings per agent, synthesis
-
-Mode 3 (collaborative team):
-  Each teammate writes their own report directly:
-    .plans/reviews/[ARTIFACT-ID]-[agent-name]-report.md
+All modes — every dispatched agent writes its own report:
+  .plans/reviews/[ARTIFACT-ID]-[agent-name]-report.md
   Contains:
     - Their findings and analysis
     - The customized instructions they received (appended context block)
     - Self-evaluation
     - Questions or concerns for the user/team
 
-  Main agent writes a separate lead review:
-    .plans/reviews/[ARTIFACT-ID]-lead-review.md
+  The agent also returns results directly to the main agent for
+  quick synthesis. The written report is the source of truth;
+  the direct return is for convenience.
+
+Mode 2 & 3 — main agent writes a lead review:
+  .plans/reviews/[ARTIFACT-ID]-lead-review.md
   Contains:
-    - Assessment of each teammate's work
+    - Assessment of each agent's work
     - Verification that customized instructions were followed
     - Synthesis across all perspectives
-    - Team reconstitution notes for future sessions
-    - Disagreements or tensions observed between teammates
+    - (Mode 3 only) Team reconstitution notes for future sessions
+    - Disagreements or tensions observed between agents
 
-  Main agent can compare teammate's reported instructions against
+  Main agent can compare agent's reported instructions against
   what was actually sent to verify context passing fidelity.
 
-User interaction paths (Mode 3):
+User interaction paths (Mode 3 only):
   Standard:  Teammate ──message──▶ Main Agent ──relay──▶ User
   In-depth:  User ──Shift+Down──▶ Teammate (direct terminal interaction)
 ```
@@ -402,26 +420,41 @@ User interaction paths (Mode 3):
 └──────────────┘
 ```
 
-### DATA-1: Agent Definition File
+### DATA-1: Agent Definition File (Native Claude Code Subagent Format)
 
-**Purpose:** Define a single agent persona
+**Purpose:** Define a single agent persona as a standard Claude Code subagent
 
-**Used by:** COMP-1, COMP-3 (index reads frontmatter), INT-1 (prompt assembly)
+**Used by:** COMP-1, COMP-3 (reads `description` and `category` from frontmatter for index), INT-1 (prompt assembly)
 
 **Schema/Structure:**
+
+**YAML Frontmatter (Claude Code standard fields):**
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| name | frontmatter string | Yes | Agent identifier (e.g., "critic") |
-| category | frontmatter string | Yes | One of: evaluative, perspective, structural, meta |
-| purpose | frontmatter string | Yes | One-line description for index listing |
-| Identity | markdown section | Yes | Who this agent is, what perspective they bring |
-| Reasoning Approach | markdown section | Yes | How they think, what they look for, priorities |
-| Output Format | markdown section | Yes | Structure of their responses |
-| Self-Evaluation | markdown section | Yes | Instructions to reflect on their own performance |
+| name | string | Yes | Agent identifier, lowercase with hyphens (e.g., "critic") |
+| description | string | Yes | When to delegate to this agent — doubles as index entry for consult-team skill |
+| tools | comma-separated | No | Tool restrictions (e.g., "Read, Grep, Glob, Write" for review agents) |
+| model | string | No | Model override (e.g., "sonnet", "opus", "inherit") |
+| memory | string | No | Persistent memory scope: "project" recommended — accumulates knowledge in `.claude/agent-memory/<name>/` |
+
+**YAML Frontmatter (Praxisity custom fields):**
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| category | string | Yes | One of: evaluative, perspective, structural, meta — used by consult-team skill for grouping |
+
+**Markdown Body (persona definition):**
+| Section | Required | Description |
+|---------|----------|-------------|
+| Identity | Yes | Who this agent is, what perspective they bring |
+| Reasoning Approach | Yes | How they think, what they look for, priorities |
+| Output Format | Yes | Structure of their responses |
+| Self-Evaluation | Yes | Instructions to reflect on their own performance and write report to `.plans/reviews/` |
 
 **Constraints:**
 - Files must be functional standalone (no assumption of appended content)
 - Focused and concise — establish perspective and expectations, not exhaustive instructions
+- Must conform to Claude Code subagent format so platform features work natively
+- Files live in `.claude/agents/` (project-level) so they're available to all sessions and checkable into version control
 
 ---
 
@@ -474,18 +507,26 @@ User interaction paths (Mode 3):
 **Used by:** COMP-2 (template), COMP-3 (guidance on when/how to write), INT-3
 
 **Schema/Structure (flexible template — all modes):**
+
+**Agent report (every dispatched agent, all modes):**
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| Metadata | section | Yes | Artifact ID, date, agent name(s), dispatch mode |
-| Instructions received | section | Mode 3 teammates: the customization block they were given; Mode 2/lead: user's team instructions | What this agent was told to do |
+| Metadata | section | Yes | Artifact ID, date, agent name, dispatch mode |
+| Instructions received | section | Yes | The customization block they were given |
 | Findings | section | Yes | Analysis and recommendations |
 | Self-evaluation | section | Yes | What worked, what they struggled with, prompt improvement suggestions |
-| Synthesis | section | Lead review and Mode 2 only | Cross-perspective analysis, areas of agreement/disagreement |
-| Reconstitution notes | section | Lead review (Mode 3) only | Team composition, open concerns, context summary for next session |
+
+**Lead review (main agent, Modes 2 & 3):**
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| Metadata | section | Yes | Artifact ID, date, team composition, dispatch mode |
+| Per-agent assessment | section | Yes | Quality of work, instruction fidelity, context retention |
+| Synthesis | section | Yes | Cross-perspective analysis, areas of agreement/disagreement |
+| Reconstitution notes | section | Mode 3 only | Team composition, open concerns, context summary for next session |
 
 **Constraints:**
-- One flexible template covers all modes; sections left empty when not applicable
-- Naming: `[ARTIFACT-ID]-agent-review.md` (Mode 2), `[ARTIFACT-ID]-[agent-name]-report.md` (Mode 3 teammates), `[ARTIFACT-ID]-lead-review.md` (Mode 3 lead)
+- One flexible template covers both agent reports and lead reviews; sections left empty when not applicable
+- Naming: `[ARTIFACT-ID]-[agent-name]-report.md` (every dispatched agent), `[ARTIFACT-ID]-lead-review.md` (main agent synthesis for Modes 2 & 3)
 - All reports go to `.plans/reviews/`
 
 ---
@@ -524,21 +565,41 @@ User interaction paths (Mode 3):
 
 ---
 
-### DEC-3: Agents Write Their Own Reports (Mode 3)
+### DEC-3: Every Agent Writes Its Own Report (All Modes)
 
-**Context:** Mode 3 teammates are full parallel sessions, not subordinate subagents. They maintain context, can interact directly with the user, and see deltas across the work session.
+**Context:** Agent outputs returned directly to the main agent are subject to summarization loss and context window compression. The main agent's retelling of what an agent found is a telephone game.
 
-**Decision:** In Mode 3, each teammate writes their own report directly to `.plans/reviews/`, including findings, the instructions they received, and self-evaluation. The main agent writes a separate lead review assessing the team's work. In Mode 2, the main agent writes a consolidated report.
+**Decision:** Every dispatched agent (all modes) writes its own report directly to `.plans/reviews/`, including findings, the instructions they received, and self-evaluation. The agent also returns results to the main agent for quick synthesis. For Modes 2 & 3, the main agent writes a separate lead review assessing the agents' work and synthesizing across perspectives.
 
-**Rationale:** Teammates are independent professionals, not funnels. Their self-authored reports capture nuance that would be lost in main-agent summarization. Including the instructions they received allows verification of context passing fidelity. The lead review adds managerial perspective without replacing the source material.
+**Rationale:** Agent-authored reports are the source of truth. They capture nuance lost in summarization, persist beyond context compression, and enable verification of context passing fidelity (the main agent can compare what it sent vs. what the agent says it received). Subagents dispatched via the Agent tool have full Write tool access, so this is technically feasible in all modes.
 
 **Alternatives Considered:**
-- Main agent consolidates all reports: Loses individual nuance; introduces telephone-game summarization errors
-- Only teammate reports, no lead review: Loses the cross-perspective synthesis and instruction fidelity check
+- Main agent consolidates all reports: Loses individual nuance; introduces telephone-game summarization errors; no way to verify after the fact
+- Reports only for Mode 3: Misses the same verification and persistence benefits for Modes 1 & 2
 
 ---
 
-### DEC-4: Skills as Guidance, Not Control Flow
+### DEC-4: Native Claude Code Subagent Format
+
+**Context:** Agent definition files could use a custom Praxisity format or the standard Claude Code subagent format (YAML frontmatter + markdown body).
+
+**Decision:** Use the native Claude Code subagent format. Agent files live in `.claude/agents/` and conform to the standard schema. Persona content goes in the markdown body. A custom `category` field is added to frontmatter for Praxisity-specific grouping (Claude Code ignores unrecognized fields).
+
+**Rationale:** Native format gives platform capabilities for free: tool restrictions (review agents can be read-only), persistent memory (agents accumulate knowledge across sessions in `.claude/agent-memory/<name>/`), @-mention invocation, `--agent` session mode, model selection per agent, hooks, and worktree isolation. Building a custom format would require reimplementing all of this.
+
+**Alternatives Considered:**
+- Custom Praxisity format: Full control over schema but loses all platform integration; requires custom dispatch logic
+- Wrapper around native format: Unnecessary indirection; the native format already supports everything we need
+
+**Consequences:**
+- Agents are immediately usable via @-mention and --agent without the consult-team skill
+- Persistent memory replaces the custom Tier 3 resources concept entirely
+- Agent files are checkable into version control and shared with collaborators
+- Dependency on Claude Code subagent format stability (acceptable — it's the platform we're building on)
+
+---
+
+### DEC-5: Skills as Guidance, Not Control Flow
 
 **Context:** The Superpowers plugin separates dispatch logic into its own skill with deterministic workflow sequences. Praxisity needs a different approach.
 
@@ -558,11 +619,11 @@ User interaction paths (Mode 3):
 
 | Order | Component | Dependencies | Notes |
 |-------|-----------|--------------|-------|
-| 1 | Directory structure | None | Create `.claude/skills/consult-team/agents/`, `agents/resources/[per-agent]/`, `templates/`, `.plans/reviews/` |
+| 1 | Directory structure | None | Create `.claude/agents/` (if not exists), `.claude/skills/consult-team/templates/`, `.plans/reviews/` |
 | 2 | COMP-2: Templates + collab-mode | None | Small standalone files. Context block, session report template, collab-mode.md. Needed before testing dispatch. |
 | 3 | COMP-1: Agent definition files | None | Write the 8 agent personas. Foundation that everything else references. |
 | 4 | COMP-3: consult-team skill | COMP-1 (for index), COMP-2 (for template references) | Core deliverable. References agent index and templates. Includes decision gate. |
-| 5 | COMP-4: Tier 1 command pointers | COMP-3 (skill must exist to reference) | Lightest lift — 2 lines added to 3 command files (`/spec`, `/architect`, `/charter`). |
+| 5 | COMP-4: Tier 1 command pointers | COMP-3 (skill must exist to reference) | Lightest lift — ~4 lines added to 3 command files (`/spec`, `/architect`, `/charter`). |
 | 6 | Bootstrapping test | All components | Use the agents on real spec work (framework rework) to validate before finalizing. |
 
 ### 7.2 Risk Areas
@@ -574,6 +635,7 @@ User interaction paths (Mode 3):
 | Customization blocks become bloated over time | Diminishes agent focus; noisy prompts | Skill guidance emphasizes "focused and informative"; lead review checks instruction quality |
 | Main agent defaults to Mode 2 despite decision gate | Loses delta-awareness when it's needed | Skill's snapshot vs. delta framing makes the tradeoff explicit; user can always direct Mode 3 |
 | Teammate reports vary wildly in format and quality | Hard to compare across agents; synthesis becomes difficult | Output Format section in each agent file standardizes structure; collab-mode.md reinforces reporting duties |
+| Custom agents not available via subagent_type (DQ-3) | Mode 1 & 2 dispatch requires manual file reading instead of native platform dispatch | Fallback mechanism defined in INT-1; test early during implementation |
 
 ### 7.3 Testing Strategy
 
@@ -620,6 +682,7 @@ This pattern will recur constantly. The Fresh Eyes Reviewer (8th agent, added du
 |----|----------|--------|------------|
 | DQ-1 | Should the collab-mode.md instruct teammates to coordinate report writing timing, or let them write whenever they finish? | Open | Start with write-when-finished; coordinate if reports conflict |
 | DQ-2 | What is the optimal team size for spec review vs. design review vs. implementation? | Deferred | Will be informed by bootstrapping experience; Claude Code docs suggest 3-5 teammates |
+| DQ-3 | Can the Agent tool's `subagent_type` parameter dispatch custom agents from `.claude/agents/` by name? | Open | Plugin agents (e.g., `superpowers:code-reviewer`) are confirmed to work as subagent_type values. Project-level agents in `.claude/agents/` should work the same way but this is unverified. Fallback: read agent file manually and dispatch via general-purpose agent. Must test during implementation. |
 
 ---
 
@@ -633,7 +696,7 @@ This pattern will recur constantly. The Fresh Eyes Reviewer (8th agent, added du
 | Delta | Awareness of changes over time; what Mode 3 (persistent teammates) see |
 | Decision gate | The point in the skill where the agent must choose between snapshot and delta dispatch |
 | Progressive loading | Architecture where content enters context only when needed, organized in tiers |
-| Tier 1 | Command-level pointers (2 lines, always loaded) |
+| Tier 1 | Command-level pointers (~4 lines: heading + guidance, always loaded) |
 | Tier 2 | consult-team skill (loaded on demand) |
 | Tier 3 | Individual agent files + resources (loaded per-dispatch) |
 | Context block | Per-dispatch customization appended by main agent to orient the dispatched agent |
@@ -642,7 +705,9 @@ This pattern will recur constantly. The Fresh Eyes Reviewer (8th agent, added du
 ### B. References
 
 - [SPEC-005: Agent Consultation System](../specs/005-agent-consultation-system.md)
-- [Claude Code Agent Teams documentation](https://code.claude.com/docs/en/agent-teams)
+- [Claude Code Sub-agents documentation](https://code.claude.com/docs/en/sub-agents) — native subagent file format, tool restrictions, persistent memory, hooks
+- [Claude Code Agent Teams documentation](https://code.claude.com/docs/en/agent-teams) — Mode 3 team creation, coordination, messaging
+- [Claude Code Hooks reference](https://code.claude.com/docs/en/hooks) — quality gate integration (future)
 - [D4C-ARS Bug Report](../references/d4c-praxisity-bug-report.md)
 - [v0.5.0 Bug Report](../references/new-project-bug-report.md)
 

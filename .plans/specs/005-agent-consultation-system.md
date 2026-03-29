@@ -55,16 +55,18 @@ Provide Praxisity with a reusable, progressively-loaded agent consultation syste
 
 | ID | Requirement | Priority | Rationale |
 |----|-------------|----------|-----------|
-| REQ-F1 | Each agent shall be defined in its own file with a standardized format: frontmatter (name, category, purpose), Identity, Reasoning Approach, Output Format, and Self-Evaluation sections | MUST | Enables progressive loading — only dispatched agents enter context; frontmatter enables index without full load |
+| REQ-F1 | Each agent shall be defined as a native Claude Code subagent file (YAML frontmatter + markdown body) in `.claude/agents/`, with standard fields (name, description, tools, model, memory) plus custom `category` field, and a markdown body containing Identity, Reasoning Approach, Output Format, and Self-Evaluation sections | MUST | Native format gives platform capabilities for free (tool restrictions, persistent memory, @-mention, --agent mode); enables progressive loading — only dispatched agents enter context |
 | REQ-F2 | Agent files shall be immutable at dispatch time; per-invocation customization shall be appended as a context block following a standardized template, never edited into the agent file | MUST | Prevents prompt drift across sessions; separates stable persona from variable context |
 | REQ-F3 | A `consult-team` skill shall provide the main agent with guidance on: available agents (index from frontmatter), when to use single consult vs. team session, how to manage parallel agent sessions, how to synthesize feedback, and what to preserve from sessions | MUST | Without this loaded guidance, the user must manually instruct the agent on team management every session |
 | REQ-F4 | The initial agent roster shall include 8 agents across 4 categories: Evaluative (Critic, Skeptic), Perspective (User Advocate, Stakeholder), Structural (Designer, Project Manager), Meta (Prompt Engineer, Fresh Eyes Reviewer) | MUST | These perspectives cover the range needed for spec/design review; roster designed during brainstorming and expanded during design when cross-document consistency review proved its value |
-| REQ-F5 | Thinking commands (`/spec`, `/architect`, `/charter`) shall include a Tier 1 pointer (3-5 lines) referencing the consult-team skill and listing natural-fit agents for that command's phase | SHOULD | Reminds the main agent that consultation is available without loading the full skill; reduces user burden of remembering to invoke |
+| REQ-F5 | Thinking commands (`/spec`, `/architect`, `/charter`) shall include a Tier 1 pointer (~4 lines: heading + guidance) referencing the consult-team skill and listing natural-fit agents for that command's phase | SHOULD | Reminds the main agent that consultation is available without loading the full skill; reduces user burden of remembering to invoke |
 | REQ-F6 | Doing commands (`/build`, `/deliver`, `/breakdown`, `/define`) shall not include agent consultation pointers by default | SHOULD | Keeps doing-command context lean; user can still manually invoke the skill when needed (e.g., when a DIP involves writing skills) |
 | REQ-F7 | Each agent's output shall include a self-evaluation section covering: what was useful about their perspective, what they struggled with, and suggestions for prompt improvement | SHOULD | Generates improvement data as a byproduct of normal work; enables iterative refinement without separate overhead |
-| REQ-F8 | Agent consultation outputs and self-evaluations shall be saved to `.plans/reviews/` as session report files | SHOULD | Persists agent feedback beyond the terminal session; accumulated reports inform agent prompt revisions |
-| REQ-F9 | The directory structure shall include an `agents/resources/` directory with per-agent subdirectories for agent-specific reference materials (Tier 3) | COULD | Infrastructure for future agent knowledge bases; starts mostly empty and grows through use |
+| REQ-F8 | Every dispatched agent (all modes) shall write its own report directly to `.plans/reviews/` including findings, instructions received, and self-evaluation — independent of what it returns to the main agent | MUST | Agent-authored reports are the source of truth; prevents telephone-game summarization loss; enables verification of what the agent actually found vs. what the main agent reported; persists beyond context window compression |
+| REQ-F9 | Agent definitions shall use Claude Code's native `memory: project` feature for persistent cross-session knowledge accumulation, stored in `.claude/agent-memory/<name>/` | COULD | Platform-native Tier 3 — agents accumulate knowledge across sessions without custom infrastructure; starts empty and grows through use |
 | REQ-F10 | The `consult-team` skill name and description shall be clearly differentiated from Superpowers' `dispatching-parallel-agents` skill to prevent main agent confusion when both are installed | MUST | Different purpose (multi-perspective on same topic vs. independent parallel tasks); ambiguous naming would cause incorrect skill selection |
+| REQ-F11 | The consult-team skill shall support three dispatch modes: single expert consult (Mode 1, one subagent via Agent tool), parallel perspectives (Mode 2, multiple subagents via Agent tool), and collaborative team (Mode 3, persistent teammates via TeamCreate with shared task list, direct messaging, and direct user interaction) | MUST | Each mode serves different needs: Mode 1 for quick checks (snapshot), Mode 2 for multi-perspective review (snapshot), Mode 3 for sustained work where context accumulation and delta-awareness matter |
+| REQ-F12 | Mode 3 collaborative teammates shall be full parallel sessions that write their own reports directly, maintain their own perspective, and can interact with the user either via main agent relay or direct terminal access | MUST | Teammates are independent professionals, not subordinate funnels; self-authored reports capture nuance lost in summarization; direct user access enables in-depth interaction when relay is insufficient |
 
 ### 3.2 Non-Functional Requirements
 
@@ -85,7 +87,7 @@ Provide Praxisity with a reusable, progressively-loaded agent consultation syste
 
 **Preconditions:**
 - Thinking command includes Tier 1 pointer to consult-team skill
-- Agent definition files exist in the skill's agents/ directory
+- Agent definition files exist in `.claude/agents/`
 
 **Flow:**
 1. Developer runs `/spec` and completes the gathering phase
@@ -154,15 +156,17 @@ Provide Praxisity with a reusable, progressively-loaded agent consultation syste
 
 | ID | Criterion | Validates |
 |----|-----------|-----------|
-| AC-1 | Given an agent definition file, when inspected, then it contains frontmatter (name, category, purpose) and sections for Identity, Reasoning Approach, Output Format, and Self-Evaluation | REQ-F1 |
+| AC-1 | Given an agent definition file in `.claude/agents/`, when inspected, then it uses native Claude Code subagent format with YAML frontmatter (name, description, tools, model, memory, category) and a markdown body containing Identity, Reasoning Approach, Output Format, and Self-Evaluation sections | REQ-F1 |
 | AC-2 | Given a dispatched agent, when the dispatch prompt is constructed, then the agent file content is included verbatim and the context block is appended after it — the agent file is not modified | REQ-F2 |
 | AC-3 | Given the consult-team skill is invoked, when loaded, then it provides an agent index (names, categories, purposes), dispatch guidance for single consult and team sessions, session management instructions, and output preservation instructions | REQ-F3 |
-| AC-4 | Given the agents/ directory, when listed, then it contains exactly 8 agent files: critic.md, skeptic.md, user-advocate.md, stakeholder.md, designer.md, project-manager.md, prompt-engineer.md, fresh-eyes-reviewer.md | REQ-F4 |
-| AC-5 | Given a thinking command (`/spec`, `/architect`, `/charter`), when its skill file is inspected, then it contains a Tier 1 pointer of 3-5 lines referencing the consult-team skill and listing natural-fit agents | REQ-F5 |
+| AC-4 | Given the `.claude/agents/` directory, when listed, then it contains exactly 8 agent files: critic.md, skeptic.md, user-advocate.md, stakeholder.md, designer.md, project-manager.md, prompt-engineer.md, fresh-eyes-reviewer.md | REQ-F4 |
+| AC-5 | Given a thinking command (`/spec`, `/architect`, `/charter`), when its command file is inspected, then it contains a Tier 1 pointer of ~4 lines (heading + guidance) referencing the consult-team skill and listing natural-fit agents | REQ-F5 |
 | AC-6 | Given a doing command (`/build`, `/deliver`, `/breakdown`, `/define`), when its skill file is inspected, then it contains no agent consultation pointers | REQ-F6 |
 | AC-7 | Given an agent that has completed its review, when its output is inspected, then it includes a self-evaluation section | REQ-F7 |
-| AC-8 | Given a completed agent consultation session, when `.plans/reviews/` is inspected, then a session report file exists containing agent findings and self-evaluations | REQ-F8 |
+| AC-8 | Given any dispatched agent (Mode 1, 2, or 3), when it completes its work, then it has written its own report to `.plans/reviews/` including findings, instructions received, and self-evaluation | REQ-F8 |
 | AC-9 | Given the consult-team skill name and description, when compared to Superpowers' dispatching-parallel-agents, then the names and descriptions are clearly distinguishable in purpose | REQ-F10 |
+| AC-10 | Given the consult-team skill, when loaded, then it provides guidance for all three dispatch modes: Mode 1 (single subagent), Mode 2 (parallel subagents), Mode 3 (collaborative team via TeamCreate) including a decision gate for choosing between snapshot and delta dispatch | REQ-F11 |
+| AC-11 | Given a Mode 3 collaborative team session, when a teammate completes their work, then they have written their own report to `.plans/reviews/` including findings, instructions received, and self-evaluation — independent of the lead's report | REQ-F12 |
 
 ---
 
@@ -209,7 +213,7 @@ The following are explicitly NOT part of this specification:
 
 - Auto-invocation of the consult-team skill by commands — commands include pointers but the skill is invoked by user choice or explicit agent suggestion, never automatically
 - Custom agent-to-agent communication protocols — the platform's built-in SendMessage capability exists and agents may use it; this spec does not build additional communication infrastructure on top of it
-- Agents modifying project files — agents return analysis and recommendations for project artifacts; the main agent or user acts on them. Exception: Mode 3 teammates write their own reports directly to `.plans/reviews/`
+- Agents modifying project files — agents return analysis and recommendations for project artifacts; the main agent or user acts on them. All dispatched agents (every mode) write their own reports to `.plans/reviews/`, but do not modify other project files
 - Code review agents — covered by Superpowers for now; Praxisity will develop its own when scope expands to cover implementation phases
 - Automated agent prompt refinement — self-evaluation generates data; humans decide when and how to revise prompts
 - Populating Tier 3 agent-specific resources — directory structure is created but content grows through use, not upfront design
@@ -223,7 +227,7 @@ The following are explicitly NOT part of this specification:
 |----|----------|--------|------------|
 | Q-1 | How reliably does Claude Code auto-invoke skills when it recognizes the need? | Deferred | No data as of 2026-03-28; designed around explicit chains for now with structure compatible with auto-invocation later |
 | Q-2 | What is the optimal synthesis approach for multi-agent feedback — automated summary, raw responses, or both? | Deferred | Will be informed by experience using the agents during the framework rework spec work |
-| Q-3 | Should the session report template be structured differently for single consult vs. team sessions? | Open | To be resolved during design phase |
+| Q-3 | Should the session report template be structured differently for single consult vs. team sessions? | Resolved | DESIGN-004 DATA-4: one flexible template covers all modes; sections left empty when not applicable |
 
 ---
 
@@ -232,6 +236,8 @@ The following are explicitly NOT part of this specification:
 - [D4C-ARS Bug Report](../references/d4c-praxisity-bug-report.md) — ISSUE-004 identified need for persistent agent teams
 - [v0.5.0 Bug Report](../references/new-project-bug-report.md) — 46 bugs demonstrating single-perspective blind spots
 - [CHARTER.md](../../CHARTER.md)
+- [Claude Code Sub-agents documentation](https://code.claude.com/docs/en/sub-agents) — native subagent file format, tool restrictions, persistent memory
+- [Claude Code Agent Teams documentation](https://code.claude.com/docs/en/agent-teams) — Mode 3 team creation and coordination
 - Superpowers plugin skills (subagent-driven-development, dispatching-parallel-agents, brainstorming) — pattern reference for agent dispatch approaches
 
 ---
