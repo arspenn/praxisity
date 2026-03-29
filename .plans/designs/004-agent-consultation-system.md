@@ -136,12 +136,13 @@ The main agent is always the coordinator. The skill provides knowledge of how to
 | User interaction | Via main agent only | Via main agent only | Direct interaction possible |
 | Best for | Sanity checks | Spec/design review gates | Multi-DIP implementation, framework rework |
 
-**Prompt assembly by mode:**
+**Prompt delivery by mode** (platform loads agent.md as system prompt in all modes):
 
 ```
-Mode 1: [agent.md] + [customization]
-Mode 2: [agent.md] + [customization]  (×N in parallel)
-Mode 3: [agent.md] + [collab-mode.md] + [customization]
+Mode 1: system=[agent.md]  task=[context block]
+Mode 2: system=[agent.md]  task=[context block]  (×N in parallel)
+Mode 3: system=[agent.md]  task=[collab-mode content] + [context block]
+         + TeamCreate for shared task list and messaging
 ```
 
 #### 2.3 Technology Choices
@@ -291,35 +292,38 @@ Mode 3: [agent.md] + [collab-mode.md] + [customization]
 
 **Contract:**
 ```
-Mode 1 & 2 — Native subagent dispatch (preferred):
-  1. Main agent dispatches via Agent tool:
-       subagent_type: "[agent-name]"   (e.g., "critic")
-       prompt: [customization/context block]
-  2. Platform loads .claude/agents/[agent-name].md as system prompt
-  3. Customization becomes the task prompt
-  4. Mode 2: dispatch N agents in parallel, same mechanism
+Mode 1 — Single expert consult (native dispatch):
+  Agent(subagent_type: "[agent-name]", prompt: [context block])
+  Platform loads .claude/agents/[agent-name].md as system prompt.
+  Context block becomes the task prompt.
 
-  NOTE: This assumes custom agents in .claude/agents/ are available
-  as subagent_type values. Plugin agents (e.g., superpowers:code-reviewer)
-  are confirmed to work this way. See DQ-3.
+Mode 2 — Parallel perspectives (native dispatch):
+  Same as Mode 1, dispatched N times in parallel.
 
-Mode 1 & 2 — Fallback (if native dispatch unavailable):
-  1. Main agent reads agent file verbatim
-  2. Main agent writes customization section
-  3. Dispatch via Agent tool (general-purpose) with
-     prompt: [agent file content] + [customization]
+Mode 3 — Collaborative team (native dispatch + TeamCreate):
+  1. TeamCreate(team_name: "[team-name]", description: "[purpose]")
+  2. For each teammate:
+     Agent(
+       subagent_type: "[agent-name]",
+       team_name: "[team-name]",
+       name: "[agent-name]",
+       prompt: [collab-mode.md content] + [context block]
+     )
+  Platform loads .claude/agents/[agent-name].md as system prompt.
+  Collab-mode content + context block become the task prompt.
+  Teammates join the shared team with task list and direct messaging.
 
-Mode 3 — Manual assembly (TeamCreate):
-  1. Main agent reads agent file verbatim
-  2. Main agent reads collab-mode.md
-  3. Main agent writes customization section
-  4. Spawn prompt = [agent file] + [collab-mode.md] + [customization]
-  5. Dispatch via TeamCreate
-  (TeamCreate does not reference subagent definitions;
-   teammates get spawn prompts from the lead)
+Fallback (if native dispatch unavailable for custom agents):
+  Agent(subagent_type: "general-purpose",
+        prompt: [agent file content] + [context block])
 
 All modes: subagents cannot spawn other subagents.
 Our agents analyze and report only — this is not a constraint.
+
+NOTE: Native dispatch for custom agents confirmed working after
+session registration via /agents (see DQ-3). Agent files must be
+loaded at session start or via /agents to be available as
+subagent_type values.
 ```
 
 ---
