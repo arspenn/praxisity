@@ -1,6 +1,6 @@
 # Praxisity Agent Roster
 
-## Active Agents (8)
+## Active Agents (9)
 
 | Agent | Category | Core Question |
 |-------|----------|---------------|
@@ -12,10 +12,10 @@
 | designer | Structural | How do the pieces fit together? |
 | project-manager | Structural | What's realistic and what blocks what? |
 | prompt-engineer | Meta | Is this optimized for both humans and AI? |
+| spot | Meta | Can someone with no context understand this? (haiku model — document clarity gate) |
 
 ## Future Agents (Not Yet Built)
 
-- **cold-reader** — Minimal-context document reviewer. No project knowledge, no methodology priming. Just reads documents and flags what doesn't match. Catches things primed reviewers skip. Useful as a Mode 1 one-shot counterpart to the consistency-reviewer's structured approach.
 - **domain-expert** — Configurable domain specialist. Spawn with a specific domain (public health, software, research) to evaluate whether content is technically sound in that field.
 - **editor** — Writing quality reviewer. Checks clarity, conciseness, and readability without changing meaning. Distinct from prompt-engineer (which checks AI-effectiveness) and consistency-reviewer (which checks cross-document agreement).
 - **devil's-advocate** — Takes the opposing position on any decision or design choice. Stronger than the skeptic — doesn't just question necessity, actively argues the other side to stress-test reasoning.
