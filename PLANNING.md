@@ -15,7 +15,7 @@
 
 ## Session Notes
 
-- SPEC-005 designed via brainstorming session — 7-agent consultation system with 3-tier progressive loading
+- SPEC-005 designed via brainstorming session — 8-agent consultation system with 3-tier progressive loading
 - Bootstrapping approach: build agents to help write the framework rework spec, then formalize as a feature
 - Key design decisions: skills are loaded context not control flow; agent files immutable at dispatch; persistence via documents not terminal sessions
 

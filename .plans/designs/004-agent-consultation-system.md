@@ -33,7 +33,7 @@
 
 This design implements a prompt-based agent consultation system — no runtime code, no automation logic. The entire deliverable is authored files: 8 agent definition prompts, 1 skill document, 1 collaborative mode extension, 1 flexible report template, 1 context block template, a directory structure, and minor edits to 3 existing command files.
 
-The architecture follows a 3-tier progressive loading model where content enters the agent's context only when needed. Tier 1 is ~4 lines (heading + guidance) embedded in thinking commands. Tier 2 is the consult-team skill loaded on demand. Tier 3 is individual agent files loaded only when that specific agent is dispatched. Three dispatch modes (single expert consult, parallel perspectives, collaborative team) serve different needs, with a decision gate in the skill that forces explicit consideration of snapshot vs. delta tradeoffs.
+The architecture follows a 3-tier progressive loading model where content enters the agent's context only when needed. Tier 1 is a compact pointer embedded in thinking commands (format defined in INT-2). Tier 2 is the consult-team skill loaded on demand. Tier 3 is individual agent files loaded only when that specific agent is dispatched. Three dispatch modes (single expert consult, parallel perspectives, collaborative team) serve different needs, with a decision gate in the skill that forces explicit consideration of snapshot vs. delta tradeoffs.
 
 The main agent is always the coordinator. The skill provides knowledge of how to coordinate but contains no control flow. Agent files are immutable at dispatch time — customization is appended, never edited in. For collaborative teams (Mode 3), agents are full parallel sessions that write their own reports, maintain their own perspective, and can interact directly with the user.
 
@@ -52,7 +52,7 @@ The main agent is always the coordinator. The skill provides knowledge of how to
 | REQ-F2 | COMP-1, COMP-2, DATA-2, DATA-3, INT-1 | Layered prompt assembly: agent file (immutable) + collab-mode (Mode 3) + context block (appended) |
 | REQ-F3 | COMP-3 | consult-team skill with agent index, decision gate, dispatch guidance, session management |
 | REQ-F4 | COMP-1 | 8 agent files across 4 categories |
-| REQ-F5 | COMP-4 | ~4-line pointers in /spec, /architect, /charter |
+| REQ-F5 | COMP-4 | Compact pointers in /spec, /architect, /charter (format per INT-2) |
 | REQ-F6 | COMP-4 | No pointers in /build, /deliver, /breakdown, /define |
 | REQ-F7 | COMP-1, DATA-1 | Self-Evaluation section in every agent file's output instructions |
 | REQ-F8 | COMP-2, DATA-4, INT-3 | Flexible session report template; reports saved to .plans/reviews/ |
@@ -221,7 +221,7 @@ Mode 3: [agent.md] + [collab-mode.md] + [customization]
 - `.plans/reviews/` directory (report destination)
 
 **Key Design Decisions:**
-- Collab-mode.md is a single shared file, not per-agent — avoids 7x duplication; contains only what's different about being a persistent teammate vs. a one-shot subagent
+- Collab-mode.md is a single shared file, not per-agent — avoids duplicating collab content across all 8 agent files; contains only what's different about being a persistent teammate vs. a one-shot subagent
 - One flexible session report template covers all modes — sections left empty when not applicable rather than maintaining separate templates
 - Context block provides structure but the main agent writes naturally within it; the main agent identifies the customization section explicitly when it writes it
 - Report naming: `[ARTIFACT-ID]-[agent-name]-report.md` (every dispatched agent, all modes), `[ARTIFACT-ID]-lead-review.md` (main agent synthesis for Modes 2 & 3)
@@ -263,7 +263,7 @@ Mode 3: [agent.md] + [collab-mode.md] + [customization]
 **Satisfies:** REQ-F5, REQ-F6, REQ-N3
 
 **Responsibilities:**
-- Add ~4-line pointer (heading + 2 guidance lines) to `/spec`, `/architect`, `/charter`: Mode 1 (single consult) inline, Modes 2 & 3 via consult-team skill
+- Add compact pointer to `/spec`, `/architect`, `/charter` matching the INT-2 contract format: Mode 1 (single consult) inline, Modes 2 & 3 via consult-team skill
 - List natural-fit agents per command (just names)
 - Do NOT add pointers to `/build`, `/deliver`, `/breakdown`, `/define`
 
@@ -272,7 +272,7 @@ Mode 3: [agent.md] + [collab-mode.md] + [customization]
 - Existing command files in `.claude/commands/`
 
 **Key Design Decisions:**
-- Approximately 4 lines per command (heading + 2 guidance lines) — enough to remind, not enough to prime
+- Compact pointer per command matching INT-2 contract format — enough to remind, not enough to prime
 - Mode 1 is inline (dispatch a single agent directly), Modes 2 & 3 require loading the skill (decision gate)
 - Natural-fit suggestions: `/spec` → Critic, User Advocate, Skeptic; `/architect` → Designer, Prompt Engineer, Critic; `/charter` → Stakeholder, Project Manager
 - Doing commands stay completely clean — user can always manually invoke the skill
@@ -623,7 +623,7 @@ User interaction paths (Mode 3 only):
 | 2 | COMP-2: Templates + collab-mode | None | Small standalone files. Context block, session report template, collab-mode.md. Needed before testing dispatch. |
 | 3 | COMP-1: Agent definition files | None | Write the 8 agent personas. Foundation that everything else references. |
 | 4 | COMP-3: consult-team skill | COMP-1 (for index), COMP-2 (for template references) | Core deliverable. References agent index and templates. Includes decision gate. |
-| 5 | COMP-4: Tier 1 command pointers | COMP-3 (skill must exist to reference) | Lightest lift — ~4 lines added to 3 command files (`/spec`, `/architect`, `/charter`). |
+| 5 | COMP-4: Tier 1 command pointers | COMP-3 (skill must exist to reference) | Lightest lift — compact pointer added to 3 command files (`/spec`, `/architect`, `/charter`) per INT-2 format. |
 | 6 | Bootstrapping test | All components | Use the agents on real spec work (framework rework) to validate before finalizing. |
 
 ### 7.2 Risk Areas
@@ -697,7 +697,7 @@ This pattern will recur constantly. The Fresh Eyes Reviewer (8th agent, added du
 | Delta | Awareness of changes over time; what Mode 3 (persistent teammates) see |
 | Decision gate | The point in the skill where the agent must choose between snapshot and delta dispatch |
 | Progressive loading | Architecture where content enters context only when needed, organized in tiers |
-| Tier 1 | Command-level pointers (~4 lines: heading + guidance, always loaded) |
+| Tier 1 | Compact command-level pointers (format defined in INT-2, always loaded) |
 | Tier 2 | consult-team skill (loaded on demand) |
 | Tier 3 | Individual agent files + resources (loaded per-dispatch) |
 | Context block | Per-dispatch customization appended by main agent to orient the dispatched agent |
