@@ -243,7 +243,7 @@ git add .plans/reviews/.gitkeep \
 git commit -m "feat(agents): add templates, extensions, and directory structure (DIP-004)
 
 Implements DIP-004: context block template, session report template, collab-mode.md
-Satisfies: REQ-F2, REQ-F8, REQ-F12, REQ-N4"
+Satisfies: REQ-F2, REQ-F8, REQ-F12, REQ-N1, REQ-N4"
 ```
 
 **Commit type:** feat
