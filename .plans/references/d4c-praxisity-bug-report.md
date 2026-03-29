@@ -135,7 +135,7 @@ The full Praxisity pipeline (SPEC-009 -> DESIGN-005 -> DIP-006 + DIP-007) worked
 **Status:** Open (template-level fix needed)
 **Affects:** `/define`, DIP template
 
-The DIP template lists which requirements a DIP satisfies in two places: the Must Satisfy table (Section: Technical Requirements) and the Commit Instructions `Satisfies:` line. During SPEC-005 work, fixing one without updating the other caused a sync issue caught by the fresh-eyes-reviewer. This happened twice in one session.
+The DIP template lists which requirements a DIP satisfies in two places: the Must Satisfy table (Section: Technical Requirements) and the Commit Instructions `Satisfies:` line. During SPEC-005 work, fixing one without updating the other caused a sync issue caught by the consistency-reviewer. This happened twice in one session.
 
 **Fix needed in template:** Collapse requirement satisfaction into a single authoritative location (the Must Satisfy table) and have the commit message template reference it rather than duplicating the list. E.g., the commit template could say `Satisfies: [see Must Satisfy table]` or auto-generate from the table.
 

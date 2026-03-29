@@ -63,7 +63,7 @@ Read the frontmatter of all 8 agent files in `.claude/agents/`. Extract name, de
 - Evaluative: Critic, Skeptic
 - Perspective: User Advocate, Stakeholder
 - Structural: Designer, Project Manager
-- Meta: Prompt Engineer, Fresh Eyes Reviewer
+- Meta: Prompt Engineer, Consistency Reviewer
 
 The index should contain just enough for the main agent to select agents without loading full files — name, one-line description, category.
 
@@ -251,7 +251,7 @@ All criteria must pass for this DIP to be considered complete.
 ls .claude/skills/consult-team/SKILL.md
 
 # Verify all 8 agents referenced in index
-grep -c "critic\|skeptic\|user-advocate\|stakeholder\|designer\|project-manager\|prompt-engineer\|fresh-eyes-reviewer" .claude/skills/consult-team/SKILL.md
+grep -c "critic\|skeptic\|user-advocate\|stakeholder\|designer\|project-manager\|prompt-engineer\|consistency-reviewer" .claude/skills/consult-team/SKILL.md
 # Expected: >= 8 matches
 
 # Verify decision gate keywords present

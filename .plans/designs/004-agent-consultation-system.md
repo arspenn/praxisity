@@ -181,7 +181,7 @@ Mode 3: system=[agent.md]  task=[collab-mode content] + [context block]
 - None — standalone files; Claude Code subagent infrastructure is built-in
 
 **Key Design Decisions:**
-- 8 files in `.claude/agents/`: `critic.md`, `skeptic.md`, `user-advocate.md`, `stakeholder.md`, `designer.md`, `project-manager.md`, `prompt-engineer.md`, `fresh-eyes-reviewer.md`
+- 8 files in `.claude/agents/`: `critic.md`, `skeptic.md`, `user-advocate.md`, `stakeholder.md`, `designer.md`, `project-manager.md`, `prompt-engineer.md`, `consistency-reviewer.md`
 - Uses native Claude Code subagent format — not a custom format. This gives us @-mention, `--agent`, tool restrictions, persistent memory, hooks, and model selection for free
 - Frontmatter includes `memory: project` — agents accumulate knowledge across sessions in `.claude/agent-memory/<name>/` (replaces the custom Tier 3 resources concept with platform-native persistent memory)
 - All agents use restricted tool access: `tools: Read, Grep, Glob, Write` — read-only for project files, Write for `.plans/reviews/` reports only
@@ -202,7 +202,7 @@ Mode 3: system=[agent.md]  task=[collab-mode content] + [context block]
 | Designer | Structural | "How do the pieces fit together?" |
 | Project Manager | Structural | "What's realistic and what blocks what?" |
 | Prompt Engineer | Meta | "Is this optimized for both humans and AI?" |
-| Fresh Eyes Reviewer | Meta | "Does what's written match what's written elsewhere?" |
+| Consistency Reviewer | Meta | "Does what's written match what's written elsewhere?" |
 
 ---
 
@@ -654,11 +654,11 @@ User interaction paths (Mode 3 only):
 
 All testing is manual — run the workflow, observe behavior, review outputs.
 
-### 7.4 Design-Phase Learning: The Fresh Eyes Reviewer
+### 7.4 Design-Phase Learning: The Consistency Reviewer
 
 During this design session, the spec reviewer (dispatched cold with no conversation context) caught two contradictions the authors missed — a line count discrepancy and a conflict between the spec's out-of-scope and the design's Mode 3 reporting. Both felt resolved because they'd been discussed, but the documents still said the old thing.
 
-This pattern will recur constantly. The Fresh Eyes Reviewer (8th agent, added during design) is specifically designed for cold-read cross-document consistency. It reads linked specs, designs, and DIPs without brainstorming history — the way a future implementer will. It is likely to be one of the most frequently dispatched standalone agents.
+This pattern will recur constantly. The Consistency Reviewer (8th agent, added during design) is specifically designed for cross-document consistency checking. When dispatched as a one-shot subagent it reads cold — the way a future implementer will. When running as a persistent teammate it leverages accumulated session context to catch regressions as work evolves. It is likely to be one of the most frequently dispatched agents in both modes.
 
 ---
 
@@ -687,7 +687,7 @@ This pattern will recur constantly. The Fresh Eyes Reviewer (8th agent, added du
 |----|----------|--------|------------|
 | DQ-1 | Should the collab-mode.md instruct teammates to coordinate report writing timing, or let them write whenever they finish? | Open | Start with write-when-finished; coordinate if reports conflict |
 | DQ-2 | What is the optimal team size for spec review vs. design review vs. implementation? | Deferred | Will be informed by bootstrapping experience; Claude Code docs suggest 3-5 teammates |
-| DQ-3 | Can the Agent tool's `subagent_type` parameter dispatch custom agents from `.claude/agents/` by name? | Resolved | **Yes, after session registration.** First test failed ("Agent type not found") because the file was created mid-session via Write tool but not loaded. After running `/agents` (which registers and loads the agent), `subagent_type: "fresh-eyes-reviewer"` worked natively. Agents are loaded at session start or via `/agents`. INT-1 preferred path (native dispatch) is confirmed working. Fallback path retained for edge cases. |
+| DQ-3 | Can the Agent tool's `subagent_type` parameter dispatch custom agents from `.claude/agents/` by name? | Resolved | **Yes, after session registration.** First test failed ("Agent type not found") because the file was created mid-session via Write tool but not loaded. After running `/agents` (which registers and loads the agent), `subagent_type: "consistency-reviewer"` worked natively. Agents are loaded at session start or via `/agents`. INT-1 preferred path (native dispatch) is confirmed working. Fallback path retained for edge cases. |
 
 ---
 

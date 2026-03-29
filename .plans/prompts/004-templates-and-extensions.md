@@ -56,7 +56,7 @@ Create the directories needed by the agent consultation system.
 - `.plans/reviews/` (with `.gitkeep`)
 - `.claude/skills/consult-team/` (home for the skill, created now for DIP-006)
 - `.claude/skills/consult-team/templates/` (home for context block and session report templates)
-- `.claude/agents/` (should already exist from fresh-eyes-reviewer work)
+- `.claude/agents/` (should already exist from consistency-reviewer work)
 
 **Verify:** `ls -la` each directory confirms it exists
 
