@@ -110,6 +110,8 @@ How the main agent creates a collaborative team.
 **Input:** INT-1 Mode 3 contract, TeamCreate tool, INT-3 reporting contract, collab-mode.md
 **Output:** Mode 3 section in the skill
 
+**Important:** The items below describe the knowledge to convey in the skill, not a procedural structure to impose. The skill should explain these concepts as guidance the main agent can draw on, not as a step-by-step sequence to follow. See AC-6: the skill must contain no execution sequences or control flow.
+
 Cover:
 - Create team: `TeamCreate(team_name: "[name]", description: "[purpose]")`
 - Spawn each teammate: `Agent(subagent_type: "[agent-name]", team_name: "[name]", name: "[agent-name]", prompt: [collab-mode content] + [context block])`
@@ -188,6 +190,7 @@ Keep the skill focused and readable. Remember: this is loaded context, not a man
 ### Must Satisfy
 | Requirement | How to Satisfy |
 |-------------|----------------|
+| REQ-N1 | Skill file optimized for dual consumption — human-readable AND effective when loaded into AI context |
 | REQ-F3 | Skill provides: agent index, dispatch guidance, synthesis approach, output preservation |
 | REQ-F10 | Name and description clearly distinct from Superpowers skill |
 | REQ-F11 | Covers Mode 2 and Mode 3 with decision gate (Mode 1 is in command pointers) |

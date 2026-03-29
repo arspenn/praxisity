@@ -61,7 +61,7 @@ The main agent is always the coordinator. The skill provides knowledge of how to
 | REQ-F11 | COMP-3, DEC-1 | Three dispatch modes defined in skill with decision gate; Mode 3 uses TeamCreate |
 | REQ-F12 | COMP-2 (collab-mode), DEC-3, INT-3 | Mode 3 teammates are full parallel sessions with self-authored reports and direct user interaction |
 | REQ-N1 | All | All files authored for dual consumption (human-readable + AI-effective) |
-| REQ-N2 | COMP-3, DEC-4 | Skill provides guidance and decision frameworks, not execution sequences |
+| REQ-N2 | COMP-3, DEC-5 | Skill provides guidance and decision frameworks, not execution sequences |
 | REQ-N3 | COMP-3, COMP-4 | Consultation always optional; pointers suggest, never require |
 | REQ-N4 | COMP-2, DATA-4, INT-3 | Team composition captured in session reports; lead review includes reconstitution notes |
 

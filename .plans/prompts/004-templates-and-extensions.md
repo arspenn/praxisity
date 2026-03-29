@@ -140,6 +140,7 @@ This file contains ONLY what's different about being a persistent teammate vs. a
 ### Must Satisfy
 | Requirement | How to Satisfy |
 |-------------|----------------|
+| REQ-N1 | All template files optimized for dual consumption — human-readable AND effective as AI prompts |
 | REQ-F2 | Context block template provides the standardized structure for appended customization |
 | REQ-F8 | Session report template defines the format agents use to write their own reports |
 | REQ-F12 | Collab-mode.md provides Mode 3 awareness including self-authored reporting and direct user interaction |
