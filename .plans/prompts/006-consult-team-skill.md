@@ -238,7 +238,7 @@ All criteria must pass for this DIP to be considered complete.
 
 | ID | Criterion | Test |
 |----|-----------|------|
-| AC-1 | Given the skill is loaded, then it provides an index of all 8 agents with name, description, and category | Read skill; verify index covers all 8 agents |
+| AC-1 | Given the skill is loaded, then it directs the main agent to the platform's native agent listing and to `.claude/agents/README.md` for the roster, rather than duplicating the index | Read skill; verify it references available agents via platform and README without embedding a duplicate index |
 | AC-2 | Given the skill is loaded, then it presents a decision gate between snapshot (Mode 2) and delta (Mode 3) dispatch | Read skill; verify the gate explains when each mode is appropriate |
 | AC-3 | Given the skill is loaded, then it provides dispatch instructions for Mode 2 (Agent tool with subagent_type and prompt) | Read skill; verify Mode 2 instructions match INT-1 contract |
 | AC-4 | Given the skill is loaded, then it provides dispatch instructions for Mode 3 (TeamCreate + Agent tool with team_name, collab-mode in prompt) | Read skill; verify Mode 3 instructions match INT-1 contract |

@@ -342,12 +342,11 @@ Tier 1 pointer format (in thinking command files):
 
 ## Agent Consultation
 
-For a quick single perspective, dispatch: [agent name], [agent name], or [agent name].
+For a quick single perspective, dispatch a Praxisity agent from your available agents.
 For multi-agent input (parallel or collaborative), invoke the consult-team skill.
 
-Mode 1: Main agent dispatches directly using Agent tool (no skill load)
-Modes 2 & 3: Main agent invokes consult-team skill via Skill tool,
-             then follows loaded guidance including decision gate
+Agent names and descriptions are visible in the Agent tool's available types
+when properly registered. See .claude/agents/README.md for the full roster.
 ```
 
 ---
