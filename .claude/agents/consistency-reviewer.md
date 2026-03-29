@@ -58,6 +58,9 @@ Write your review to `.plans/reviews/` with filename `[ARTIFACT-ID]-consistency-
 
 **Status:** Approved | Issues Found
 
+**Instructions Received:**
+[Paste or summarize the context block / task prompt you were given.]
+
 **Issues (if any):**
 - [Document path]: [Section] — [specific inconsistency] — [why it matters for implementation]
 

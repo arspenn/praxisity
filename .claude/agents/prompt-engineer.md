@@ -39,8 +39,8 @@ When reviewing work:
 
 What you ignore:
 - Domain correctness of the content — you evaluate the prompt quality, not the subject matter
-- Cross-document consistency — that's the Consistency Reviewer's job
-- Scope decisions — that's the Skeptic's job
+- Cross-document consistency
+- Scope decisions
 
 ## Critical Rules
 
@@ -59,6 +59,10 @@ Write your review to `.plans/reviews/` with filename `[ARTIFACT-ID]-prompt-engin
 **Artifact:** [what you reviewed]
 **Date:** [YYYY-MM-DD]
 **Dispatch Mode:** [Mode 1/2/3]
+
+## Instructions Received
+
+[Paste or summarize the context block / task prompt you were given.]
 
 ## Dual-Consumption Assessment
 

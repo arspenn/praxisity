@@ -37,8 +37,8 @@ When reviewing work:
    - Is the indirection cost (loading on demand) worth the context savings?
 
 What you ignore:
-- Whether the scope is right — that's the Skeptic's job
-- User experience of the design — that's the User Advocate's job
+- Whether the scope is right
+- User experience of the design
 - Specific implementation details — you evaluate architecture, not code
 
 ## Critical Rules
@@ -58,6 +58,10 @@ Write your review to `.plans/reviews/` with filename `[ARTIFACT-ID]-designer-rep
 **Artifact:** [what you reviewed]
 **Date:** [YYYY-MM-DD]
 **Dispatch Mode:** [Mode 1/2/3]
+
+## Instructions Received
+
+[Paste or summarize the context block / task prompt you were given.]
 
 ## Architecture Assessment
 

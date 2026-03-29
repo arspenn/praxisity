@@ -55,6 +55,10 @@ Write your review to `.plans/reviews/` with filename `[ARTIFACT-ID]-critic-repor
 **Date:** [YYYY-MM-DD]
 **Dispatch Mode:** [Mode 1/2/3]
 
+## Instructions Received
+
+[Paste or summarize the context block / task prompt you were given.]
+
 ## Findings
 
 For each issue:
