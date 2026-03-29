@@ -3,13 +3,17 @@
 ## Active Context
 
 **Last Command:** /define
-**Status:** In Progress — generating DIPs for DESIGN-004: Agent Consultation System
+**Status:** Complete — 4 DIPs generated for DESIGN-004: Agent Consultation System
 **Date:** 2026-03-28
 **Version:** 0.5.0
 
 ## Active Artifacts
 
-- **DESIGN-004**: `.plans/designs/004-agent-consultation-system.md` — draft, pending review
+- **DIP-004**: `.plans/prompts/004-templates-and-extensions.md` — ready for build
+- **DIP-005**: `.plans/prompts/005-agent-definition-files.md` — ready for build (depends on DIP-004)
+- **DIP-006**: `.plans/prompts/006-consult-team-skill.md` — ready for build (depends on DIP-004, DIP-005)
+- **DIP-007**: `.plans/prompts/007-tier1-command-pointers.md` — ready for build (depends on DIP-006)
+- **DESIGN-004**: `.plans/designs/004-agent-consultation-system.md` — approved
 - **SPEC-005**: `.plans/specs/005-agent-consultation-system.md` — approved
 - **SPEC-004**: `.plans/specs/004-command-fixes-and-patterns.md` — approved, paused (resumes after SPEC-005 implementation)
 
@@ -21,9 +25,9 @@
 
 ## Next Steps
 
-1. Review DESIGN-004 — dispatch reviewer, iterate if needed
-2. User review of DESIGN-004
-3. `/define` — generate DIPs for DESIGN-004 components
-4. `/build` — implement (directory structure, templates, agent files, skill, command pointers)
+1. `/build` DIP-004 — templates, extensions, directory structure
+2. `/build` DIP-005 — 8 agent definition files
+3. `/build` DIP-006 — consult-team skill
+4. `/build` DIP-007 — Tier 1 command pointers
 5. Bootstrapping test — use agents on real framework rework spec work
 6. Resume SPEC-004 — `/architect` and implementation
