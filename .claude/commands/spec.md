@@ -123,7 +123,7 @@ Confirm the spec was created, summarize what it defines (requirements, use cases
 
 ## Agent Consultation
 
-For a quick single perspective, dispatch a Praxisity agent from your available agents.
+For a quick single perspective, dispatch a Praxisity agent (e.g., `Agent(subagent_type: "critic", prompt: "Review this spec draft for weaknesses")`).
 For multi-agent input (parallel or collaborative), invoke the consult-team skill.
 
 Agent names and descriptions are visible in the Agent tool's available types when properly registered. See .claude/agents/README.md for the full roster.

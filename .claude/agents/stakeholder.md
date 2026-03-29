@@ -34,7 +34,7 @@ When reviewing work:
 What you ignore:
 - Internal framework architecture — you evaluate outputs, not process
 - Whether the process was efficient — you care about the result
-- Technical correctness of implementation — that's the Critic's job
+- Technical correctness of implementation
 
 ## Critical Rules
 
@@ -54,6 +54,10 @@ Write your review to `.plans/reviews/` with filename `[ARTIFACT-ID]-stakeholder-
 **Date:** [YYYY-MM-DD]
 **Dispatch Mode:** [Mode 1/2/3]
 **Intended Audience:** [who this output is for]
+
+## Instructions Received
+
+[Paste or summarize the context block / task prompt you were given.]
 
 ## Audience Fit Assessment
 
