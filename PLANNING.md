@@ -3,16 +3,16 @@
 ## Active Context
 
 **Last Command:** /build
-**Status:** In Progress — executing DIP-007: Tier 1 Command Pointers
+**Status:** Complete — all 4 DIPs implemented for SPEC-005
 **Date:** 2026-03-28
 **Version:** 0.5.0
 
 ## Active Artifacts
 
-- **DIP-004**: `.plans/prompts/004-templates-and-extensions.md` — ready for build
-- **DIP-005**: `.plans/prompts/005-agent-definition-files.md` — ready for build (depends on DIP-004)
-- **DIP-006**: `.plans/prompts/006-consult-team-skill.md` — ready for build (depends on DIP-004, DIP-005)
-- **DIP-007**: `.plans/prompts/007-tier1-command-pointers.md` — ready for build (depends on DIP-006)
+- **DIP-004**: `.plans/prompts/004-templates-and-extensions.md` — implemented
+- **DIP-005**: `.plans/prompts/005-agent-definition-files.md` — implemented
+- **DIP-006**: `.plans/prompts/006-consult-team-skill.md` — implemented
+- **DIP-007**: `.plans/prompts/007-tier1-command-pointers.md` — implemented
 - **DESIGN-004**: `.plans/designs/004-agent-consultation-system.md` — approved
 - **SPEC-005**: `.plans/specs/005-agent-consultation-system.md` — approved
 - **SPEC-004**: `.plans/specs/004-command-fixes-and-patterns.md` — approved, paused (resumes after SPEC-005 implementation)
@@ -25,9 +25,6 @@
 
 ## Next Steps
 
-1. `/build` DIP-004 — templates, extensions, directory structure
-2. `/build` DIP-005 — 8 agent definition files
-3. `/build` DIP-006 — consult-team skill
-4. `/build` DIP-007 — Tier 1 command pointers
-5. Bootstrapping test — use agents on real framework rework spec work
-6. Resume SPEC-004 — `/architect` and implementation
+1. Bootstrapping test — restart session, register agents via `/agents`, test full consultation flow
+2. Use agents on real framework rework spec work
+3. Resume SPEC-004 — `/architect` and implementation
