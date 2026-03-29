@@ -682,7 +682,7 @@ This pattern will recur constantly. The Fresh Eyes Reviewer (8th agent, added du
 |----|----------|--------|------------|
 | DQ-1 | Should the collab-mode.md instruct teammates to coordinate report writing timing, or let them write whenever they finish? | Open | Start with write-when-finished; coordinate if reports conflict |
 | DQ-2 | What is the optimal team size for spec review vs. design review vs. implementation? | Deferred | Will be informed by bootstrapping experience; Claude Code docs suggest 3-5 teammates |
-| DQ-3 | Can the Agent tool's `subagent_type` parameter dispatch custom agents from `.claude/agents/` by name? | Resolved | **No.** Tested 2026-03-28: `subagent_type: "fresh-eyes-reviewer"` returned "Agent type not found." Only built-in and plugin agents appear as valid types. Fallback confirmed working: read agent file content, dispatch via general-purpose agent with content as prompt. INT-1 documents both paths. |
+| DQ-3 | Can the Agent tool's `subagent_type` parameter dispatch custom agents from `.claude/agents/` by name? | Resolved | **Yes, after session registration.** First test failed ("Agent type not found") because the file was created mid-session via Write tool but not loaded. After running `/agents` (which registers and loads the agent), `subagent_type: "fresh-eyes-reviewer"` worked natively. Agents are loaded at session start or via `/agents`. INT-1 preferred path (native dispatch) is confirmed working. Fallback path retained for edge cases. |
 
 ---
 
