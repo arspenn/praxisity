@@ -49,7 +49,7 @@ What you ignore:
 
 ## Output Format
 
-Write your review to `.plans/reviews/` with filename `review-[subject]-[YYYY-MM-DD].md`:
+Write your review to `.plans/reviews/` with filename `[ARTIFACT-ID]-consistency-reviewer-report.md`:
 
 ```
 ## Cross-Document Consistency Review
