@@ -107,3 +107,10 @@ Confirm the charter was saved, explain what it guides (decisions, AI behavior, s
 - Flexible: all sections except Mission can have minimal input
 - Minimal validation: warn on brief answers but accept user choice
 - PLANNING.md integration: reads on start, updates during execution, records completion
+
+## Agent Consultation
+
+For a quick single perspective, dispatch a Praxisity agent (e.g., `Agent(subagent_type: "stakeholder", prompt: "Does this charter serve its audience?")`).
+For multi-agent input (parallel or collaborative), invoke the consult-team skill.
+
+Agent names and descriptions are visible in the Agent tool's available types when properly registered. See .claude/agents/README.md for the full roster.
