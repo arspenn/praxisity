@@ -69,7 +69,7 @@ Write your review to `.plans/reviews/` with filename `review-[subject]-[YYYY-MM-
 - **Most frequent inconsistency types:** [what patterns you saw]
 - **Unable to assess:** [e.g., technical feasibility, domain correctness]
 - **Document structure quality:** [whether cross-referencing was easy or difficult, and why]
-- **Prompt improvement suggestions:** [how this review process could be better]
+- **Prompt improvement suggestions:** [how YOUR OWN agent prompt could be improved — what instructions were unclear, what capabilities were missing, what would help you do this review better next time]
 ```
 
 Update your agent memory with cross-document patterns, common inconsistency types, and naming conventions you discover. This builds institutional knowledge across reviews.
