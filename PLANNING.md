@@ -2,28 +2,17 @@
 
 ## Active Context
 
-**Last Command:** /architect
-**Status:** Complete — DESIGN-004: Agent Consultation System Design
-**Date:** 2026-03-28
-**Version:** 0.5.0
-
-## Active Artifacts
-
-- **DESIGN-004**: `.plans/designs/004-agent-consultation-system.md` — draft, pending review
-- **SPEC-005**: `.plans/specs/005-agent-consultation-system.md` — approved
-- **SPEC-004**: `.plans/specs/004-command-fixes-and-patterns.md` — approved, paused (resumes after SPEC-005 implementation)
-
-## Session Notes
-
-- SPEC-005 designed via brainstorming session — 7-agent consultation system with 3-tier progressive loading
-- Bootstrapping approach: build agents to help write the framework rework spec, then formalize as a feature
-- Key design decisions: skills are loaded context not control flow; agent files immutable at dispatch; persistence via documents not terminal sessions
+**Last Command:** Session wrap-up
+**Status:** SPEC-005 complete (v0.6.0) — pending team discussion on next steps
+**Date:** 2026-03-29
+**Version:** 0.6.0
 
 ## Next Steps
 
-1. Review DESIGN-004 — dispatch reviewer, iterate if needed
-2. User review of DESIGN-004
-3. `/define` — generate DIPs for DESIGN-004 components
-4. `/build` — implement (directory structure, templates, agent files, skill, command pointers)
-5. Bootstrapping test — use agents on real framework rework spec work
-6. Resume SPEC-004 — `/architect` and implementation
+Team decision (10/10 unanimous): **Resume SPEC-004 — Command Behavioral Fixes.**
+
+1. Register all agents via `/agents` at session start
+2. SPEC-004 `/architect` — design the command fixes, use agents during design (organic bootstrapping)
+3. `/breakdown` + `/build` — implement fixes
+4. Agent refinements informed by real dispatch data from SPEC-004 work
+5. Framework rework after commands are in known-good state

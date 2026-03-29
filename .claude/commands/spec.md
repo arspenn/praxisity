@@ -120,3 +120,10 @@ Confirm the spec was created, summarize what it defines (requirements, use cases
 - Charter integration: loads context, inherits constraints and exclusions
 - Dual-use design: section IDs enable both human reading and AI parsing
 - PLANNING.md integration: reads context, tracks state, records completion
+
+## Agent Consultation
+
+For a quick single perspective, dispatch a Praxisity agent (e.g., `Agent(subagent_type: "critic", prompt: "Review this spec draft for weaknesses")`).
+For multi-agent input (parallel or collaborative), invoke the consult-team skill.
+
+Agent names and descriptions are visible in the Agent tool's available types when properly registered. See .claude/agents/README.md for the full roster.

@@ -43,5 +43,11 @@ This framework enforces that workflow through command dependencies:
 
 **praxisity-foundation-plan.md** - Source of truth for MVP scope. Reference when making decisions. Will be removed by `/new-project` for end users.
 
+## Bootstrapping Principle
+
+Use the system to build the system. Use the system to build the user. Use the user to build the system.
+
+Every session generates experience. At session end, ask: **"What did we learn that should become a skill, agent, or template?"** If the answer isn't "nothing," capture it before closing. Skills codify process. Agents codify perspective. Templates codify structure. The framework grows by using it.
+
 ## Hints from the developer
 - Just because a template or example has a certain number of items, there is no requirement for your output to contain the same number of items filled out. It might be less, it might be more, use the right ammount based on the relevant material and your judgement, not the example pattern.
