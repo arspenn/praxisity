@@ -2,8 +2,8 @@
 
 ## Active Context
 
-**Last Command:** /define
-**Status:** Complete — 4 DIPs generated for DESIGN-004: Agent Consultation System
+**Last Command:** /build
+**Status:** In Progress — executing DIP-004: Templates, Extensions, and Directory Structure
 **Date:** 2026-03-28
 **Version:** 0.5.0
 
