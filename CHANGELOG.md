@@ -5,6 +5,60 @@ All notable changes to the Praxisity framework will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.0] - 2026-03-29
+
+### Added
+
+**Agent Consultation System (SPEC-005, DESIGN-004, DIP-004 through DIP-007):**
+- 9 native Claude Code subagent definitions in `.claude/agents/`:
+  - Evaluative: critic, skeptic
+  - Perspective: user-advocate, stakeholder
+  - Structural: designer, project-manager
+  - Meta: prompt-engineer, consistency-reviewer, spot (haiku-based document clarity gate)
+- `consult-team` skill in `.claude/skills/consult-team/` — on-demand guidance for multi-agent dispatch with snapshot vs. delta decision gate
+- Templates in `.claude/skills/consult-team/templates/`:
+  - `context-block.md` — standardized task prompt structure for agent dispatch
+  - `session-report.md` — flexible report format for agent findings and lead reviews
+  - `collab-mode.md` — Mode 3 persistent teammate awareness extension
+- Tier 1 consultation pointers in `/spec`, `/architect`, `/charter` commands with Mode 1 dispatch examples
+- `.plans/reviews/` directory for agent consultation outputs
+- `.praxisity/templates/gitignore.template` with `.claude/agent-memory/` exclusion
+
+**Three Dispatch Modes:**
+- Mode 1: Single expert consult (Agent tool, snapshot, inline in commands)
+- Mode 2: Parallel perspectives (Agent tool, snapshot, via consult-team skill)
+- Mode 3: Collaborative team (TeamCreate + Agent tool, delta-aware, persistent sessions with direct inter-agent and user messaging)
+
+**Platform Discoveries:**
+- Native subagent dispatch works for custom agents after `/agents` registration
+- Team dispatch (`team_name` parameter) loads mid-session agents without registration
+- Agent files cached at session start; edits require restart or `/agents` reload
+- `memory: project` injects ~130 lines of platform boilerplate at runtime
+
+**Bootstrapping Validation:**
+- 9-agent team reviewed its own implementation across 2 rounds + cross-reviews
+- 18 review reports produced with differentiated, non-redundant findings
+- spot (haiku) validated as document clarity gate — caught 7 issues primed agents missed
+- Mode 3 collaborative teams validated; inter-agent messaging untested (collab-mode not prepended)
+
+### Changed
+
+- `.gitignore` — added `.claude/agent-memory/` exclusion
+- PLANNING.md — updated with SPEC-005 completion and next steps
+- `/spec`, `/architect`, `/charter` — added Agent Consultation sections
+
+### Planning Artifacts
+
+- SPEC-005: Agent Consultation System (12 functional + 4 non-functional requirements)
+- DESIGN-004: Agent Consultation System Design (4 components, 3 interfaces, 4 data entities, 5 design decisions)
+- DIP-004: Templates, extensions, and directory structure
+- DIP-005: 8 agent definition files (+ spot added outside DIP scope)
+- DIP-006: consult-team skill
+- DIP-007: Tier 1 command pointers
+- ISSUE-006: DIP template duplicates requirement satisfaction (deferred to SPEC-004)
+
+---
+
 ## [0.5.0] - 2026-03-21
 
 ### Added
