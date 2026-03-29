@@ -2,14 +2,15 @@
 
 ## Active Context
 
-**Last Command:** brainstorming / spec authoring
-**Status:** In Progress — SPEC-005: Agent Consultation System (draft written, pending review)
+**Last Command:** /architect
+**Status:** Complete — DESIGN-004: Agent Consultation System Design
 **Date:** 2026-03-28
 **Version:** 0.5.0
 
 ## Active Artifacts
 
-- **SPEC-005**: `.plans/specs/005-agent-consultation-system.md` — draft, pending spec review
+- **DESIGN-004**: `.plans/designs/004-agent-consultation-system.md` — draft, pending review
+- **SPEC-005**: `.plans/specs/005-agent-consultation-system.md` — approved
 - **SPEC-004**: `.plans/specs/004-command-fixes-and-patterns.md` — approved, paused (resumes after SPEC-005 implementation)
 
 ## Session Notes
@@ -20,9 +21,9 @@
 
 ## Next Steps
 
-1. Spec review loop for SPEC-005 — dispatch reviewer, iterate if needed
-2. User review of SPEC-005
-3. `/architect` — design SPEC-005
-4. Implement SPEC-005 (agent files, consult-team skill, directory structure, Tier 1 pointers)
-5. Use SPEC-005 agents to work on framework rework spec
+1. Review DESIGN-004 — dispatch reviewer, iterate if needed
+2. User review of DESIGN-004
+3. `/define` — generate DIPs for DESIGN-004 components
+4. `/build` — implement (directory structure, templates, agent files, skill, command pointers)
+5. Bootstrapping test — use agents on real framework rework spec work
 6. Resume SPEC-004 — `/architect` and implementation
