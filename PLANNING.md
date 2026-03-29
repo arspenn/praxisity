@@ -3,7 +3,7 @@
 ## Active Context
 
 **Last Command:** /build
-**Status:** In Progress — executing DIP-004: Templates, Extensions, and Directory Structure
+**Status:** In Progress — executing DIP-005: Agent Definition Files (8 Agents)
 **Date:** 2026-03-28
 **Version:** 0.5.0
 

@@ -19,7 +19,7 @@
 
 ## Objective
 
-Create the 8 agent persona files as native Claude Code subagents, each following the standardized format (YAML frontmatter + markdown body with Identity, Reasoning Approach, Output Format, Self-Evaluation sections). The fresh-eyes-reviewer.md already exists and serves as the reference implementation — write the remaining 7 agents to match its quality and structure.
+Create the 8 agent persona files as native Claude Code subagents, each following the standardized format (YAML frontmatter + markdown body with Identity, Reasoning Approach, Output Format, Self-Evaluation sections). The consistency-reviewer.md already exists and serves as the reference implementation — write the remaining 7 agents to match its quality and structure.
 
 ## Required Reading
 
@@ -39,7 +39,7 @@ Before implementation, read and understand these sections:
 - [ ] Section 6: DEC-4 - Native Claude Code Subagent Format rationale
 
 ### Reference Implementation
-- [ ] `.claude/agents/fresh-eyes-reviewer.md` - The existing agent file; use as the pattern for structure, tone, and length
+- [ ] `.claude/agents/consistency-reviewer.md` - The existing agent file; use as the pattern for structure, tone, and length
 
 ### From Claude Code Documentation
 - [ ] [Sub-agents](https://code.claude.com/docs/en/sub-agents) - Supported frontmatter fields, tool restrictions, memory feature
@@ -48,7 +48,7 @@ Before implementation, read and understand these sections:
 
 ### Step 1: Review the Reference Implementation
 
-Read `.claude/agents/fresh-eyes-reviewer.md` carefully. Note:
+Read `.claude/agents/consistency-reviewer.md` carefully. Note:
 - Frontmatter structure (name, description, category, tools, model, memory)
 - How Identity establishes perspective in 2-3 sentences
 - How Reasoning Approach provides a concrete checklist without being exhaustive
@@ -60,7 +60,7 @@ Read `.claude/agents/fresh-eyes-reviewer.md` carefully. Note:
 
 This is the bar. Each agent should match this quality and conciseness.
 
-**Verify:** You can articulate what makes fresh-eyes-reviewer effective before writing others
+**Verify:** You can articulate what makes consistency-reviewer effective before writing others
 
 ### Step 2: Write Evaluative Agents (Critic, Skeptic)
 
@@ -80,7 +80,7 @@ Create two agents that stress-test work from different angles.
 - The YAGNI enforcer — questions scope, not quality
 - Tools: Read, Grep, Glob, Write (review-focused)
 
-**Input:** COMP-1 roster descriptions, fresh-eyes-reviewer as structural reference
+**Input:** COMP-1 roster descriptions, consistency-reviewer as structural reference
 **Output:** `.claude/agents/critic.md`, `.claude/agents/skeptic.md`
 **Verify:** Each file has correct frontmatter, all 4 body sections, focused identity, and would produce differentiated output from the other evaluative agent
 
@@ -102,7 +102,7 @@ Create two agents that represent viewpoints the author can't easily hold.
 - Evaluates whether the process produces things that are useful to the people they're for
 - Tools: Read, Grep, Glob, Write (review-focused)
 
-**Input:** COMP-1 roster descriptions, fresh-eyes-reviewer as structural reference
+**Input:** COMP-1 roster descriptions, consistency-reviewer as structural reference
 **Output:** `.claude/agents/user-advocate.md`, `.claude/agents/stakeholder.md`
 **Verify:** Each perspective is distinct and represents a viewpoint the author genuinely can't hold while writing
 
@@ -124,7 +124,7 @@ Create two agents that ensure the design holds together.
 - Guards against redesigning everything at once
 - Tools: Read, Grep, Glob, Write (review-focused)
 
-**Input:** COMP-1 roster descriptions, fresh-eyes-reviewer as structural reference
+**Input:** COMP-1 roster descriptions, consistency-reviewer as structural reference
 **Output:** `.claude/agents/designer.md`, `.claude/agents/project-manager.md`
 **Verify:** Designer focuses on how things fit; PM focuses on whether they're achievable — distinct concerns
 
@@ -137,9 +137,9 @@ Create two agents that ensure the design holds together.
 - Checks for: clear/unambiguous instructions, good signal-to-noise ratio, "don't think about elephants" problems, consistent behavior across sessions
 - Tools: Read, Grep, Glob, Write (review-focused)
 
-**Input:** COMP-1 roster descriptions, fresh-eyes-reviewer as structural reference
+**Input:** COMP-1 roster descriptions, consistency-reviewer as structural reference
 **Output:** `.claude/agents/prompt-engineer.md`
-**Verify:** This agent's perspective is distinct from Fresh Eyes Reviewer — Prompt Engineer evaluates prompt quality, Fresh Eyes checks cross-document consistency
+**Verify:** This agent's perspective is distinct from Consistency Reviewer — Prompt Engineer evaluates prompt quality, Consistency Reviewer checks cross-document consistency
 
 ### Step 6: Verify All 8 Agents
 
@@ -171,7 +171,7 @@ Run verification across all agent files.
 | Requirement | How to Satisfy |
 |-------------|----------------|
 | REQ-F1 | Native Claude Code subagent format with correct field classification |
-| REQ-F4 | 8 files: critic, skeptic, user-advocate, stakeholder, designer, project-manager, prompt-engineer, fresh-eyes-reviewer |
+| REQ-F4 | 8 files: critic, skeptic, user-advocate, stakeholder, designer, project-manager, prompt-engineer, consistency-reviewer |
 | REQ-F7 | Self-Evaluation section in each agent's body instructs reflection |
 | REQ-F8 | Output Format section instructs agents to write reports to `.plans/reviews/` |
 | REQ-N1 | All files optimized for dual consumption |
@@ -179,13 +179,13 @@ Run verification across all agent files.
 ### Data Entities to Create/Modify
 | Entity | Action | Schema Reference |
 |--------|--------|-----------------|
-| DATA-1 | Create (7 new agent files; fresh-eyes-reviewer already exists) | DESIGN-004 Section 5 |
+| DATA-1 | Create (7 new agent files; consistency-reviewer already exists) | DESIGN-004 Section 5 |
 
 ## Scope Boundaries
 
 ### DO (In Scope)
 - Write 7 new agent definition files in `.claude/agents/`
-- Verify fresh-eyes-reviewer.md conforms to the same standard
+- Verify consistency-reviewer.md conforms to the same standard
 - Ensure all 8 agents are differentiated in perspective
 
 ### DO NOT (Out of Scope)
@@ -205,7 +205,7 @@ Run verification across all agent files.
 .claude/agents/designer.md
 .claude/agents/project-manager.md
 .claude/agents/prompt-engineer.md
-.claude/agents/fresh-eyes-reviewer.md (verify only, already exists)
+.claude/agents/consistency-reviewer.md (verify only, already exists)
 ```
 
 ### Files Out of Scope
@@ -234,7 +234,7 @@ ls .claude/agents/*.md | wc -l
 # Expected: 8 (plus any -old/-generated variants from testing)
 
 # Verify all have category field
-grep -l "^category:" .claude/agents/critic.md .claude/agents/skeptic.md .claude/agents/user-advocate.md .claude/agents/stakeholder.md .claude/agents/designer.md .claude/agents/project-manager.md .claude/agents/prompt-engineer.md .claude/agents/fresh-eyes-reviewer.md
+grep -l "^category:" .claude/agents/critic.md .claude/agents/skeptic.md .claude/agents/user-advocate.md .claude/agents/stakeholder.md .claude/agents/designer.md .claude/agents/project-manager.md .claude/agents/prompt-engineer.md .claude/agents/consistency-reviewer.md
 # Expected: 8 files listed
 
 # Verify all reference .plans/reviews/
@@ -291,9 +291,9 @@ Satisfies: REQ-F1, REQ-F4, REQ-F7, REQ-F8, REQ-N1"
 
 ## Notes
 
-- Write the Critic first — it's the most natural counterpart to the Fresh Eyes Reviewer and will help calibrate the style for the remaining agents
+- Write the Critic first — it's the most natural counterpart to the Consistency Reviewer and will help calibrate the style for the remaining agents
 - Each agent should feel like a distinct professional with a clear lens, not a generic reviewer with a different label
-- Resist the urge to make agents exhaustive — the fresh-eyes-reviewer is the right density
+- Resist the urge to make agents exhaustive — the consistency-reviewer is the right density
 - The `description` field is a routing hint for the platform — keep it one sentence
 - Agents will accumulate project-specific knowledge via `memory: project` over time; don't try to frontload domain knowledge
 
