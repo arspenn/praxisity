@@ -134,3 +134,10 @@ Confirm the design was created, summarize what it defines (components, interface
 - Domain awareness: different architecture questions per project type
 - Traceability: spec REQ-N → design COMP-N
 - PLANNING.md integration: may auto-select spec if one is active
+
+## Agent Consultation
+
+For a quick single perspective, dispatch a Praxisity agent from your available agents.
+For multi-agent input (parallel or collaborative), invoke the consult-team skill.
+
+Agent names and descriptions are visible in the Agent tool's available types when properly registered. See .claude/agents/README.md for the full roster.

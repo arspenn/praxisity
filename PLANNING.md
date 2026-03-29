@@ -3,7 +3,7 @@
 ## Active Context
 
 **Last Command:** /build
-**Status:** In Progress — executing DIP-006: consult-team Skill
+**Status:** In Progress — executing DIP-007: Tier 1 Command Pointers
 **Date:** 2026-03-28
 **Version:** 0.5.0
 
