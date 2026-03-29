@@ -59,7 +59,7 @@ Provide Praxisity with a reusable, progressively-loaded agent consultation syste
 | REQ-F2 | Agent files shall be immutable at dispatch time; per-invocation customization shall be appended as a context block following a standardized template, never edited into the agent file | MUST | Prevents prompt drift across sessions; separates stable persona from variable context |
 | REQ-F3 | A `consult-team` skill shall provide the main agent with guidance on: available agents (index from frontmatter), when to use single consult vs. team session, how to manage parallel agent sessions, how to synthesize feedback, and what to preserve from sessions | MUST | Without this loaded guidance, the user must manually instruct the agent on team management every session |
 | REQ-F4 | The initial agent roster shall include 8 agents across 4 categories: Evaluative (Critic, Skeptic), Perspective (User Advocate, Stakeholder), Structural (Designer, Project Manager), Meta (Prompt Engineer, Fresh Eyes Reviewer) | MUST | These perspectives cover the range needed for spec/design review; roster designed during brainstorming and expanded during design when cross-document consistency review proved its value |
-| REQ-F5 | Thinking commands (`/spec`, `/architect`, `/charter`) shall include a Tier 1 pointer (~4 lines: heading + guidance) referencing the consult-team skill and listing natural-fit agents for that command's phase | SHOULD | Reminds the main agent that consultation is available without loading the full skill; reduces user burden of remembering to invoke |
+| REQ-F5 | Thinking commands (`/spec`, `/architect`, `/charter`) shall include a compact, non-bloating Tier 1 pointer referencing the consult-team skill and listing natural-fit agents for that command's phase | SHOULD | Reminds the main agent that consultation is available without loading the full skill; reduces user burden of remembering to invoke |
 | REQ-F6 | Doing commands (`/build`, `/deliver`, `/breakdown`, `/define`) shall not include agent consultation pointers by default | SHOULD | Keeps doing-command context lean; user can still manually invoke the skill when needed (e.g., when a DIP involves writing skills) |
 | REQ-F7 | Each agent's output shall include a self-evaluation section covering: what was useful about their perspective, what they struggled with, and suggestions for prompt improvement | SHOULD | Generates improvement data as a byproduct of normal work; enables iterative refinement without separate overhead |
 | REQ-F8 | Every dispatched agent (all modes) shall write its own report directly to `.plans/reviews/` including findings, instructions received, and self-evaluation — independent of what it returns to the main agent | MUST | Agent-authored reports are the source of truth; prevents telephone-game summarization loss; enables verification of what the agent actually found vs. what the main agent reported; persists beyond context window compression |
@@ -75,7 +75,7 @@ Provide Praxisity with a reusable, progressively-loaded agent consultation syste
 | REQ-N1 | All agent files and skill content shall be optimized for dual consumption: human-readable AND effective as AI prompts | MUST | Every file in Praxisity is both prompt output and prompt input; quality matters for both readability and promptability |
 | REQ-N2 | The consult-team skill shall be guidance and context, not control flow — the main agent always coordinates; the skill provides knowledge of how to coordinate | MUST | Skills are loaded instructions, not functions; the main agent makes all dispatch and synthesis decisions |
 | REQ-N3 | Agent consultation shall not be required by any command — it is always optional, invocable by user choice or command suggestion | MUST | Preserves the framework's flexibility; a quick task shouldn't be gated on agent review |
-| REQ-N4 | Team composition for multi-session work shall be documented in planning artifacts (specs, designs, DIPs) so teams can be reconstituted across terminal sessions | SHOULD | Terminal sessions can end unexpectedly; persistence lives in documents, not connections |
+| REQ-N4 | Team composition for multi-session work shall be documented in session reports (`.plans/reviews/`) and referenced by planning artifacts (specs, designs, DIPs) so teams can be reconstituted across terminal sessions | SHOULD | Terminal sessions can end unexpectedly; persistence lives in documents, not connections; lead review contains reconstitution notes, planning artifacts reference them |
 
 ---
 
@@ -103,6 +103,8 @@ Provide Praxisity with a reusable, progressively-loaded agent consultation syste
 
 **Postconditions:**
 - Spec reflects multi-perspective input before moving to design phase
+- Each dispatched agent has written its own report to `.plans/reviews/`
+- Main agent has written a lead review synthesizing findings across agents
 - Agent self-evaluations are persisted for future prompt refinement
 
 **Alternative Flows:**
@@ -160,12 +162,12 @@ Provide Praxisity with a reusable, progressively-loaded agent consultation syste
 | AC-2 | Given a dispatched agent, when the dispatch prompt is constructed, then the agent file content is included verbatim and the context block is appended after it — the agent file is not modified | REQ-F2 |
 | AC-3 | Given the consult-team skill is invoked, when loaded, then it provides an agent index (names, categories, purposes), dispatch guidance for single consult and team sessions, session management instructions, and output preservation instructions | REQ-F3 |
 | AC-4 | Given the `.claude/agents/` directory, when listed, then it contains exactly 8 agent files: critic.md, skeptic.md, user-advocate.md, stakeholder.md, designer.md, project-manager.md, prompt-engineer.md, fresh-eyes-reviewer.md | REQ-F4 |
-| AC-5 | Given a thinking command (`/spec`, `/architect`, `/charter`), when its command file is inspected, then it contains a Tier 1 pointer of ~4 lines (heading + guidance) referencing the consult-team skill and listing natural-fit agents | REQ-F5 |
-| AC-6 | Given a doing command (`/build`, `/deliver`, `/breakdown`, `/define`), when its skill file is inspected, then it contains no agent consultation pointers | REQ-F6 |
+| AC-5 | Given a thinking command (`/spec`, `/architect`, `/charter`), when its command file is inspected, then it contains a compact Tier 1 pointer referencing the consult-team skill and listing natural-fit agents, matching the format defined in DESIGN-004 INT-2 | REQ-F5 |
+| AC-6 | Given a doing command (`/build`, `/deliver`, `/breakdown`, `/define`), when its command file in `.claude/commands/` is inspected, then it contains no agent consultation pointers | REQ-F6 |
 | AC-7 | Given an agent that has completed its review, when its output is inspected, then it includes a self-evaluation section | REQ-F7 |
 | AC-8 | Given any dispatched agent (Mode 1, 2, or 3), when it completes its work, then it has written its own report to `.plans/reviews/` including findings, instructions received, and self-evaluation | REQ-F8 |
 | AC-9 | Given the consult-team skill name and description, when compared to Superpowers' dispatching-parallel-agents, then the names and descriptions are clearly distinguishable in purpose | REQ-F10 |
-| AC-10 | Given an agent definition file, when its frontmatter is inspected, then it includes `memory: project` enabling persistent knowledge accumulation in `.claude/agent-memory/<name>/` | REQ-F9 |
+| AC-10 | Given an agent definition file, when its frontmatter is inspected, then it should include `memory: project` enabling persistent knowledge accumulation in `.claude/agent-memory/<name>/` (COULD priority — omission is acceptable) | REQ-F9 |
 | AC-11 | Given the consult-team skill, when loaded, then it provides guidance for Mode 2 (parallel subagents) and Mode 3 (collaborative team via TeamCreate) including a decision gate for choosing between snapshot and delta dispatch. Mode 1 guidance is provided by Tier 1 command pointers (COMP-4), not the skill. | REQ-F11 |
 | AC-12 | Given a Mode 3 collaborative team session, when a teammate completes their work, then they have written their own report to `.plans/reviews/` including findings, instructions received, and self-evaluation — independent of the lead's report | REQ-F12 |
 
