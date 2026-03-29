@@ -635,7 +635,8 @@ User interaction paths (Mode 3 only):
 | Customization blocks become bloated over time | Diminishes agent focus; noisy prompts | Skill guidance emphasizes "focused and informative"; lead review checks instruction quality |
 | Main agent defaults to Mode 2 despite decision gate | Loses delta-awareness when it's needed | Skill's snapshot vs. delta framing makes the tradeoff explicit; user can always direct Mode 3 |
 | Teammate reports vary wildly in format and quality | Hard to compare across agents; synthesis becomes difficult | Output Format section in each agent file standardizes structure; collab-mode.md reinforces reporting duties |
-| Custom agents not available via subagent_type (DQ-3) | Mode 1 & 2 dispatch requires manual file reading instead of native platform dispatch | Fallback mechanism defined in INT-1; test early during implementation |
+| Agent file edits not picked up mid-session | Implementer edits an agent prompt, tests it, sees old behavior | Agent files are cached at session start or `/agents` registration; must restart session or run `/agents` to reload after edits |
+| `memory: project` injects ~130 lines of runtime boilerplate | Agent context is larger than the file suggests; may affect token budget for complex reviews | Expected platform behavior; do not duplicate memory instructions in agent files |
 
 ### 7.3 Testing Strategy
 
