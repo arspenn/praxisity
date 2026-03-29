@@ -183,8 +183,8 @@ Mode 3: [agent.md] + [collab-mode.md] + [customization]
 - 8 files in `.claude/agents/`: `critic.md`, `skeptic.md`, `user-advocate.md`, `stakeholder.md`, `designer.md`, `project-manager.md`, `prompt-engineer.md`, `fresh-eyes-reviewer.md`
 - Uses native Claude Code subagent format — not a custom format. This gives us @-mention, `--agent`, tool restrictions, persistent memory, hooks, and model selection for free
 - Frontmatter includes `memory: project` — agents accumulate knowledge across sessions in `.claude/agent-memory/<name>/` (replaces the custom Tier 3 resources concept with platform-native persistent memory)
-- Review-focused agents (Critic, Skeptic, Fresh Eyes Reviewer) use restricted tool access: `tools: Read, Grep, Glob, Write` — read-only for project files, Write for `.plans/reviews/` reports only
-- Action-oriented agents (Designer, Project Manager) may need broader tool access
+- All agents use restricted tool access: `tools: Read, Grep, Glob, Write` — read-only for project files, Write for `.plans/reviews/` reports only
+- Agents analyze and recommend; they do not modify project files. Broader tool access may be considered in future iterations but is out of scope per SPEC-005 Section 8
 - `description` field doubles as the index entry for the consult-team skill — no separate index needed
 - Self-evaluation section is part of the markdown body instructions
 - Files must be focused and concise — establish perspective and expectations, not exhaustive instructions
@@ -682,7 +682,7 @@ This pattern will recur constantly. The Fresh Eyes Reviewer (8th agent, added du
 |----|----------|--------|------------|
 | DQ-1 | Should the collab-mode.md instruct teammates to coordinate report writing timing, or let them write whenever they finish? | Open | Start with write-when-finished; coordinate if reports conflict |
 | DQ-2 | What is the optimal team size for spec review vs. design review vs. implementation? | Deferred | Will be informed by bootstrapping experience; Claude Code docs suggest 3-5 teammates |
-| DQ-3 | Can the Agent tool's `subagent_type` parameter dispatch custom agents from `.claude/agents/` by name? | Open | Plugin agents (e.g., `superpowers:code-reviewer`) are confirmed to work as subagent_type values. Project-level agents in `.claude/agents/` should work the same way but this is unverified. Fallback: read agent file manually and dispatch via general-purpose agent. Must test during implementation. |
+| DQ-3 | Can the Agent tool's `subagent_type` parameter dispatch custom agents from `.claude/agents/` by name? | Resolved | **No.** Tested 2026-03-28: `subagent_type: "fresh-eyes-reviewer"` returned "Agent type not found." Only built-in and plugin agents appear as valid types. Fallback confirmed working: read agent file content, dispatch via general-purpose agent with content as prompt. INT-1 documents both paths. |
 
 ---
 
