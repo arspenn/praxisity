@@ -75,6 +75,12 @@ This framework enforces that workflow through command dependencies:
 
 All tasks tracked in Todoist project: "[TODOIST_PROJECT_NAME]"
 
+## Bootstrapping Principle
+
+Use the system to build the system. Use the system to build the user. Use the user to build the system.
+
+Every session generates experience. At session end, ask: **"What did we learn that should become a skill, agent, or template?"** If the answer isn't "nothing," capture it before closing. Skills codify process. Agents codify perspective. Templates codify structure. The framework grows by using it.
+
 ## Behavioral Corrections
 
 <!-- Add entries here ONLY when you observe the agent repeatedly making the
