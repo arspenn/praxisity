@@ -861,56 +861,117 @@ The deliver skill's markdown parser handles: title, headings, body paragraphs, t
 
 ---
 
-## Fix Tracking
+## Bug Disposition Table (SPEC-004)
 
-| Bug | Artifact Fixed | Command Updated |
-|-----|---------------|-----------------|
-| BUG-001 | Yes | No |
-| BUG-002 | Yes | No |
-| BUG-003 | Yes | No |
-| BUG-004 | Yes | No |
-| BUG-005 | Yes | No |
-| BUG-006 | Yes | No |
-| BUG-007 | No | No |
-| BUG-008 | No | No (root cause: BUG-009) |
-| BUG-009 | No | No |
-| BUG-010 | No | No |
-| BUG-011 | No | No |
-| BUG-012 | No | No |
-| BUG-013 | No | No |
-| BUG-014 | No | No |
-| BUG-015 | No | No |
-| BUG-016 | No | No |
-| BUG-017 | No | No |
-| BUG-018 | No | No |
-| BUG-019 | No | No |
-| BUG-020 | No | No (root cause: BUG-009) |
-| BUG-021 | No | No |
-| BUG-022 | No | No |
-| BUG-023 | No | No |
-| BUG-024 | No | No |
-| BUG-025 | No | No |
-| BUG-026 | No | No |
-| BUG-027 | No | No |
-| BUG-028 | No | No |
-| BUG-029 | No | No |
-| BUG-030 | No | No |
-| BUG-031 | No | No |
-| BUG-032 | No | No |
-| BUG-033 | No | No |
-| BUG-034 | No | No |
-| BUG-035 | No | No |
-| BUG-036 | No | No |
-| BUG-037 | No | No |
-| BUG-038 | No | No |
-| BUG-039 | No | No |
-| BUG-040 | No | No |
-| BUG-041 | No | No |
-| BUG-042 | No | No |
-| BUG-043 | No | No |
-| BUG-044 | No | No |
-| BUG-045 | No | No |
-| BUG-046 | No | No |
-| ISSUE-001 | No | No |
-| ISSUE-002 | No | No |
-| ISSUE-003 | No | No |
+**Updated:** 2026-04-01
+**Scope:** SPEC-004 covers full rewrites of 6 commands (`/spec`, `/charter`, `/architect`, `/new-project`, `/define`, `/build`). `/deliver` and `/breakdown` are excluded — they require their own specs.
+
+### Disposition Key
+- **Address in rewrite** — will be resolved during the command rewrite (SPEC-004 scope)
+- **Deferred: /deliver** — deferred until `/deliver` gets its own spec
+- **Deferred: /breakdown** — deferred until `/breakdown` gets its own spec
+- **Deferred: platform** — platform limitation, not addressable by command rewrites
+- **Already fixed** — artifact-only fix applied during v0.5.0 testing, no command change needed
+
+### /new-project Command
+
+| Bug | Summary | Disposition | Pattern Class | Rationale |
+|-----|---------|-------------|---------------|-----------|
+| BUG-001 | PLANNING.md not reset | Address in rewrite | Command-specific | Add PLANNING.md reset to Step 1 |
+| BUG-002 | docs/examples/ not cleared | Address in rewrite | Command-specific | Add to cleanup list |
+| BUG-003 | .plans/references/ not cleared | Address in rewrite | Command-specific | Add to cleanup list |
+| BUG-004 | \_\_pycache\_\_ committed | Address in rewrite | Command-specific | Add cleanup step before git add |
+| BUG-005 | Missing .gitkeep files | Address in rewrite | Command-specific | Ensure .gitkeep in all .plans/ subdirs |
+| BUG-006 | Framework files tracked in git | Address in rewrite | Command-specific | Update .gitignore generation |
+| BUG-007 | README.md not fully adapted | Address in rewrite | Template handling (REQ-F1) | Root cause: BUG-009 |
+| BUG-008 | CHARTER.md comments stripped | Address in rewrite | Template handling (REQ-F1) | Root cause: BUG-009 |
+| BUG-009 | Templates interpreted instead of copied | Address in rewrite | Template handling (REQ-F1) | Root cause for the pattern class |
+
+### /charter Command
+
+| Bug | Summary | Disposition | Pattern Class | Rationale |
+|-----|---------|-------------|---------------|-----------|
+| BUG-010 | Domain context fields not fully gathered | Address in rewrite | Command-specific | Prompt each field individually |
+| BUG-011 | Success Criteria quality indicators not gathered | Address in rewrite | Command-specific | Add missing prompt |
+| BUG-012 | Constraints gathered as single combined prompt | Address in rewrite | One-at-a-time gathering (REQ-F3) | Prompt per constraint category |
+| BUG-013 | Charter dates incomplete | Address in rewrite | Command-specific | Set all three date fields |
+| BUG-014 | Success message incomplete | Address in rewrite | Success messages (REQ-F4) | Include all prescribed elements |
+| BUG-015 | Amendment process not prompted | Address in rewrite | Command-specific | Add optional prompt |
+| BUG-016 | Pre-flight step ordering | Address in rewrite | Pre-flight ordering (REQ-F2) | PLANNING.md must be step 2 |
+
+### /spec Command
+
+| Bug | Summary | Disposition | Pattern Class | Rationale |
+|-----|---------|-------------|---------------|-----------|
+| BUG-017 | Pre-flight step ordering (same as BUG-016) | Address in rewrite | Pre-flight ordering (REQ-F2) | Same pattern |
+| BUG-018 | Sections gathered in batches | Address in rewrite | One-at-a-time gathering (REQ-F3) | One section at a time with pause |
+| BUG-019 | Review and Confirm step skipped | Address in rewrite | Command-specific | Enforce structured review format |
+| BUG-020 | Template written from scratch | Address in rewrite | Template handling (REQ-F1) | Root cause: BUG-009 |
+| BUG-021 | Success message missing next steps | Address in rewrite | Success messages (REQ-F4) | Include all prescribed elements |
+| BUG-022 | Post-save Todoist option not offered | Address in rewrite | Command-specific | Offer post-save options as specified |
+
+### /architect Command
+
+| Bug | Summary | Disposition | Pattern Class | Rationale |
+|-----|---------|-------------|---------------|-----------|
+| BUG-023 | Metadata not gathered | Address in rewrite | Command-specific | Prompt for title/author before content |
+| BUG-024 | Spec auto-selected without listing | Address in rewrite | Command-specific | Confirm selection even when argument provided |
+| BUG-025 | MUST requirement coverage check not shown | Address in rewrite | Command-specific | Show traceability matrix |
+| BUG-026 | No domain-relevant examples shown | Address in rewrite | Command-specific | Show examples before drafting |
+| BUG-027 | Introduction step incomplete | Address in rewrite | Success messages (REQ-F4) | Include framing explanation |
+
+### /define Command
+
+| Bug | Summary | Disposition | Pattern Class | Rationale |
+|-----|---------|-------------|---------------|-----------|
+| BUG-028 | Task selection step skipped | Address in rewrite | Command-specific | Confirm DIP selection list |
+| BUG-029 | Multiple DIPs generated in single run | Address in rewrite | Command-specific | Design decision: add batch mode or enforce one-per-run |
+| BUG-030 | Git commit not offered post-save | Address in rewrite | Command-specific | Offer git commit after saving |
+| BUG-031 | Template sections removed instead of N/A | Address in rewrite | Template handling (REQ-F1a) | Mark inapplicable sections N/A |
+| BUG-032 | Success message not shown | Address in rewrite | Success messages (REQ-F4) | Include full prescribed format |
+
+### /build Command
+
+| Bug | Summary | Disposition | Pattern Class | Rationale |
+|-----|---------|-------------|---------------|-----------|
+| BUG-033 | Objective/step summary not displayed | Address in rewrite | Command-specific | Show objective and steps before starting |
+| BUG-034 | Steps 2-6 batched into single execution | Address in rewrite | One-at-a-time gathering (REQ-F3) | Mark each step individually even if execution overlaps |
+| BUG-035 | Git diff not shown before commit | Address in rewrite | Command-specific | Always show git diff --staged |
+| BUG-036 | PLANNING.md not updated after DIP completion | Address in rewrite | PLANNING.md gating (REQ-F5) | Hard gate before success message |
+| BUG-037 | Success message abbreviated | Address in rewrite | Success messages (REQ-F4) | Include all prescribed elements |
+
+### /deliver Command (DEFERRED)
+
+| Bug | Summary | Disposition | Pattern Class | Rationale |
+|-----|---------|-------------|---------------|-----------|
+| BUG-038 | Does not handle numbered lists | Deferred: /deliver | /deliver-specific | Python parser fix, separate process |
+| BUG-039 | Leaves generation script in deliverables/ | Deferred: /deliver | /deliver-specific | Cleanup step needed |
+| BUG-044 | Success message not shown | Deferred: /deliver | Success messages | Will adopt standard when rewritten |
+| BUG-045 | Page count not obtained | Deferred: /deliver | /deliver-specific | pypdf dependency |
+| BUG-046 | Parser does not handle horizontal rules | Deferred: /deliver | /deliver-specific | Parser gap |
+
+### Platform / Cross-Cutting
+
+| Bug | Summary | Disposition | Pattern Class | Rationale |
+|-----|---------|-------------|---------------|-----------|
+| BUG-040 | Context compaction causes step state loss | Deferred: platform | Platform limitation | Not fixable by command rewrites; relevant to future skill transition |
+| BUG-041 | DIP-003 cut notes not persisted | Deferred: platform | Platform limitation | Related to BUG-040; DIP design issue, not command issue |
+| BUG-042 | PLANNING.md not updated after DIP-003 | Address in rewrite | PLANNING.md gating (REQ-F5) | Third instance of same pattern — /build rewrite will enforce |
+| BUG-043 | DIP-003 success message not shown | Address in rewrite | Success messages (REQ-F4) | Third instance — /build rewrite will enforce |
+
+### Framework Issues
+
+| Issue | Summary | Disposition | Rationale |
+|-------|---------|-------------|-----------|
+| ISSUE-001 | Template example counts anchor agent output | Address in rewrite | REQ-F7; verify existing CLAUDE.md hint sufficiency |
+| ISSUE-002 | Smart quotes in PDF output | Deferred: /deliver | Cosmetic, /deliver-specific |
+| ISSUE-003 | Word Title bottom border | Deferred: /deliver | Cosmetic, /deliver-specific |
+
+### Summary
+
+| Disposition | Count |
+|-------------|-------|
+| Address in rewrite (SPEC-004 scope) | 35 bugs + 1 issue |
+| Deferred: /deliver | 5 bugs + 2 issues |
+| Deferred: /breakdown | 0 (no bugs logged) |
+| Deferred: platform | 2 bugs |
