@@ -6,7 +6,7 @@
 |-------|-------|
 | Spec ID | SPEC-004 |
 | Title | Command Behavioral Fixes and Pattern Standards |
-| Status | Draft |
+| Status | Ready for Design |
 | Author | Andrew Robert Spenn |
 | Created | 2026-03-22 |
 | Last Updated | 2026-04-01 |
@@ -143,9 +143,8 @@ Categories:
 
 ### 6.2 Spec-Specific Constraints
 
-- `/breakdown` is entirely out of scope — Todoist coupling concern deferred with it
+- `/breakdown` is entirely out of scope — tightly coupled to task management service integration, requires its own spec
 - `/deliver` is excluded — separate Python-based process, will be addressed independently
-- `/breakdown` is excluded — tightly coupled to task management service integration, requires its own spec
 - Commands are fully rewritten, not patched — existing commands serve as prototypes and semantic inspiration
 - The command-vs-skill format migration question is deferred to the `/architect` phase for research and design decision
 - Long-term plugin/skill format migration is explicitly out of scope for this spec
@@ -198,7 +197,7 @@ The following are explicitly NOT part of this specification:
 - All `/breakdown`-specific bugs — deferred with `/breakdown`
 - Plugin or skill format migration (the command-vs-skill question is deferred to `/architect` for research)
 - New commands or command features not required to address a documented bug
-- Todoist service replacement (REQ-F6 only prevents deepening the dependency)
+- Todoist service replacement (deferred with `/breakdown`; Todoist optional steps in remaining commands are a design decision for `/architect`)
 - BUG-040/BUG-041 (context compaction during long sessions) — platform limitation, not addressable by command rewrites
 - ISSUE-002 (smart quotes in PDF output) and ISSUE-003 (Word Title border) — cosmetic output issues, separate concern
 - Bugs discovered during implementation that are not in the original BUG-001 through BUG-046 scope
