@@ -7,9 +7,9 @@
 | Design ID | DESIGN-005 |
 | Title | Command Behavioral Fixes and Pattern Standards |
 | Status | Draft |
-| Author | Designer Agent (Mode 3 collaborative team) |
+| Author | Designer Agent (Mode 3 collaborative team) + Lead Agent |
 | Created | 2026-04-03 |
-| Last Updated | 2026-04-03 |
+| Last Updated | 2026-04-04 |
 
 ### Specification References
 
@@ -32,16 +32,28 @@
 
 ### 1.1 Design Summary
 
-This design transforms 6 Praxisity workflow commands from prototype `.claude/commands/*.md` files into directory-based skills under `.claude/skills/`, applying codified behavioral standards extracted from the v0.5.0 bug report. All 5 behavioral standards are embedded inline at phase boundaries within each skill — no shared files are read by AI at runtime. A human-only authoring reference (`command-standards.md`) documents the standards for UC-2 (new skill creation) but is never loaded during skill execution. Each skill is a full rewrite treating the existing command as prototype and semantic inspiration, not a base to patch.
+This design transforms 5 Praxisity workflow commands from prototype `.claude/commands/*.md` files into self-contained, directory-based skills under `.claude/skills/`. Each skill bundles its own template and applies codified behavioral standards extracted from the v0.5.0 bug report.
 
-The 6 commands fall into two structural families — template-producing skills (spec, charter, architect, define) that share a common Pre-Flight → Gather → Generate → Post-Save → Success Message skeleton, and execution skills (build, new-project) that diverge structurally. The design accommodates both families while maintaining a unified standards approach.
+Behavioral standards are delivered in two ways: 4 mechanical standards (F1, F2, F4, F5) are embedded inline at phase boundaries within each skill. The 1 judgment standard (F3 gathering protocol) is implemented as a standalone auto-invokable support skill (`/gather`) — because inline F3 was already present in prototypes and was defeated (BUG-018), and the gathering protocol benefits every development session, not just workflow skill execution. A development template (`.praxisity/templates/skill-standards.template.md`) documents all standards for UC-2 (new skill authoring) but is never loaded during skill execution.
+
+**Workflow skills** (user-invoked, `disable-model-invocation: true`):
+- **`/charter`** — create or update project charter (pattern-setter, built first)
+- **`/describe`** (née `/spec`) — create a specification document
+- **`/design`** (née `/architect`) — create a design document for a specification
+- **`/plan`** (née `/define`) — generate implementation prompts (DIPs) from a design
+- **`/do`** (née `/build`) — execute a DIP with step verification
+
+**Support skills** (auto-invokable, used by the agent during workflow execution):
+- **`/gather`** — structured one-at-a-time gathering protocol for user input (REQ-F3). Built first for immediate bootstrapping benefit.
+- **`/consult-team`** — multi-perspective agent consultation (existing)
+- **`/agent-authoring`** — agent definition file creation (existing)
 
 ### 1.2 Design Principles
 
-- **Inline over indirection:** All behavioral standards are embedded at the point of application within each skill. AI agents reliably follow inline imperatives; they unreliably follow cross-references. Zero shared files read at runtime.
-- **Phase-gated placement:** Standards appear at the phase boundary where they apply, not at the top of the file. The agent reads template handling rules right before Generate, not 200 lines earlier.
-- **Minimal coupling surface:** Each skill is fully self-contained — no skill depends on another skill's internals, and no shared files are loaded during execution. The only external references are to `.praxisity/templates/` for output generation.
-- **Compression over explanation:** Standards are compressed to the minimum lines that address the documented bug patterns. Operational context (the "why") is embedded in the phrasing of the rule itself, not in a separate explanation.
+- **Self-contained skills:** Each skill bundles its template and everything it needs. No reaching across the repo to distant directories. Aligns with Anthropic's skill format examples and distribution model.
+- **Inline mechanical standards, skill-based judgment standards:** Mechanical standards (F1, F2, F5) are embedded inline. The gathering protocol (F3) is a standalone support skill (`/gather`) — auto-invokable, reusable across all workflow skills and development sessions. This eliminates both inline duplication and cross-file references.
+- **Phase-gated placement:** Standards appear at the phase boundary where they apply, not at the top of the file.
+- **Bootstrapping:** `/charter` is built first as the pattern-setter. It validates the standards approach before the remaining 4 skills are written. Then each subsequent skill can be specified using `/describe` — the framework building itself.
 
 ### 1.3 Requirements Coverage
 
@@ -50,12 +62,12 @@ The 6 commands fall into two structural families — template-producing skills (
 | REQ-F1 | COMP-3, DEC-4 | Copy-then-edit protocol with 6 permitted operations, inline at Generate phase |
 | REQ-F1a | COMP-3 | N/A marking as permitted operation #4 |
 | REQ-F2 | COMP-4 | Sequential execution constraint inline at Pre-Flight phase |
-| REQ-F3 | COMP-5 | Compressed 4-line inline standard at Gather phase boundary |
+| REQ-F3 | COMP-5 | `/gather` support skill — auto-invokable, loaded by platform during gathering phases |
 | REQ-F4 | COMP-6 | Per-skill success message checklist (each skill defines its own elements) |
-| REQ-F5 | COMP-6 | One-line imperative between Post-Save and Success Message |
-| REQ-F7 | DEC-4, COMP-3 | Resolved by operation #6 (table row adjustment) — "template example counts are illustrative, not prescriptive" |
-| REQ-N1 | DEC-1, DEC-5 | Full rewrites as skills with Mode 3 team; implementation order: charter first |
-| REQ-N2 | COMP-3 (note) | Bug disposition table in bug report is complete (35+1 in scope); design maps each to components |
+| REQ-F5 | COMP-6 | One-line imperative between Post-Save and Success Message (Completion Gate) |
+| REQ-F7 | DEC-4, COMP-3 | Resolved by operation #6 (table row adjustment) — template example counts are illustrative, not prescriptive |
+| REQ-N1 | DEC-1, DEC-6 | Full rewrites as skills; charter first as pattern-setter; bootstrapping approach |
+| REQ-N2 | COMP-3 (note) | Bug disposition table in bug report complete (26 bugs + 1 issue in scope) |
 
 ---
 
@@ -67,67 +79,66 @@ The 6 commands fall into two structural families — template-producing skills (
 .claude/
 ├── skills/
 │   ├── _shared/
-│   │   └── command-standards.md        ← human authoring reference (UC-2, never read at runtime)
-│   ├── spec/
-│   │   └── SKILL.md                    ← full rewrite of /spec command
+│   │   └── (reserved for future cross-skill resources if needed)
+│   ├── gather/
+│   │   └── SKILL.md                   ← support skill: structured gathering protocol (REQ-F3)
 │   ├── charter/
-│   │   └── SKILL.md                    ← full rewrite of /charter command
-│   ├── architect/
-│   │   └── SKILL.md                    ← full rewrite of /architect command
-│   ├── define/
-│   │   └── SKILL.md                    ← full rewrite of /define command
-│   ├── build/
-│   │   └── SKILL.md                    ← full rewrite of /build command
-│   └── new-project/
-│       └── SKILL.md                    ← full rewrite of /new-project command
+│   │   ├── SKILL.md                   ← full rewrite of /charter command
+│   │   └── templates/
+│   │       └── charter.template.md    ← bundled template
+│   ├── describe/
+│   │   ├── SKILL.md                   ← full rewrite of /spec command
+│   │   └── templates/
+│   │       └── spec.template.md       ← bundled template
+│   ├── design/
+│   │   ├── SKILL.md                   ← full rewrite of /architect command
+│   │   └── templates/
+│   │       └── design.template.md     ← bundled template
+│   ├── plan/
+│   │   ├── SKILL.md                   ← full rewrite of /define command
+│   │   └── templates/
+│   │       └── dip.template.md        ← bundled template
+│   ├── do/
+│   │   └── SKILL.md                   ← full rewrite of /build command (no template)
+│   ├── consult-team/                  ← existing (unchanged)
+│   └── agent-authoring/               ← existing (unchanged)
 │
-├── commands/                           ← existing prototypes (retained as reference during rewrites)
-│
-.praxisity/
-└── templates/                          ← template files referenced by REQ-F1
-    ├── spec.template.md
-    ├── charter.template.md
-    ├── design.template.md
-    ├── dip.template.md
-    ├── claude.template.md
-    ├── readme.template.md
-    └── changelog.template.md
+├── commands/                          ← existing prototypes (retained as reference during rewrites)
 ```
 
 ### 2.2 Architecture Pattern
 
-**Pattern:** Skill-per-command with shared behavioral constraints
+**Pattern:** Self-contained skill-per-command with bundled templates and shared behavioral constraints.
 
-**Rationale:** Each workflow command becomes a self-contained skill directory. Skills are the unit of loading — when invoked, the platform loads the SKILL.md as the agent's instructions. Behavioral standards are delivered at phase boundaries within each SKILL.md, with one shared file for the gathering protocol. This matches the existing `consult-team` skill pattern proven in the codebase.
+**Rationale:** Each workflow command becomes a self-contained skill directory bundling its SKILL.md and its output template. Skills are the platform's documented extension format — `/init` creates skills, not commands. Bundling templates eliminates cross-repo indirection and supports distribution (individual skills can be installed independently). Behavioral standards are delivered at phase boundaries with one shared file for the gathering protocol.
 
 **Trade-offs:**
-- Pros: Fully self-contained skills, no hidden dependencies, no cross-references, maximum AI reliability
-- Cons: ~8-12 lines of inline standard text duplicated across 6 skills (acceptable — total duplication is small and each instance is adapted to its phase context)
+- Pros: Fully self-contained, distributable, no distant path references, platform-aligned
+- Cons: Templates are duplicated from `.praxisity/templates/` (one-time copy during migration). ~8-12 lines of inline standard text duplicated across 5 skills.
 
 ### 2.3 Two Structural Families
 
-The 6 skills divide into two families based on their phase structure:
+The 5 skills divide into two families based on their phase structure:
 
-**Template-producing skills** (spec, charter, architect, define):
+**Template-producing skills** (charter, describe, design, plan):
 ```
-Pre-Flight → Gather → Generate-from-template → Post-Save → Success Message
+Pre-Flight → Gather → Generate-from-template → Post-Save → Completion Gate → Success Message
 ```
-All 5 behavioral standards apply. These skills share the full skeleton and differ only in gathering content and template.
+All 5 behavioral standards apply. These skills share the full skeleton and differ in gathering content and template.
 
-**Execution skills** (build, new-project):
+**Execution skill** (do):
 ```
-/build:       Pre-Flight → DIP-Execution → Completion → Success Message
-/new-project: Pre-Flight → Parameter-Gathering → Execution-Steps → Success Message
+Pre-Flight → DIP-Execution → Completion Gate → Success Message
 ```
 Standards apply selectively:
 
-| Standard | spec | charter | architect | define | build | new-project |
-|----------|------|---------|-----------|--------|-------|-------------|
-| REQ-F1 (template handling) | yes | yes | yes | yes | N/A | adapted (multi-template) |
-| REQ-F2 (sequential pre-flight) | yes | yes | yes | yes | yes | yes |
-| REQ-F3 (gathering) | yes | yes | yes | yes | N/A | yes (parameter gathering) |
-| REQ-F4 (success message) | yes | yes | yes | yes | yes | yes |
-| REQ-F5 (PLANNING.md gate) | yes | yes | yes | yes | yes | yes |
+| Standard | charter | describe | design | plan | do |
+|----------|---------|----------|--------|------|-----|
+| REQ-F1 (template handling) | yes | yes | yes | yes | N/A |
+| REQ-F2 (sequential pre-flight) | yes | yes | yes | yes | yes |
+| REQ-F3 (gathering) | yes | yes | yes | yes | N/A |
+| REQ-F4 (success message) | yes | yes | yes | yes | yes |
+| REQ-F5 (PLANNING.md gate) | yes | yes | yes | yes | yes |
 
 ---
 
@@ -146,35 +157,37 @@ Standards apply selectively:
 - Provide human-readable authoring reference for UC-2 (new skill creation)
 
 **Dependencies:**
-- `.claude/skills/_shared/gathering-standards.md` (the one shared runtime file)
-- `.claude/skills/_shared/command-standards.md` (human authoring reference, never read at runtime)
+- `.claude/skills/gather/SKILL.md` (support skill for REQ-F3, auto-invokable)
+- `.praxisity/templates/skill-standards.template.md` (human authoring reference template for UC-2)
 
 **Key Design Decisions:**
-- Mechanical standards inline, judgment standards in shared file (DEC-2)
-- Phase-gated loading — standards are read at the boundary where they apply, not at the top
-- The architectural distinction: mechanical = "do X, not Y" (survives as terse imperative). Judgment = "apply X considering Y and Z" (needs operational context). REQ-F3 is the only judgment standard.
+- Mechanical standards inline, judgment standard as support skill (DEC-2)
+- Phase-gated placement — inline standards appear at the boundary where they apply
+- The architectural distinction: mechanical = "do X, not Y" (survives as terse imperative). Judgment = "apply X considering Y and Z" (needs operational context as a reusable skill). REQ-F3 is the only judgment standard.
+- Two skill types: workflow skills (user-invoked, `disable-model-invocation: true`) and support skills (auto-invokable, agent uses as tools)
 
-**Inline standard locations per SKILL.md:**
+**Standard locations:**
 
-| Standard | Location in SKILL.md | Approximate text |
-|----------|---------------------|------------------|
-| REQ-F2 | Top of Pre-Flight section | "Execute steps sequentially. Do not begin step N+1 until step N completes. PLANNING.md update must be step 2." (~2 lines) |
-| REQ-F1 | Top of Generate section | "Copy template to destination via `cp`. Read the copy. Use Edit for permitted modifications only. Never use Write for template-derived files." (~3 lines) |
-| REQ-F3 | Top of Gather section | Imperative: "Before gathering, read `.claude/skills/_shared/gathering-standards.md` and apply its rules to each section below." (~1 line) |
-| REQ-F5 | Between Post-Save and Success Message | "Update PLANNING.md with completion status. This is a hard gate — do not show the success message until PLANNING.md is updated." (~1 line) |
-| REQ-F4 | Within Success Message section | Per-skill checklist of required elements (unique per skill, not duplicated) |
+| Standard | Delivery | Location |
+|----------|----------|----------|
+| REQ-F2 | Inline | Top of Pre-Flight section (~2 lines) |
+| REQ-F1 | Inline | Top of Generate section (~3 lines) |
+| REQ-F3 | Support skill | `/gather` skill auto-invoked during gathering phases |
+| REQ-F5 | Inline | Between Post-Save and Success Message (~1 line) |
+| REQ-F4 | Per-skill | Within Success Message section (unique per skill) |
 
 ---
 
 ### COMP-2: Skill File Structure
 
-**Purpose:** Define the directory layout and file structure for each rewritten command.
+**Purpose:** Define the directory layout and file structure for each rewritten skill.
 
 **Satisfies:** REQ-N1 (full rewrites as skills)
 
 **Responsibilities:**
-- Each skill is a directory under `.claude/skills/` containing at minimum a `SKILL.md`
-- SKILL.md contains YAML frontmatter (name, description), followed by structured sections
+- Each skill is a directory under `.claude/skills/` containing a `SKILL.md` and bundled template(s)
+- SKILL.md contains YAML frontmatter followed by structured sections
+- Templates bundled in `templates/` subdirectory within each skill
 - Shared resources live under `_shared/`
 - Existing `.claude/commands/*.md` files retained during transition as prototype reference
 
@@ -182,10 +195,18 @@ Standards apply selectively:
 - Claude Code skills platform (directory-based loading)
 - Existing `consult-team` skill as proven structural reference
 
-**Key Design Decisions:**
-- Skills format chosen over commands (DEC-1) — directory-based, supports supporting files, progressive loading
-- No supporting files needed per-skill beyond SKILL.md (unlike consult-team which has templates/)
-- The `_shared/` directory holds cross-skill resources
+**Skill frontmatter:**
+
+```yaml
+---
+name: [skill-name]
+description: [one-line description]
+# Additional capabilities leveraged per-skill:
+# allowed-tools: [restrict tools for safety — e.g., /do may need Bash, /charter may not]
+# disable-model-invocation: true  # for destructive skills only
+# argument-hint: [describe expected arguments]
+---
+```
 
 **Standard SKILL.md section order for template-producing skills:**
 
@@ -214,8 +235,8 @@ description: [one-line description]
 [Framing for the user]
 
 ### Gather [Content Type]
-[REQ-F3 imperative loading instruction]
-[Section-by-section gathering]
+[The /gather support skill auto-invokes here via platform context matching]
+[Section-by-section gathering — one at a time per /gather protocol]
 
 ### Review and Confirm
 [Structured review with y/e/c options]
@@ -229,6 +250,7 @@ description: [one-line description]
 ## Post-Save
 [Optional: task manager integration, git commit]
 
+## Completion Gate
 [REQ-F5 inline standard — PLANNING.md hard gate]
 
 ## Success Message
@@ -242,7 +264,7 @@ description: [one-line description]
 
 ### COMP-3: Template Handling Protocol
 
-**Purpose:** Define how skills interact with `.praxisity/templates/` files to produce deterministic output.
+**Purpose:** Define how skills interact with their bundled template files to produce deterministic output.
 
 **Satisfies:** REQ-F1, REQ-F1a, REQ-F7
 
@@ -250,10 +272,9 @@ description: [one-line description]
 - Enforce copy-then-edit pattern for all template-derived output
 - Define permitted Edit operations (closed list — anything not listed is not permitted)
 - Handle dual-use template lifecycle (read for gathering context, copy for generation)
-- Handle `/new-project`'s multi-template variant
 
 **Dependencies:**
-- `.praxisity/templates/*.md` (7 template files)
+- Each skill's `templates/` subdirectory
 - Bash `cp` command for file copying
 - Edit tool for modifications
 
@@ -266,7 +287,7 @@ description: [one-line description]
 | 3 | HTML comment stripping | Remove `<!-- ... -->` guidance comments |
 | 4 | N/A marking | Replace content of inapplicable sections with "N/A — [reason]" (REQ-F1a) |
 | 5 | Content population | Fill gathered user input into the appropriate template sections |
-| 6 | Table row adjustment | Add or remove rows in ID-tracked tables to match gathered content count exactly. If gathered content has fewer entries than template example rows, remove excess rows. If more, add rows. Preserve table format and header. Generate sequential IDs. Template example row counts are illustrative, not prescriptive. |
+| 6 | Table row adjustment | Add or remove rows in ID-tracked tables to match gathered content count exactly. Template example row counts are illustrative, not prescriptive. Generate sequential IDs. |
 
 **NOT permitted:**
 - Rewriting existing template prose
@@ -275,17 +296,8 @@ description: [one-line description]
 - Paraphrasing or summarizing template language
 
 **Dual-use template lifecycle:**
-1. **During Gather phase:** Read the original template (with HTML comments intact) as a reference for section structure, examples, and domain-specific prompts. The comments are the gathering guide.
-2. **During Generate phase:** `cp` the template to the destination path. Read the fresh copy. Apply permitted Edit operations. The original template is never modified.
-
-**`/new-project` per-template operation matrix:**
-
-| Template | Destination | cp | Placeholder sub | Domain removal | Comment strip | Content population |
-|----------|-------------|----|-----------------|----|---|---|
-| claude.template.md | CLAUDE.md | yes | yes | yes | yes | no |
-| charter.template.md | CHARTER.md | yes | no | no | no | no |
-| readme.template.md | README.md | yes | yes | no | no | no |
-| changelog.template.md | CHANGELOG.md | yes | yes | no | yes | no |
+1. **During Gather phase:** Read the bundled template (with HTML comments intact) as a reference for section structure, examples, and domain-specific prompts. The comments are the gathering guide.
+2. **During Generate phase:** `cp` the template from the skill's `templates/` directory to the destination path. Read the fresh copy. Apply permitted Edit operations. The bundled template is never modified.
 
 ---
 
@@ -294,15 +306,6 @@ description: [one-line description]
 **Purpose:** Ensure consistent pre-flight behavior across all skills.
 
 **Satisfies:** REQ-F2
-
-**Responsibilities:**
-- Enforce sequential step execution (no parallelization, no batching)
-- Ensure PLANNING.md update is step 2 in every skill's pre-flight
-- Provide skill-specific pre-flight steps after the common first two
-
-**Dependencies:**
-- PLANNING.md (read and write)
-- Skill-specific resources (CHARTER.md, specs, designs, templates, etc.)
 
 **Common pre-flight steps (all skills):**
 
@@ -316,57 +319,26 @@ description: [one-line description]
 
 > Execute these steps sequentially in the order listed. Do not begin step N+1 until step N is complete. Do not batch or parallelize pre-flight steps.
 
-**Why this is inline, not shared:** The sequential execution rule is a mechanical constraint — "do not parallelize" — that was defeated when phrased as a numbered list alone (BUG-016, BUG-017). The explicit prohibition needs to be directly above the numbered steps, not in a separate file read beforehand.
-
 ---
 
-### COMP-5: Gathering Protocol
+### COMP-5: Gathering Protocol (Support Skill)
 
-**Purpose:** Prevent batched gathering by providing operational context for one-at-a-time prompting.
+**Purpose:** Prevent batched gathering by codifying the one-at-a-time prompting protocol as a reusable, auto-invokable support skill.
 
 **Satisfies:** REQ-F3
 
-**Responsibilities:**
-- Define what "one section at a time" means operationally
-- Define when draft-for-approval is permitted vs. prompting from scratch
-- Define the boundary of "sufficient context" for drafting
+**Implementation:** `.claude/skills/gather/SKILL.md` — a standalone support skill with `when_to_use` triggering.
 
-**Dependencies:**
-- `.claude/skills/_shared/gathering-standards.md` (the shared file)
+**Why a skill, not inline or a shared file:**
+- Inline "one section at a time" was already present in prototype commands and was defeated (BUG-018). A terse inline rule is the pattern that already failed.
+- A shared file requires cross-references, which we've established are unreliable.
+- A support skill is auto-invoked by the platform based on context matching — no cross-reference needed. The agent loads the gathering protocol when it needs it, the same way it loads consult-team when it needs multi-agent review.
+- Building it as a skill gives immediate benefit — every session from this point forward uses the protocol, not just workflow skill executions.
+- The gathering protocol can be developed, tested, and improved independently from the workflow skills.
 
-**Why this is a shared file, not inline:** REQ-F3 is the only judgment standard. Inline "one section at a time" was already present in prototype commands and was defeated (BUG-018: agent drafted sections 3-10 in a single batch despite the constraint). The operational context — what "sufficient context" means, what "one at a time" means in practice, when drafting is OK — is ~15 lines and provides the behavioral anchoring that a terse rule cannot.
+**Skill type:** Support skill (auto-invokable). Workflow skills are `disable-model-invocation: true` (user-invoked only). Support skills like `/gather`, `/consult-team`, and `/agent-authoring` are auto-invokable — the agent uses them as tools.
 
-**`gathering-standards.md` content structure:**
-
-```markdown
-# Gathering Standards
-
-## Rule
-Prompt one section at a time. Wait for the user's response before presenting
-the next section.
-
-## When drafting is permitted
-When the agent has sufficient context (prior conversation, loaded documents,
-domain knowledge) to produce a reasonable draft for a section, it may present
-a draft for approval rather than prompting from scratch. But:
-- Still pause between sections for user confirmation
-- Do not draft content for sections the user hasn't been prompted for yet
-- "Sufficient context" means you can produce something the user would accept
-  with minor edits, not that you can produce *something*
-
-## What "one section at a time" means operationally
-- Present section N's prompt or draft
-- Wait for explicit user response (approval, edit, or new input)
-- Only then present section N+1
-- Never bundle multiple sections into a single message
-- Never draft ahead of where the user has confirmed
-```
-
-**Imperative loading instruction (in each SKILL.md's Gather section):**
-
-> Before gathering, read `.claude/skills/_shared/gathering-standards.md` and apply its rules to each section below.
-
-**Applicability:** Template-producing skills (spec, charter, architect, define) and `/new-project` (parameter gathering). Does NOT apply to `/build` — its DIP execution steps are agent-driven with verification gates, not user-input gathering.
+**Applicability:** Any session where structured input is gathered from the user across multiple sections or categories. This includes workflow skill execution (charter, describe, design, plan) and general development work. Does NOT apply to `/do` — its DIP execution steps are agent-driven, not user-input gathering.
 
 ---
 
@@ -376,19 +348,11 @@ a draft for approval rather than prompting from scratch. But:
 
 **Satisfies:** REQ-F4, REQ-F5
 
-**Responsibilities:**
-- Enforce PLANNING.md update as a hard gate before success message display
-- Ensure each skill emits all elements defined in its own Success Message section
-
-**Dependencies:**
-- PLANNING.md (write)
-- Per-skill success message element definitions
-
-**REQ-F5 inline standard (between Post-Save and Success Message):**
+**REQ-F5 inline standard (Completion Gate — between Post-Save and Success Message):**
 
 > Update PLANNING.md with completion status, active artifacts, and next steps. This is a hard gate — do not display the success message until PLANNING.md has been updated in this run.
 
-**REQ-F4 approach:** Each skill defines its own success message checklist. These are NOT standardized across skills because each skill's "complete" is different (SPEC-004 spec, Section 3.1, REQ-F4 note). The design specifies the structure, not the content:
+**REQ-F4 approach:** Each skill defines its own success message checklist. The design specifies the structure, not the content:
 
 ```markdown
 ## Success Message
@@ -401,7 +365,7 @@ Show all of the following:
   2. [Step 2]
 ```
 
-**Post-Save section restructuring:** In prototype commands, PLANNING.md update was buried as step 3-4 inside Post-Save, after optional Todoist/git steps. This is the root cause of BUG-036 and BUG-042. The design restructures the section order:
+**Post-Save section restructuring:** In prototype commands, PLANNING.md update was buried as step 3-4 inside Post-Save, after optional Todoist/git steps. The Completion Gate is a new structural element that physically separates Post-Save from Success Message:
 
 ```
 ## Post-Save
@@ -415,117 +379,75 @@ Update PLANNING.md with completion status. Do not proceed until this is done.
 [per-skill checklist]
 ```
 
-The "Completion Gate" is a new structural element that physically separates Post-Save from Success Message with the PLANNING.md requirement between them.
-
 ---
 
 ## 4. Interfaces
+### INT-1: Workflow Skill ↔ Gather Support Skill
 
-### INT-1: Skill ↔ Shared Standards
+**Connects:** Workflow skills with gathering phases (COMP-2) ↔ `/gather` skill (COMP-5)
 
-**Connects:** Each SKILL.md (COMP-2) ↔ `_shared/gathering-standards.md` (COMP-5)
-
-**Type:** File read (imperative)
-
-**Direction:** Unidirectional — SKILL.md reads from `_shared/`; never writes.
+**Type:** Platform auto-invocation via `when_to_use` context matching
 
 **Contract:**
-- **Trigger:** Agent reaches the Gather phase boundary in a skill
-- **Instruction:** Imperative "read this file now and apply" (not passive "see also")
-- **Content:** The gathering protocol rules (~15 lines)
-- **Failure mode:** If the agent doesn't read the file, behavior reverts to prototype-era failure mode (batched gathering). This is a bounded downside — no worse than current state.
-- **Applicability filter:** Only skills with user-input gathering phases include the imperative. `/build` omits it.
+- **Trigger:** Agent is gathering structured input from the user across multiple sections — the `/gather` skill's `when_to_use` matches this context
+- **Mechanism:** Platform loads the gathering skill's instructions automatically, not via explicit cross-reference
+- **Failure mode:** If auto-invocation doesn't fire, the agent falls back to its default gathering behavior (which may batch). Bounded downside — same as current state. Workflow skills can also reference `/gather` explicitly as a fallback.
+- **Applicability:** Workflow skills with user-input gathering (charter, describe, design, plan). Not `/do`.
 
-### INT-2: Skill ↔ Templates
+### INT-2: Skill ↔ Bundled Templates
 
-**Connects:** Each template-producing SKILL.md (COMP-2) ↔ `.praxisity/templates/*.md` (COMP-3)
+**Connects:** Each template-producing SKILL.md (COMP-2) ↔ its `templates/*.template.md` (COMP-3)
 
 **Type:** File read + file copy + file edit
 
-**Direction:** Unidirectional — skill reads and copies templates; never modifies originals.
-
 **Contract:**
 ```
-Phase 1 (Gather): Read template original → extract section structure, examples, prompts
+Phase 1 (Gather): Read bundled template → extract section structure, examples, prompts
 Phase 2 (Generate):
-  1. cp template.md → destination.md    (Bash cp)
-  2. Read destination.md                (Read tool)
-  3. Edit destination.md                (Edit tool, permitted operations only)
-  4. Verify: original template unchanged (implicit — cp creates the copy)
+  1. cp templates/[name].template.md → destination    (Bash cp)
+  2. Read destination                                  (Read tool)
+  3. Edit destination                                  (Edit tool, permitted operations only)
+  4. Verify: bundled template unchanged                (implicit — cp creates the copy)
 ```
-
-**Error handling:** If `cp` fails (permissions, missing file), halt and report. If Edit fails (old_string not found), halt and report — do not fall back to Write.
 
 ### INT-3: Skill ↔ PLANNING.md
 
 **Connects:** Each SKILL.md (COMP-2) ↔ PLANNING.md
 
-**Type:** File read + file write
-
-**Direction:** Bidirectional — skill reads context and writes updates.
-
 **Contract:**
 ```
 Pre-Flight Step 1: Read PLANNING.md (or create if missing)
-Pre-Flight Step 2: Write — set active command/skill
+Pre-Flight Step 2: Write — set active skill
 Completion Gate:   Write — set completion status, artifacts, next steps
                    MUST complete before Success Message is displayed
 ```
 
-**Touchpoints per skill execution:** Exactly 3 — read at start, write at step 2, write at completion gate. No intermediate writes during Gather or Generate phases.
+**Touchpoints per skill execution:** Exactly 3 — read at start, write at step 2, write at completion gate.
 
 ---
 
 ## 5. Data Model
 
-### DATA-1: Skill File (SKILL.md)
+### DATA-1: Skill Directory
 
-**Purpose:** The complete behavioral specification for one workflow skill.
-
-**Used by:** Claude Code platform (loaded as agent instructions when skill is invoked)
-
-**Schema/Structure:**
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| YAML frontmatter | metadata | Yes | `name` and `description` fields |
-| Constraints | section | Yes | Skill-specific behavioral limits |
-| Pre-Flight | section | Yes | Sequential steps with REQ-F2 inline standard |
-| Flow/Gather | section | Yes (template-producing) | Content gathering with REQ-F3 imperative |
-| Generate | section | Yes (template-producing) | Template handling with REQ-F1 inline standard |
-| Post-Save | section | Yes | Optional integrations (task manager, git) |
-| Completion Gate | section | Yes | REQ-F5 PLANNING.md hard gate |
-| Success Message | section | Yes | REQ-F4 per-skill element checklist |
-| Behavior Notes | section | Optional | Skill-specific guidance |
+| Component | Required | Description |
+|-----------|----------|-------------|
+| `SKILL.md` | Yes | The complete behavioral specification |
+| `templates/` | Template-producing skills only | Bundled output template(s) |
 
 ### DATA-2: Gathering Standards File
 
-**Purpose:** Shared operational context for the gathering protocol (REQ-F3).
-
-**Used by:** COMP-5 (Gathering Protocol), loaded by template-producing skills + `/new-project`
-
-**Schema/Structure:**
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
 | Rule | section | Yes | Core one-at-a-time rule |
 | When drafting is permitted | section | Yes | Exception conditions and boundaries |
 | Operational definition | section | Yes | Step-by-step meaning of "one at a time" |
 
-**Constraints:**
-- Must be self-contained — no cross-references to other files
-- Must be under 20 lines — loaded into context at a phase boundary, not at session start
+Must be self-contained, under 20 lines, no cross-references.
 
-### DATA-3: Command Standards Reference (Human Authoring Guide)
+### DATA-3: Skill Standards Template (Human Authoring Guide)
 
-**Purpose:** Canonical reference for authors creating new skills (UC-2). Not read by AI at runtime.
-
-**Used by:** Human developers writing new Praxisity skills
-
-**Schema/Structure:**
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| Per-standard sections | section | Yes | Each REQ-F standard with rule, rationale, and application guidance |
-| Standard classification | metadata | Yes | Mechanical vs. judgment classification |
-| Delivery instructions | section | Yes | Where and how to embed each standard in a new SKILL.md |
+`.praxisity/templates/skill-standards.template.md` — a Praxisity template documenting the behavioral standards (F1-F5), mechanical vs. judgment classification, phase-gate placement rules, and permitted edit operations. For human developers writing new skills. Not read by AI at runtime.
 
 ---
 
@@ -533,138 +455,81 @@ Completion Gate:   Write — set completion status, artifacts, next steps
 
 ### DEC-1: Skills Format Over Commands
 
-**Context:** Q-3 — existing commands are `.claude/commands/*.md` files. Should rewrites remain as commands or migrate to directory-based skills?
-
 **Decision:** Migrate to skills under `.claude/skills/[name]/SKILL.md`.
 
-**Rationale:** Skills are directory-based (SKILL.md + supporting files), enabling progressive loading and shared resources. The `_shared/` directory provides a natural location for the gathering standards file. Skills also align with the framework's direction (SPEC-006, agent-authoring skill, consult-team precedent).
+**Rationale:** Platform evidence confirms commands are legacy — not listed as extension point, `/init` creates skills, skills support `allowed-tools`, `disable-model-invocation`, named arguments, and per-step success criteria. Skills are directory-based, enabling bundled templates and supporting files.
 
-**Alternatives Considered:**
-- Keep as commands: Simpler but flat — no directory structure for shared resources, no supporting files
-- MCP tools: Overkill — these are prompt instructions, not programmatic interfaces
+### DEC-2: Standards Delivery — Inline Mechanical, Skill-Based Judgment
 
-**Consequences:**
-- Existing commands retained as prototypes during transition
-- Each skill gets its own directory even if it only contains SKILL.md
-- `_shared/` directory establishes the pattern for future shared resources
-
----
-
-### DEC-2: Hybrid Standards Delivery — Mechanical Inline, Judgment Shared
-
-**Context:** Q-4 — how do behavioral standards reach each skill? Options: shared reference doc, context block, extracted skill, inline duplication, or hybrid.
-
-**Decision:** Inline mechanical standards at phase boundaries + one shared file for the judgment standard (REQ-F3 gathering protocol).
+**Decision:** Inline mechanical standards (F1, F2, F5) at phase boundaries. Judgment standard (F3 gathering protocol) implemented as a standalone auto-invokable support skill (`/gather`). Per-skill for F4 success messages.
 
 **Rationale:**
-- **Mechanical standards** (F1, F2, F5): 2-4 lines each, "do X not Y" rules. These survive as inline imperatives. Cross-referencing adds indirection cost that exceeds the duplication cost (~7-8 lines total per skill).
-- **Judgment standard** (F3): ~15 lines of operational context. Inline "one section at a time" was already present in prototypes and defeated (BUG-018). The "why" context provides behavioral anchoring that terse rules cannot.
-- **Per-skill standard** (F4): Each skill's success message is unique. No duplication — each defines its own checklist.
-
-**Alternatives Considered:**
-- Pure shared reference: AI cross-referencing unreliable (skeptic's v0.1 review insight)
-- Pure inline duplication: Would duplicate F3's 15 lines across 5 skills — unnecessary when a shared file works for this one standard
-- Context block: No existing loading mechanism in skills, can't be section-targeted
-- Extracted skill: Standards are constraints, not a skill — no invocation or flow
-
-**Consequences:**
-- One cross-reference in the entire system (`gathering-standards.md`)
-- If the cross-reference fails, bounded downside — reverts to current failure mode
-- Human authoring reference (`command-standards.md`) is documentation, not infrastructure
-
----
+- **Mechanical standards** (F1, F2, F5): 2-4 lines each, "do X not Y" rules that survive as inline imperatives.
+- **Judgment standard** (F3): Inline "one section at a time" was already in prototypes and was defeated (BUG-018). A support skill provides the operational context AND is reusable across all sessions — not just workflow skill execution. The gathering protocol benefits every development session, making it a natural skill rather than embedded documentation.
+- **Per-skill standard** (F4): Each skill's success message is unique.
+- **Two skill types:** Workflow skills are user-invoked (`disable-model-invocation: true`). Support skills (gather, consult-team, agent-authoring) are auto-invokable — the agent uses them as tools.
 
 ### DEC-3: Todoist Abstraction to Generic Task Manager
-
-**Context:** Todoist is named in 4 of 6 in-scope commands as optional post-save integration. `/breakdown` (excluded) is deeply Todoist-coupled. Charter still mandates Todoist but replacement is deferred.
 
 **Decision:** Abstract all Todoist references to generic "project task management service (if available)." Remove hardcoded MCP tool names.
 
 **Rationale:** Three coupling types identified:
-1. **Post-save convenience** (spec, charter, architect): "Optionally create task" — abstract to generic
-2. **Input source** (define): "Task from Todoist" — abstract to "task from project task manager"
-3. **Completion signal** (build): Hardcoded `mcp__todoist__complete-tasks` — abstract to "mark task complete in project task management service"
-
-Hardcoding "Todoist" in 4 skills creates 4 update points when the service changes. The abstraction costs nothing — steps are already "if available" guarded.
-
-**Alternatives Considered:**
-- Remove entirely: Loses the integration point; would need re-adding when replacement lands
-- Keep as-is: 4 unnecessary update points when service changes
-
-**Consequences:**
-- No service-specific MCP tool names in any skill file
-- Task management integration remains as optional steps
-- When replacement service is chosen, only the service-specific implementation changes — skill files stay generic
-
----
+1. **Post-save convenience** (charter, describe, design): abstract to generic
+2. **Input source** (plan): abstract to "task from project task manager"
+3. **Completion signal** (do): abstract to "mark task complete in project task management service"
 
 ### DEC-4: Permitted Edit Operations (Closed List)
 
-**Context:** REQ-F1 says "Edit-based modifications" but doesn't define what operations are permitted. The critic flagged this as under-specified.
-
-**Decision:** Define a closed list of 6 permitted operations. Anything not listed is not permitted.
-
-**Rationale:** A closed list prevents the agent from reinterpreting "Edit-based modifications" as license to rewrite template content. The operations were derived from analyzing what the 7 templates actually require and what the bug report documented as failures.
+**Decision:** 6 permitted operations. Anything not listed is not permitted.
 
 **The 6 operations:** Placeholder substitution, domain section removal, HTML comment stripping, N/A marking, content population, table row adjustment. (Full definitions in COMP-3.)
 
-**Alternatives Considered:**
-- Open-ended "use Edit tool appropriately": Too vague — the v0.5.0 test showed agents interpret liberally
-- Positive-and-negative list: The NOT-permitted list supplements the positive list to close loopholes
+**NOT permitted:** Rewriting prose, adding sections, restructuring order, paraphrasing.
 
-**Consequences:**
-- Table row adjustment (operation #6) resolves ISSUE-001 (template anchoring) at the design level
-- `/new-project` applies a per-template subset of operations (matrix in COMP-3)
+### DEC-5: Templates Bundled in Skill Directories
 
----
-
-### DEC-5: Templates Remain in `.praxisity/templates/`
-
-**Context:** Skills format supports bundled resources (e.g., `consult-team/templates/`). Should output templates move from `.praxisity/templates/` into each skill's directory?
-
-**Decision:** Templates stay in `.praxisity/templates/`. Skills reference them by path.
-
-**Rationale:** Templates and skill-internal resources serve different audiences:
-- **Skill-internal resources** (like consult-team's `context-block.md`) are consumed by the skill during execution. They have no meaning outside the skill. Bundling is correct.
-- **Output templates** (like `spec.template.md`) define what the user's output documents look like. They're the user's customization surface — a user might modify their spec template without touching skill logic. `.praxisity/` is framework configuration that `/new-project` preserves for the user. `.claude/` is agent infrastructure.
-
-Additionally, `charter.template.md` is shared between `/charter` (fills it) and `/new-project` (copies it as placeholder). Bundling would require either a duplicate or a cross-skill reference — both worse than the current shared location.
-
-**Alternatives Considered:**
-- Bundle in skill directories, keep `.praxisity/` as meta-source: Two copies of each template, sync question
-- Bundle in skill directories, eliminate `.praxisity/`: Conflates user customization with agent infrastructure; `charter.template.md` duplicated in two skills
-- Symlinks: Fragile, platform-dependent, over-engineered for the problem
-
-**Consequences:**
-- Skills reference `.praxisity/templates/[name].template.md` — a distant but stable path
-- Templates are the user's domain; skills are the framework's domain — clean separation
-- Template standardization (consistent metadata tables, HTML comment style, section IDs) is a separate concern addressable by an authoring guide, not by moving files
-
----
-
-### DEC-6: Implementation Order — Charter First, New-Project Last
-
-**Context:** 6 skills to rewrite. The dependency chain matches the workflow the commands implement. PM analysis identified `/charter` as the simplest pattern-setter and `/new-project` as the most structurally different.
-
-**Decision:** Implement in this order: charter -> spec -> architect -> define -> build -> new-project.
+**Decision:** Each skill bundles its own template in a `templates/` subdirectory. Templates are copied from `.praxisity/templates/` during the migration.
 
 **Rationale:**
-- `/charter` is the simplest gathering flow (8 sections, no traceability IDs), has the clearest bug-to-fix mapping, and its output (CHARTER.md) is referenced by `/spec`
-- `/spec` adds traceability IDs, references charter — second validation of patterns
-- `/architect` is the most complex gathering (domain-aware sections), adds requirement coverage
-- `/define` depends on design output format, has the batch-mode design question (BUG-029)
-- `/build` has unique execution model (DIP runner, not gatherer) — needs independent design
-- `/new-project` is structurally different from all others, mostly cleanup bugs (BUG-001-006)
+- Skills should be self-contained — bundling matches Anthropic's skill examples and the consult-team skill pattern
+- Eliminates cross-repo indirection (no distant `.praxisity/templates/` references)
+- Supports distribution model — individual skills can be installed with their templates
+- Reduces conceptual cross-referencing before Obsidian support is developed
+- `/new-project` (which shared `charter.template.md`) is dropped from scope, so the sharing concern is moot
 
-**Alternatives Considered:**
-- Alphabetical: Ignores dependencies and pattern-setting opportunity
-- By bug count: `/new-project` has 9 bugs but is the worst pattern-setter
-- Parallel: Limited opportunity — each rewrite informs the next
+**Two template locations by audience:**
+- **`.praxisity/templates/`** — development templates (framework infrastructure, consumed by developers building the framework). E.g., `skill-standards.template.md`.
+- **`.claude/skills/[name]/templates/`** — end-user templates (output structure, consumed by the skill during execution). E.g., `charter.template.md` bundled with the `/charter` skill.
 
 **Consequences:**
-- Design and implementation can overlap: once `/charter` is approved, its build can begin while `/spec` design proceeds
-- The Mode 3 team accumulates pattern knowledge through the sequence
-- `/new-project` benefits from all patterns established in earlier rewrites
+- Each skill references its template via a short relative path: `templates/charter.template.md`
+- `.praxisity/templates/` retains development-facing templates and remains the canonical source for `/new-project` if it's ever revived
+
+### DEC-6: Implementation Order — Charter First, Bootstrapping Approach
+
+**Decision:** Build `/charter` first as the pattern-setter. Then use `/describe` to formally specify remaining skills through the framework's own workflow.
+
+**Order:** charter → describe → design → plan → do
+
+**Rationale:**
+- `/charter` is the simplest gathering flow (8 sections, no traceability IDs) and validates the standards approach
+- Building `/charter` first gives immediate utility — it can be used to update the project charter
+- `/describe` is built second, then used to specify the remaining 3 skills (bootstrapping principle: use the system to build the system)
+- `/do` has a unique execution model (DIP runner) and comes last
+
+### DEC-7: Skill Frontmatter Capabilities
+
+**Decision:** Leverage skill-specific frontmatter fields where they add safety or clarity.
+
+| Skill | `allowed-tools` | `disable-model-invocation` | `argument-hint` |
+|-------|-----------------|---------------------------|-----------------|
+| charter | Read, Write, Edit, Glob, Grep | no | — |
+| describe | Read, Write, Edit, Glob, Grep | no | — |
+| design | Read, Write, Edit, Glob, Grep | no | `<spec-number>` |
+| plan | Read, Write, Edit, Glob, Grep | no | `<design-component or task>` |
+| do | Read, Write, Edit, Glob, Grep, Bash | no | `<dip-path>` |
+
+Note: `allowed-tools` and other advanced frontmatter fields need empirical testing during the `/charter` build to verify platform behavior.
 
 ---
 
@@ -672,53 +537,57 @@ Additionally, `charter.template.md` is shared between `/charter` (fills it) and 
 
 ### 7.1 Implementation Order
 
-| Order | Skill | Dependencies | Notes |
-|-------|-------|--------------|-------|
-| 0 | `_shared/gathering-standards.md` | None | Write the shared file first — all gathering skills reference it |
-| 0 | `_shared/command-standards.md` | None | Write the authoring reference — informs all rewrites |
-| 1 | charter | shared files | Pattern-setter; simplest gathering flow |
-| 2 | spec | charter pattern | Adds traceability IDs; references charter output |
-| 3 | architect | spec pattern | Most complex gathering; domain-aware sections |
-| 4 | define | architect pattern | Depends on design output format; BUG-029 batch question |
-| 5 | build | independent | Unique execution model; only F2/F4/F5 apply |
-| 6 | new-project | all patterns | Structurally different; multi-template; mostly cleanup bugs |
+| Order | Skill | Notes |
+|-------|-------|-------|
+| 0 | `/gather` (support skill) | Build first — immediate bootstrapping benefit for all sessions |
+| 0 | `.praxisity/templates/skill-standards.template.md` | Human authoring reference template (deferrable — DQ-3) |
+| 1 | `/charter` | Pattern-setter; simplest; validates approach; uses `/gather` |
+| 2 | `/describe` | Adds traceability IDs; then used to specify remaining skills |
+| 3 | `/design` | Most complex gathering; domain-aware sections |
+| 4 | `/plan` | Depends on design output format; BUG-029 batch question |
+| 5 | `/do` | Unique execution model; only F2/F4/F5 apply |
 
-### 7.2 Risk Areas
+### 7.2 Migration Steps
+
+1. Create `.claude/skills/_shared/` with gathering standards and authoring reference
+2. For each skill in order: create directory, copy template from `.praxisity/templates/`, write SKILL.md
+3. Retain `.claude/commands/` originals as reference during transition
+4. After all 5 skills validated end-to-end, remove old command files
+
+### 7.3 Risk Areas
 
 | Risk | Impact | Mitigation |
 |------|--------|------------|
-| Gathering standards file not read by agent | F3 violations (batched gathering) — same as current state | Bounded downside; imperative phrasing ("read this now") proven in consult-team |
-| Inline standards ignored despite explicit phrasing | Behavioral violations for F1/F2/F5 | F2 already failed as numbered list — explicit prohibition language ("do not begin step N+1") is the upgrade. If this also fails, the standard needs enforcement via tooling, not prompt language |
-| `/new-project` per-template variant creates confusion | Agent applies wrong operations to wrong template | Operation matrix (COMP-3) makes the mapping explicit and testable |
-| BUG-029 batch mode question unresolved for /define | Design gap during /define rewrite | Flag during /define design — the current spec says "each run creates a NEW DIP" but users want batch creation. Design decision, not just a bug fix |
-| Scope creep during individual rewrites | Each rewrite expands beyond its bug list | PM identified 4 scope creep risks — agent prompt revision (Q-5), command rename, BUG-029, and Todoist references. All are explicitly bounded or deferred |
+| Gathering standards file not read by agent | F3 violations — same as current state | Bounded downside; imperative phrasing proven in consult-team |
+| Inline standards ignored despite explicit phrasing | Behavioral violations for F1/F2/F5 | Explicit prohibition language is the upgrade over numbered lists. If this also fails, enforcement via tooling needed |
+| BUG-029 batch mode question unresolved for /plan | Design gap during /plan rewrite | Flag during /plan design — design decision, not just a bug fix |
+| Skill frontmatter fields don't work as expected | Features like `allowed-tools` may not behave as documented | Test during /charter build before relying on them |
+| Template drift between bundled copies and .praxisity/ originals | Inconsistency if both are maintained | `.praxisity/templates/` is canonical source for `/new-project` only; skill-bundled copies are authoritative for their skill |
 
-### 7.3 Testing Strategy
+### 7.4 Testing Strategy
 
 | Level | Approach | Covers |
 |-------|----------|--------|
 | Per-skill | Run each rewritten skill end-to-end in a test project | AC-1 through AC-5 for that skill |
-| Cross-skill | Run the full Specify → Design → Build workflow | Skill-to-skill handoffs, template output consumed by downstream skills |
-| Regression | Compare against bug disposition table | AC-6 — all 35 in-scope bugs addressed |
-| Pattern validation | Run `/charter` first, verify behavioral standards hold, then proceed | AC-7 — charter as pattern-setter validates the approach before scaling |
+| Cross-skill | Run the full Describe → Design → Plan → Do workflow | Skill-to-skill handoffs |
+| Regression | Compare against bug disposition table | AC-6 — all 26 in-scope bugs addressed |
+| Pattern validation | Run `/charter` first, verify standards hold, then proceed | AC-7 — charter as pattern-setter validates approach |
 
 ---
 
 ## 8. Out of Scope
 
 **From Specification (inherited):**
-- `/deliver` command — separate Python-based process, own spec later
-- `/breakdown` command — task management service integration, own spec later
-- All `/deliver`-specific bugs (BUG-038, BUG-039, BUG-044, BUG-045, BUG-046)
-- Platform limitation bugs (BUG-040, BUG-041) — not addressable by skill rewrites
-- Plugin/skill format long-term migration beyond the 6 in-scope rewrites
+- `/new-project` command — sunset candidate pending distribution model decision
+- `/deliver` command — separate Python-based process
+- `/breakdown` command — task management service integration
+- All deferred bugs (BUG-001–009, BUG-038–039, BUG-040–041, BUG-044–046)
 - New features not required to address a documented bug
 
 **Design-Specific Exclusions:**
 - Agent prompt revision (Q-5) — separate workstream, does not block skill rewrites
-- Command rename (describe/design/do) — deferred to implementation phase, per-skill decision
-- Todoist replacement selection — abstracted away; replacement is a future decision
-- Template file modifications — templates are consumed, not rewritten, by this design
+- Todoist replacement selection — abstracted away
+- Template standardization ("template for templates") — valid future concern, deferred
 - `consult-team` and `agent-authoring` skills — existing skills, not in scope for rewrite
 
 ---
@@ -727,11 +596,10 @@ Additionally, `charter.template.md` is shared between `/charter` (fills it) and 
 
 | ID | Question | Status | Resolution |
 |----|----------|--------|------------|
-| DQ-1 | Should `/define` support batch DIP creation? | Open | BUG-029 flagged this. Current spec says one-per-run. Users naturally want batch. Design decision needed during `/define` rewrite — not blocking other skills. |
+| DQ-1 | Should `/plan` support batch DIP creation? | Open | BUG-029 flagged this. Current spec says one-per-run. Design decision during `/plan` rewrite. |
 | DQ-2 | Should existing `.claude/commands/` files be deleted after skills are validated? | Open | Recommend retaining during transition, removing after full workflow validation. |
-| DQ-3 | Does the `command-standards.md` authoring reference need to exist at MVP? | Open | It's documentation for UC-2 (new skill authoring). Could be deferred until someone actually writes a new skill. The inline standards in each SKILL.md are the runtime source of truth. |
-| DQ-4 | Which skill frontmatter capabilities should the rewrites leverage? | Open | Skills support fields beyond `name` and `description` — potentially `allowed-tools` (restrict tool access), named arguments, and per-step success criteria. Need PE input on what capabilities exist and which are relevant per skill. `/new-project` is the strongest candidate for `allowed-tools` restriction (destructive operations). Resolution will add a DEC-7 to this design. |
-| DQ-5 | Should template standardization be addressed now or deferred? | Open | The user identified that templates themselves could benefit from standardization (consistent metadata tables, HTML comment style, section IDs). This is a valid concern but separate from SPEC-004's scope (which is about command behavior, not template structure). Recommend deferring to a future spec unless it blocks the rewrites. |
+| DQ-3 | Does the `command-standards.md` authoring reference need to exist at MVP? | Open | Could be deferred until someone writes a new skill. |
+| DQ-4 | Do skill frontmatter capabilities work as documented? | Open | `allowed-tools`, `disable-model-invocation`, named arguments need empirical testing during `/charter` build. |
 
 ---
 
@@ -743,46 +611,34 @@ Additionally, `charter.template.md` is shared between `/charter` (fills it) and 
 |------|------------|
 | Skill | A directory-based prompt specification under `.claude/skills/` containing a SKILL.md and optional supporting files |
 | Command | The prototype format under `.claude/commands/` — flat markdown files, being replaced by skills |
-| Mechanical standard | A behavioral rule that can be stated as a terse imperative ("do X, not Y") and survives inline |
-| Judgment standard | A behavioral rule requiring operational context ("apply X considering Y and Z") that needs a shared reference |
-| Phase boundary | The point in a skill's execution where a new phase begins (Pre-Flight → Gather → Generate → etc.) |
-| Template-producing skill | A skill that gathers user input and generates output from a `.praxisity/templates/` file |
-| Execution skill | A skill that runs a process (DIP execution, project initialization) rather than producing template-based output |
-| Permitted operation | One of the 6 defined Edit operations allowed on template copies (COMP-3) |
-| Completion gate | The structural element between Post-Save and Success Message enforcing PLANNING.md update |
+| Mechanical standard | A behavioral rule stated as a terse imperative ("do X, not Y") — survives inline |
+| Judgment standard | A behavioral rule requiring operational context ("apply X considering Y and Z") — needs shared reference |
+| Phase boundary | The point where a new phase begins (Pre-Flight → Gather → Generate → etc.) |
+| Template-producing skill | A skill that gathers user input and generates output from a bundled template |
+| Execution skill | A skill that runs a process (DIP execution) rather than producing template-based output |
+| Completion gate | Structural element between Post-Save and Success Message enforcing PLANNING.md update |
 
-### B. References
+### B. Bug-to-Component Mapping
 
-- [SPEC-004: Command Behavioral Fixes and Pattern Standards](../specs/004-command-fixes-and-patterns.md)
-- [Bug Report: v0.5.0 end-to-end test results](../references/new-project-bug-report.md)
-- [SESSION-4-1-26 reviews](../reviews/SESSION-4-1-26/) — 9-agent parallel review
-- [SESSION-4-3-26 reviews](../reviews/SESSION-4-3-26/) — Mode 3 collaborative design
-- [consult-team skill](../../.claude/skills/consult-team/) — structural reference for skill directory pattern
-- [CHARTER.md](../../CHARTER.md) — project governance
-
-### C. Bug-to-Component Mapping
-
-| Bug Range | Command | Component(s) | Notes |
-|-----------|---------|---------------|-------|
-| BUG-001–006 | /new-project | COMP-2 (skill structure) | Command-specific cleanup items |
-| BUG-007–009 | /new-project | COMP-3 (template handling) | REQ-F1 pattern class |
-| BUG-010–011, 013, 015 | /charter | COMP-2 (skill structure) | Command-specific gathering items |
-| BUG-012 | /charter | COMP-5 (gathering protocol) | REQ-F3 pattern class |
-| BUG-014 | /charter | COMP-6 (completion protocol) | REQ-F4 pattern class |
-| BUG-016 | /charter | COMP-4 (pre-flight protocol) | REQ-F2 pattern class |
-| BUG-017 | /spec | COMP-4 (pre-flight protocol) | REQ-F2 pattern class |
-| BUG-018 | /spec | COMP-5 (gathering protocol) | REQ-F3 pattern class |
-| BUG-019, 022 | /spec | COMP-2 (skill structure) | Command-specific |
-| BUG-020 | /spec | COMP-3 (template handling) | REQ-F1 pattern class |
-| BUG-021 | /spec | COMP-6 (completion protocol) | REQ-F4 pattern class |
-| BUG-023–027 | /architect | COMP-2 (skill structure) | All command-specific |
-| BUG-028–030 | /define | COMP-2 (skill structure) | Command-specific |
-| BUG-031 | /define | COMP-3 (template handling) | REQ-F1a pattern class |
-| BUG-032 | /define | COMP-6 (completion protocol) | REQ-F4 pattern class |
-| BUG-033, 035 | /build | COMP-2 (skill structure) | Command-specific |
-| BUG-034 | /build | COMP-5 (gathering protocol) | REQ-F3 pattern class (execution variant) |
-| BUG-036, 042 | /build | COMP-6 (completion protocol) | REQ-F5 pattern class |
-| BUG-037, 043 | /build | COMP-6 (completion protocol) | REQ-F4 pattern class |
+| Bug Range | Skill | Component(s) | Notes |
+|-----------|-------|---------------|-------|
+| BUG-010–011, 013, 015 | /charter | COMP-2 | Command-specific gathering items |
+| BUG-012 | /charter | COMP-5 | REQ-F3 pattern class |
+| BUG-014 | /charter | COMP-6 | REQ-F4 pattern class |
+| BUG-016 | /charter | COMP-4 | REQ-F2 pattern class |
+| BUG-017 | /describe | COMP-4 | REQ-F2 pattern class |
+| BUG-018 | /describe | COMP-5 | REQ-F3 pattern class |
+| BUG-019, 022 | /describe | COMP-2 | Command-specific |
+| BUG-020 | /describe | COMP-3 | REQ-F1 pattern class |
+| BUG-021 | /describe | COMP-6 | REQ-F4 pattern class |
+| BUG-023–027 | /design | COMP-2 | All command-specific |
+| BUG-028–030 | /plan | COMP-2 | Command-specific |
+| BUG-031 | /plan | COMP-3 | REQ-F1a pattern class |
+| BUG-032 | /plan | COMP-6 | REQ-F4 pattern class |
+| BUG-033, 035 | /do | COMP-2 | Command-specific |
+| BUG-034 | /do | COMP-5 | REQ-F3 pattern class (execution variant) |
+| BUG-036, 042 | /do | COMP-6 | REQ-F5 pattern class |
+| BUG-037, 043 | /do | COMP-6 | REQ-F4 pattern class |
 | ISSUE-001 | framework | COMP-3, DEC-4 | Resolved by table row adjustment operation #6 |
 
 ---
@@ -792,6 +648,8 @@ Additionally, `charter.template.md` is shared between `/charter` (fills it) and 
 | Version | Date | Author | Changes |
 |---------|------|--------|---------|
 | 0.1 | 2026-04-03 | Designer Agent | Initial draft — Mode 3 collaborative team session |
-| 0.2 | 2026-04-03 | Designer Agent | Added DEC-5 (template location), DQ-4 (skill frontmatter), DQ-5 (template standardization). Renumbered DEC-5→DEC-6. Incorporated user feedback on template bundling. |
+| 0.2 | 2026-04-03 | Designer Agent | Added DEC-5 (template location), DQ-4 (skill frontmatter), DQ-5 (template standardization) |
+| 0.3 | 2026-04-04 | Lead Agent | Comprehensive update: templates bundled in skill directories (DEC-5 reversed); /new-project dropped (5 skills); renames applied (describe, charter, design, plan, do); charter first with bootstrapping (DEC-6); DEC-7 added (skill frontmatter); bug counts updated (26+1) |
+| 0.4 | 2026-04-04 | Lead Agent | F3 gathering protocol elevated from shared file to standalone support skill (`/gather`). Two skill types introduced: workflow (user-invoked) and support (auto-invokable). `/gather` built first for immediate bootstrapping benefit. Shared `_shared/gathering-standards.md` removed from architecture. |
 
 ---
