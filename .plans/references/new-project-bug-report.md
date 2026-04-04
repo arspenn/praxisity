@@ -864,28 +864,29 @@ The deliver skill's markdown parser handles: title, headings, body paragraphs, t
 ## Bug Disposition Table (SPEC-004)
 
 **Updated:** 2026-04-01
-**Scope:** SPEC-004 covers full rewrites of 6 commands (`/spec`, `/charter`, `/architect`, `/new-project`, `/define`, `/build`). `/deliver` and `/breakdown` are excluded — they require their own specs.
+**Scope:** SPEC-004 covers full rewrites of 5 commands as skills (`/charter`, `/describe` (née /spec), `/design` (née /architect), `/plan` (née /define), `/do` (née /build)). `/deliver`, `/breakdown`, and `/new-project` are excluded — they require their own specs or are sunset candidates.
 
 ### Disposition Key
-- **Address in rewrite** — will be resolved during the command rewrite (SPEC-004 scope)
+- **Address in rewrite** — will be resolved during the skill rewrite (SPEC-004 scope)
 - **Deferred: /deliver** — deferred until `/deliver` gets its own spec
 - **Deferred: /breakdown** — deferred until `/breakdown` gets its own spec
-- **Deferred: platform** — platform limitation, not addressable by command rewrites
+- **Deferred: /new-project** — deferred; `/new-project` is a sunset candidate pending framework distribution model decision
+- **Deferred: platform** — platform limitation, not addressable by skill rewrites
 - **Already fixed** — artifact-only fix applied during v0.5.0 testing, no command change needed
 
-### /new-project Command
+### /new-project Command (DEFERRED — sunset candidate)
 
 | Bug | Summary | Disposition | Pattern Class | Rationale |
 |-----|---------|-------------|---------------|-----------|
-| BUG-001 | PLANNING.md not reset | Address in rewrite | Command-specific | Add PLANNING.md reset to Step 1 |
-| BUG-002 | docs/examples/ not cleared | Address in rewrite | Command-specific | Add to cleanup list |
-| BUG-003 | .plans/references/ not cleared | Address in rewrite | Command-specific | Add to cleanup list |
-| BUG-004 | \_\_pycache\_\_ committed | Address in rewrite | Command-specific | Add cleanup step before git add |
-| BUG-005 | Missing .gitkeep files | Address in rewrite | Command-specific | Ensure .gitkeep in all .plans/ subdirs |
-| BUG-006 | Framework files tracked in git | Address in rewrite | Command-specific | Update .gitignore generation |
-| BUG-007 | README.md not fully adapted | Address in rewrite | Template handling (REQ-F1) | Root cause: BUG-009 |
-| BUG-008 | CHARTER.md comments stripped | Address in rewrite | Template handling (REQ-F1) | Root cause: BUG-009 |
-| BUG-009 | Templates interpreted instead of copied | Address in rewrite | Template handling (REQ-F1) | Root cause for the pattern class |
+| BUG-001 | PLANNING.md not reset | Deferred: /new-project | Command-specific | Sunset candidate pending distribution model |
+| BUG-002 | docs/examples/ not cleared | Deferred: /new-project | Command-specific | Sunset candidate pending distribution model |
+| BUG-003 | .plans/references/ not cleared | Deferred: /new-project | Command-specific | Sunset candidate pending distribution model |
+| BUG-004 | \_\_pycache\_\_ committed | Deferred: /new-project | Command-specific | Sunset candidate pending distribution model |
+| BUG-005 | Missing .gitkeep files | Deferred: /new-project | Command-specific | Sunset candidate pending distribution model |
+| BUG-006 | Framework files tracked in git | Deferred: /new-project | Command-specific | Sunset candidate pending distribution model |
+| BUG-007 | README.md not fully adapted | Deferred: /new-project | Template handling (REQ-F1) | Sunset candidate; pattern class still valid via BUG-020 |
+| BUG-008 | CHARTER.md comments stripped | Deferred: /new-project | Template handling (REQ-F1) | Sunset candidate; pattern class still valid via BUG-020 |
+| BUG-009 | Templates interpreted instead of copied | Deferred: /new-project | Template handling (REQ-F1) | Original discovery of pattern class; still valid via BUG-020 (/spec) |
 
 ### /charter Command
 
@@ -971,7 +972,8 @@ The deliver skill's markdown parser handles: title, headings, body paragraphs, t
 
 | Disposition | Count |
 |-------------|-------|
-| Address in rewrite (SPEC-004 scope) | 35 bugs + 1 issue |
+| Address in rewrite (SPEC-004 scope) | 26 bugs + 1 issue |
+| Deferred: /new-project (sunset candidate) | 9 bugs |
 | Deferred: /deliver | 5 bugs + 2 issues |
 | Deferred: /breakdown | 0 (no bugs logged) |
 | Deferred: platform | 2 bugs |

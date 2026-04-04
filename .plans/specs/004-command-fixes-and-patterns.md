@@ -50,7 +50,7 @@ Extract the recurring behavioral patterns from the full bug report into codified
 
 | ID | Requirement | Priority | Rationale |
 |----|-------------|----------|-----------|
-| REQ-F1 | All commands that use templates shall copy the template file via `cp`, then use Edit for placeholder substitution — never Write from scratch | MUST | Root cause of BUG-009, BUG-007, BUG-008, BUG-020 |
+| REQ-F1 | All commands that use templates shall copy the template file via `cp`, then use Edit for placeholder substitution — never Write from scratch | MUST | Root cause of BUG-020 (/spec), BUG-009 (original discovery in /new-project, now deferred) |
 | REQ-F1a | When a template section does not apply, commands shall mark it "N/A — [reason]" rather than removing it | MUST | BUG-031 — sections were silently removed instead of marked; distinct from the copy-then-edit root cause |
 | REQ-F2 | All commands shall execute pre-flight steps sequentially in specified order; PLANNING.md update shall be step 2 before any other checks. Each step must complete before the next begins — do not batch or parallelize pre-flight steps | MUST | BUG-016, BUG-017 — numbered lists alone did not prevent parallelization |
 | REQ-F3 | All commands that gather user input shall prompt one section at a time by default, waiting for the user's response before presenting the next section. When the agent has sufficient context to draft a section, it may present a draft for approval rather than prompting from scratch, but must still pause between sections for user confirmation. Do not draft content for sections the user has not yet been prompted for | MUST | BUG-012, BUG-018, BUG-034 — affects /spec, /charter, /architect, /define, /build |
@@ -163,14 +163,14 @@ What does this spec enable?
 | Dependency | Type | Status | Notes |
 |------------|------|--------|-------|
 | `.plans/references/new-project-bug-report.md` | Resource | Available | Primary evidence base — all 46 bugs and 3 framework issues |
-| 6 command files in `.claude/commands/` (`/spec`, `/charter`, `/architect`, `/new-project`, `/define`, `/build`) | Resource | Available | Files to be rewritten (`/deliver` and `/breakdown` excluded) |
+| 5 command files in `.claude/commands/` (`/charter`, `/spec`, `/architect`, `/define`, `/build`) | Resource | Available | Prototypes for skill rewrites (`/deliver`, `/breakdown`, `/new-project` excluded) |
 | `.praxisity/templates/` | Resource | Available | Template files referenced by REQ-F1 |
 
 ### 7.2 Enables
 
 | Dependent | Relationship |
 |-----------|--------------|
-| Plugin/skill format migration (long-term) | Stable, well-specified commands are a prerequisite for migration |
+| `/new-project` rewrite or sunset (future) | Behavioral standards apply if /new-project is retained; distribution model decision comes first |
 | `/breakdown` rewrite (future) | Stable behavioral standards apply when `/breakdown` gets its own spec |
 | `/deliver` rewrite (future) | Stable commands are a prerequisite for the full delivery pipeline |
 
@@ -191,6 +191,7 @@ Include things that:
 
 The following are explicitly NOT part of this specification:
 
+- `/new-project` command — sunset candidate pending framework distribution model decision; all 9 bugs (BUG-001 through BUG-009) deferred
 - `/deliver` command — fundamentally different process (Python-based PDF generation), will be addressed separately
 - `/breakdown` command — tightly coupled to task management service integration (currently Todoist), which requires its own spec once the service question (Q-1) is resolved
 - All `/deliver`-specific bugs (BUG-038, BUG-039, BUG-045, BUG-046) — deferred with `/deliver`
@@ -218,8 +219,8 @@ or explicitly deferred with rationale.
 |----|----------|--------|------------|
 | Q-1 | Which service replaces Todoist in `/breakdown`? | Deferred | `/breakdown` is out of scope for this spec; to be decided in its own spec |
 | Q-2 | Should deferred bugs be logged as tasks in the replacement task manager or tracked in the bug report itself? | Resolved | Bug dispositions tracked in the bug report's disposition table (REQ-N2). Whether deferred bugs also become tasks elsewhere is a future concern |
-| Q-3 | Should commands remain as commands or migrate to skills? | Deferred | To be researched and decided during `/architect` phase. Multiple delivery mechanisms under consideration (reference doc, context block, skill extraction). Need to verify claims about command/skill/MCP lifecycle before committing |
-| Q-4 | What is the best mechanism for cross-command behavioral standards? | Deferred | Options: shared template, context block (like consult-team), extracted skill, or inline duplication. Design decision for `/architect` |
+| Q-3 | Should commands remain as commands or migrate to skills? | Resolved | Migrate to skills. Platform evidence: commands not listed as extension point, `/init` creates skills, skills support allowed-tools/disable-model-invocation/named args. See DESIGN-005 DEC-1. |
+| Q-4 | What is the best mechanism for cross-command behavioral standards? | Resolved | Minimal hybrid: inline mechanical standards (F1, F2, F5) at phase boundaries + shared file for F3 gathering protocol (judgment standard, inline already failed per BUG-018) + per-skill F4 success messages. See DESIGN-005 DEC-2. |
 | Q-5 | Do agent prompts need revision before Mode 3 command rewrites? | Open | Two concerns: (1) Agents flagged prompt gaps in SPEC-004 self-evaluations (critic: draft vs. wrong distinction; designer: progressive loading lens unhelpful for flat files; prompt-engineer: needs prompt-infrastructure evaluation guidance). (2) Agent prompts reference the current framework vocabulary (commands, workflow names). After the command-vs-skill decision (Q-3) and any renames, agent descriptions must be updated to match the new terminology. Address during `/architect` |
 
 ---
@@ -243,5 +244,6 @@ External documents, research, or resources that inform this spec.
 |---------|------|--------|---------|
 | 0.1 | 2026-03-22 | Andrew Robert Spenn | Initial draft |
 | 0.2 | 2026-04-01 | Andrew Robert Spenn | Post-review revision: reframed from targeted fixes to full command rewrites; excluded `/deliver` and `/breakdown` from scope; split REQ-F1/BUG-031 into REQ-F1a; added BUG-012 to REQ-F3; strengthened REQ-F2 and REQ-F3 language for AI consumption; added flexibility clause to REQ-F3; removed REQ-F6 (moot with `/breakdown` excluded) and REQ-F8; added AC-1a, AC-7; deferred command-vs-skill and standards delivery mechanism to `/architect`; added Q-3, Q-4; resolved Q-2 |
+| 0.3 | 2026-04-03 | Andrew Robert Spenn | Design phase updates: dropped `/new-project` from scope (sunset candidate, 9 bugs deferred); scope now 5 skills; adjusted BUG-009 citation in REQ-F1 to lead with BUG-020; Q-3 resolved (skills format); Q-4 resolved (inline mechanical + shared F3); renames confirmed (describe, charter, design, plan, do) |
 
 ---
