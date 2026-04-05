@@ -528,11 +528,11 @@ Self-contained skill — no cross-references to other files. See DESIGN-006 for 
 
 | Skill | `allowed-tools` | `disable-model-invocation` | `argument-hint` |
 |-------|-----------------|---------------------------|-----------------|
-| charter | Read, Write, Edit, Glob, Grep | no | — |
-| describe | Read, Write, Edit, Glob, Grep | no | — |
-| design | Read, Write, Edit, Glob, Grep | no | `<spec-number>` |
-| plan | Read, Write, Edit, Glob, Grep | no | `<design-component or task>` |
-| do | Read, Write, Edit, Glob, Grep, Bash | no | `<dip-path>` |
+| charter | Read, Write, Edit, Glob, Grep | true | — |
+| describe | Read, Write, Edit, Glob, Grep | true | — |
+| design | Read, Write, Edit, Glob, Grep | true | `<spec-number>` |
+| plan | Read, Write, Edit, Glob, Grep | true | `<design-component or task>` |
+| do | Read, Write, Edit, Glob, Grep, Bash | true | `<dip-path>` |
 
 Note: `allowed-tools` and other advanced frontmatter fields need empirical testing during the `/charter` build to verify platform behavior.
 
