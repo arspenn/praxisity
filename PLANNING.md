@@ -3,7 +3,7 @@
 ## Active Context
 
 **Last Command:** /charter (updating project charter)
-**Status:** In progress — first live test of the /charter skill
+**Status:** Complete — charter v2 saved, committed, CLAUDE.md synced
 **Date:** 2026-04-04
 **Version:** 0.6.0
 
