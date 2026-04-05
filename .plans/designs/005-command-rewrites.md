@@ -578,8 +578,8 @@ Note: `allowed-tools` and other advanced frontmatter fields need empirical testi
 
 1. Build `/gather` support skill (already created as prototype — iterate based on review)
 2. For each workflow skill in order: create directory, bundle template from `.praxisity/templates/`, write SKILL.md
-3. Retain `.claude/commands/` originals as reference during transition
-4. After all 5 workflow skills validated end-to-end, remove old command files
+3. After each skill is validated: rename old command to `_prototype-[name].md`, delete the `.praxisity/templates/` copy (the bundled copy is now authoritative)
+4. After all 5 workflow skills validated end-to-end, remove `_prototype-*` command files and clean up `.praxisity/templates/`
 
 ### 7.3 Risk Areas
 
