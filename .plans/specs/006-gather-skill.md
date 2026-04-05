@@ -19,13 +19,13 @@
 |----------|--------------|
 | [SPEC-004](004-command-fixes-and-patterns.md) | Parent — this skill implements REQ-F3 |
 | [DESIGN-005](../designs/005-command-rewrites.md) | Design context — COMP-5 (Gathering Protocol) |
-| [Bug Report](../references/new-project-bug-report.md) | Evidence base — BUG-012, BUG-018, BUG-034 |
+| [Bug Report](../references/new-project-bug-report.md) | Evidence base — BUG-012, BUG-018 (BUG-034 is /do execution batching, not user gathering — out of scope) |
 
 ---
 
 ## 1. Problem Statement
 
-The Praxisity framework requires structured input gathering across multiple sections in workflow skills (/charter, /describe, /design, /plan) and in general development sessions. Testing at v0.5.0 revealed that agents consistently batch gathering — presenting all sections at once or drafting entire documents without per-section user confirmation (BUG-012, BUG-018, BUG-034). Inline constraints ("one section at a time") were already present in prototype commands and were defeated. The gathering protocol needs to be codified as a reusable, auto-invokable support skill that provides operational context beyond what a terse inline rule can deliver.
+The Praxisity framework requires structured input gathering across multiple sections in workflow skills (/charter, /describe, /design, /plan) and in general development sessions. Testing at v0.5.0 revealed that agents consistently batch gathering — presenting all sections at once or drafting entire documents without per-section user confirmation (BUG-012, BUG-018). Inline constraints ("one section at a time") were already present in prototype commands and were defeated. The gathering protocol needs to be codified as a reusable, auto-invokable support skill that provides operational context beyond what a terse inline rule can deliver.
 
 ---
 
@@ -54,10 +54,10 @@ Codify the one-at-a-time gathering protocol as a standalone support skill that a
 |----|-------------|----------|-----------|
 | REQ-G1 | The skill shall prompt one section at a time, waiting for the user's explicit response before presenting the next section | MUST | Core protocol — BUG-018 root failure was batching all sections |
 | REQ-G2 | When the agent has sufficient context, it may present a draft for approval rather than prompting from scratch, but must still pause between sections | MUST | Balances UX for experienced users with the one-at-a-time constraint |
-| REQ-G3 | The skill shall not draft content for sections the user has not yet been prompted for | MUST | Prevents the "draft everything then present for batch approval" pattern (BUG-018) |
+| REQ-G3 | The skill shall not draft content for sections the user has not yet been prompted for, unless the user explicitly requests it (see REQ-G5) | MUST | Prevents the "draft everything then present for batch approval" pattern (BUG-018). The explicit user request exception (REQ-G5) is the only override. |
 | REQ-G4 | When a section has sub-categories, each sub-category shall be prompted individually with the option to skip | MUST | BUG-012 — constraints were combined into a single prompt instead of per-category |
 | REQ-G5 | When the user requests "fill in the rest" or similar, the skill may draft remaining sections but shall still present each individually for confirmation | SHOULD | Flexibility for experienced users without abandoning the protocol |
-| REQ-G6 | The skill shall auto-invoke via `when_to_use` during structured gathering without requiring explicit cross-references from workflow skills | MUST | Eliminates the cross-reference reliability problem; gathering protocol loads automatically |
+| REQ-G6 | The skill shall auto-invoke via platform `description`-based context matching during structured gathering without requiring explicit cross-references from workflow skills | MUST | Eliminates the cross-reference reliability problem; gathering protocol loads automatically |
 | REQ-G7 | The skill shall be usable in any session context, not only during workflow skill execution | SHOULD | Bootstrapping benefit — every development session gets the gathering protocol |
 | REQ-G8 | On every invocation, the skill shall first check agent memory for gathering preferences. If preferences exist, load and apply them silently. If not, run calibration as a natural part of the gathering flow before proceeding | MUST | Memory is the settings store. First invocation calibrates; subsequent invocations load. This fires naturally during /charter (the framework's true entry point) |
 | REQ-G9 | Calibration and preference storage shall use the Claude Code agent SDK main project memory system, writing to MEMORY.md per the official documentation | MUST | Uses the platform's memory system, not a custom implementation. Project memory is loaded into every session — any agent, subagent, or skill invocation sees preferences automatically |
@@ -74,7 +74,8 @@ Codify the one-at-a-time gathering protocol as a standalone support skill that a
 | AC-G4 | Given the first invocation in a project (no gathering preferences in memory), then the skill runs calibration questions as part of the natural gathering flow and stores results to main project memory | REQ-G8, REQ-G9 |
 | AC-G5 | Given a subsequent invocation (preferences exist in memory), then the skill loads preferences silently and applies them without re-prompting | REQ-G8, REQ-G9 |
 | AC-G6 | Given the user says "fill in the rest," then the agent drafts remaining sections but presents each individually for confirmation | REQ-G5 |
-| AC-G7 | Given the skill is invoked during a workflow skill execution (e.g., /charter), then it auto-invokes via platform `when_to_use` matching without explicit cross-references | REQ-G6 |
+| AC-G7 | Given the skill is invoked during a workflow skill execution (e.g., /charter), then it auto-invokes via platform `description`-based context matching without explicit cross-references | REQ-G6 |
+| AC-G8 | Given the skill is invoked outside of a workflow skill (e.g., during a general development session), then the gathering protocol still applies when structured multi-section input is needed | REQ-G7 |
 
 ---
 
@@ -95,7 +96,7 @@ Codify the one-at-a-time gathering protocol as a standalone support skill that a
 | Dependency | Type | Status | Notes |
 |------------|------|--------|-------|
 | Claude Code agent SDK memory system | Platform | Available | Main project memory, MEMORY.md |
-| `when_to_use` skill frontmatter auto-invocation | Platform | Available | Needs empirical testing (QG-2) |
+| Skill `description`-based auto-invocation | Platform | Available | Platform matches conversation context against skill descriptions; needs empirical testing (QG-2) |
 | MEMORY.md project memory (official format) | Platform | Available | Standard frontmatter + markdown |
 
 ### 6.2 Enables
@@ -124,8 +125,8 @@ Codify the one-at-a-time gathering protocol as a standalone support skill that a
 
 | ID | Question | Status | Resolution |
 |----|----------|--------|------------|
-| QG-1 | What specific calibration questions should be asked on first run? | Open | Candidates: strictness level, user experience, verbosity, show examples. Need to test during /charter to find the right set — too many questions defeats the "natural flow" constraint |
-| QG-2 | How does `when_to_use` auto-invocation interact with a workflow skill already in progress? | Open | Need empirical testing — does the platform layer the gather skill's instructions on top of the active skill, or does it require explicit invocation? Fallback: workflow skills reference /gather explicitly |
+| QG-1 | What specific calibration questions should be asked on first run? | Resolved | Two fixed binary questions: (1) gathering-style: guided vs draft-first, (2) prompt-detail: detailed vs brief. See DESIGN-006 DEC-G4. |
+| QG-2 | How does `description`-based auto-invocation interact with a workflow skill already in progress? | Open | Need empirical testing — does the platform layer the gather skill's instructions on top of the active skill, or does it require explicit invocation? Fallback: workflow skills reference /gather explicitly |
 | QG-3 | Should preferences be stored in the main agent's memory or in a gather-specific agent memory path? | Resolved | Main project memory (`~/.claude/projects/[path]/memory/`), written to MEMORY.md per the official Claude Code memory tool documentation. Project memory is loaded into every session — any agent, subagent, or skill invocation sees preferences automatically. No separate skill-specific memory paths. |
 | QG-4 | Can other skills read gathering preferences to adapt their own behavior? | Open | E.g., /charter might adjust how many examples it shows based on the user experience level stored by /gather. This is the "shared settings via memory" pattern — validate during /charter build |
 
@@ -135,7 +136,7 @@ Codify the one-at-a-time gathering protocol as a standalone support skill that a
 
 - [SPEC-004: Command Behavioral Fixes and Pattern Standards](004-command-fixes-and-patterns.md)
 - [DESIGN-005: Command Rewrites](../designs/005-command-rewrites.md) — COMP-5
-- [Bug Report: v0.5.0 end-to-end test results](../references/new-project-bug-report.md) — BUG-012, BUG-018, BUG-034
+- [Bug Report: v0.5.0 end-to-end test results](../references/new-project-bug-report.md) — BUG-012, BUG-018
 - [Claude Code Memory Tool Documentation](https://platform.claude.com/docs/en/agents-and-tools/tool-use/memory-tool)
 
 ---
@@ -145,6 +146,7 @@ Codify the one-at-a-time gathering protocol as a standalone support skill that a
 | Version | Date | Author | Changes |
 |---------|------|--------|---------|
 | 0.1 | 2026-04-04 | Andrew Robert Spenn | Initial draft — gathered using /gather skill prototype (bootstrapping) |
+| 0.2 | 2026-04-04 | Andrew Robert Spenn | Post-review fixes: removed BUG-034 (out of scope — /do execution, not user gathering); added exception clause to REQ-G3 for REQ-G5 override; added AC-G8 for REQ-G7 |
 
 ---
 
