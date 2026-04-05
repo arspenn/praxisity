@@ -6,7 +6,7 @@ This file provides guidance to Claude Code when working with code in this reposi
 
 **Name:** Praxisity Framework
 **Type:** Development Framework / Tooling
-**Mission:** Build a design-first workflow framework enabling consistent, structured planning and execution for multi-disciplinary projects through AI-assisted tooling.
+**Mission:** Build a design-first workflow framework enabling consistent, structured planning and execution for multi-disciplinary projects through AI-assisted tooling — where the framework builds the user through use, and the user builds the framework through experience.
 
 ## Framework Development Context
 

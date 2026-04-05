@@ -2,8 +2,8 @@
 
 ## Active Context
 
-**Last Command:** SPEC-006 /gather skill — spec, design, prototype, review, iteration
-**Status:** /gather skill complete (prototype iterated through review). Ready for /charter build.
+**Last Command:** /charter (updating project charter)
+**Status:** In progress — first live test of the /charter skill
 **Date:** 2026-04-04
 **Version:** 0.6.0
 
