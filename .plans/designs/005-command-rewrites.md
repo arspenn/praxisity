@@ -110,7 +110,7 @@ Behavioral standards are delivered in two ways: 4 mechanical standards (F1, F2, 
 
 **Pattern:** Self-contained skill-per-command with bundled templates and shared behavioral constraints.
 
-**Rationale:** Each workflow command becomes a self-contained skill directory bundling its SKILL.md and its output template. Skills are the platform's documented extension format — `/init` creates skills, not commands. Bundling templates eliminates cross-repo indirection and supports distribution (individual skills can be installed independently). Behavioral standards are delivered at phase boundaries with one shared file for the gathering protocol.
+**Rationale:** Each workflow command becomes a self-contained skill directory bundling its SKILL.md and its output template. Skills are the platform's documented extension format — `/init` creates skills, not commands. Bundling templates eliminates cross-repo indirection and supports distribution (individual skills can be installed independently). Behavioral standards are delivered at phase boundaries, with the gathering protocol (F3) implemented as an auto-invokable support skill (`/gather`).
 
 **Trade-offs:**
 - Pros: Fully self-contained, distributable, no distant path references, platform-aligned
@@ -151,9 +151,9 @@ Standards apply selectively:
 **Satisfies:** REQ-F1, REQ-F2, REQ-F3, REQ-F4, REQ-F5 (delivery mechanism for all)
 
 **Responsibilities:**
-- Classify standards as mechanical (inline) or judgment (shared file)
+- Classify standards as mechanical (inline) or judgment (support skill)
 - Embed mechanical standards at phase boundaries in each SKILL.md
-- Provide shared file for judgment standards with imperative loading instructions
+- Provide support skill (`/gather`) for the judgment standard (F3 gathering protocol)
 - Provide human-readable authoring reference for UC-2 (new skill creation)
 
 **Dependencies:**
@@ -327,7 +327,7 @@ description: [one-line description]
 
 **Satisfies:** REQ-F3
 
-**Implementation:** `.claude/skills/gather/SKILL.md` — a standalone support skill with `when_to_use` triggering.
+**Implementation:** `.claude/skills/gather/SKILL.md` — a standalone support skill. Auto-invocation via platform `description`-based context matching.
 
 **Why a skill, not inline or a shared file:**
 - Inline "one section at a time" was already present in prototype commands and was defeated (BUG-018). A terse inline rule is the pattern that already failed.
@@ -386,10 +386,10 @@ Update PLANNING.md with completion status. Do not proceed until this is done.
 
 **Connects:** Workflow skills with gathering phases (COMP-2) ↔ `/gather` skill (COMP-5)
 
-**Type:** Platform auto-invocation via `when_to_use` context matching
+**Type:** Platform auto-invocation via `description`-based context matching
 
 **Contract:**
-- **Trigger:** Agent is gathering structured input from the user across multiple sections — the `/gather` skill's `when_to_use` matches this context
+- **Trigger:** Agent is gathering structured input from the user across multiple sections — the `/gather` skill's `description` matches this context
 - **Mechanism:** Platform loads the gathering skill's instructions automatically, not via explicit cross-reference
 - **Failure mode:** If auto-invocation doesn't fire, the agent falls back to its default gathering behavior (which may batch). Bounded downside — same as current state. Workflow skills can also reference `/gather` explicitly as a fallback.
 - **Applicability:** Workflow skills with user-input gathering (charter, describe, design, plan). Not `/do`.
@@ -435,15 +435,20 @@ Completion Gate:   Write — set completion status, artifacts, next steps
 | `SKILL.md` | Yes | The complete behavioral specification |
 | `templates/` | Template-producing skills only | Bundled output template(s) |
 
-### DATA-2: Gathering Standards File
+### DATA-2: Gather Support Skill (SKILL.md)
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| Rule | section | Yes | Core one-at-a-time rule |
-| When drafting is permitted | section | Yes | Exception conditions and boundaries |
-| Operational definition | section | Yes | Step-by-step meaning of "one at a time" |
+| YAML frontmatter | metadata | Yes | `name`, `description` (platform uses description for auto-invocation context matching) |
+| Preferences | section | Yes | Memory check + first-run calibration (REQ-G8/G9) |
+| The Rule | section | Yes | Core one-at-a-time rule |
+| How to Gather Each Section | section | Yes | Step-by-step gathering procedure |
+| When Drafting is Permitted | section | Yes | Observable drafting gate |
+| Before You Send | section | Yes | Pre-send verification checklist (replaces prohibitions) |
+| Handling Sub-Sections | section | Yes | Per-sub-category prompting |
+| Handling Skip Requests | section | Yes | Skip and "fill in the rest" behavior with explicit example |
 
-Must be self-contained, under 20 lines, no cross-references.
+Self-contained skill — no cross-references to other files. See DESIGN-006 for full component breakdown.
 
 ### DATA-3: Skill Standards Template (Human Authoring Guide)
 
@@ -533,6 +538,28 @@ Note: `allowed-tools` and other advanced frontmatter fields need empirical testi
 
 ---
 
+### DEC-8: Memory-as-Settings Pattern
+
+**Decision:** Skills that need per-project configuration use the Claude Code agent SDK main project memory system as their settings store, following the official memory tool documentation.
+
+**Pattern:**
+1. On every invocation, check project memory for relevant preferences
+2. If found → load and apply silently
+3. If not found → first invocation; run calibration as a natural part of the workflow flow, store results to project memory via MEMORY.md
+4. Preferences persist across sessions, subagent calls, and skill invocations
+
+**Rationale:** Solves the "settings and config files for prompt-based systems" problem without custom infrastructure. The agent memory system is platform-provided, always loaded into sessions, and follows a documented format. First identified during SPEC-006 (`/gather` skill calibration) but applicable to any skill needing per-project configuration.
+
+**First consumer:** `/gather` skill (REQ-G8, REQ-G9) — calibrates gathering strictness and user experience level on first use, loads preferences on subsequent runs.
+
+**Consequences:**
+- No config files, settings panels, or custom persistence backends
+- Preferences are transparent (stored as readable markdown in project memory)
+- Other skills can read gathering preferences to adapt their own behavior (e.g., `/charter` adjusting example verbosity based on user experience level)
+- Pattern should be documented in the skill-standards development template for UC-2
+
+---
+
 ## 7. Implementation Considerations
 
 ### 7.1 Implementation Order
@@ -549,10 +576,10 @@ Note: `allowed-tools` and other advanced frontmatter fields need empirical testi
 
 ### 7.2 Migration Steps
 
-1. Create `.claude/skills/_shared/` with gathering standards and authoring reference
-2. For each skill in order: create directory, copy template from `.praxisity/templates/`, write SKILL.md
+1. Build `/gather` support skill (already created as prototype — iterate based on review)
+2. For each workflow skill in order: create directory, bundle template from `.praxisity/templates/`, write SKILL.md
 3. Retain `.claude/commands/` originals as reference during transition
-4. After all 5 skills validated end-to-end, remove old command files
+4. After all 5 workflow skills validated end-to-end, remove old command files
 
 ### 7.3 Risk Areas
 
@@ -651,5 +678,6 @@ Note: `allowed-tools` and other advanced frontmatter fields need empirical testi
 | 0.2 | 2026-04-03 | Designer Agent | Added DEC-5 (template location), DQ-4 (skill frontmatter), DQ-5 (template standardization) |
 | 0.3 | 2026-04-04 | Lead Agent | Comprehensive update: templates bundled in skill directories (DEC-5 reversed); /new-project dropped (5 skills); renames applied (describe, charter, design, plan, do); charter first with bootstrapping (DEC-6); DEC-7 added (skill frontmatter); bug counts updated (26+1) |
 | 0.4 | 2026-04-04 | Lead Agent | F3 gathering protocol elevated from shared file to standalone support skill (`/gather`). Two skill types introduced: workflow (user-invoked) and support (auto-invokable). `/gather` built first for immediate bootstrapping benefit. Shared `_shared/gathering-standards.md` removed from architecture. |
+| 0.5 | 2026-04-04 | Lead Agent | Post-review propagation: all stale "shared file" references updated to "support skill"; DATA-2 updated from file schema to SKILL.md schema; DEC-8 added (memory-as-settings pattern); migration steps updated; BUG-034 removed from gather scope |
 
 ---
