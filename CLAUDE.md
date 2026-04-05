@@ -10,38 +10,26 @@ This file provides guidance to Claude Code when working with code in this reposi
 
 ## Framework Development Context
 
-This repository IS the Praxisity framework itself. We are building the tool, not using it (yet). Commands and templates created here will be used by future projects. Quality and thoughtfulness in design are paramount.
+This repository IS the Praxisity framework itself. We are building the tool, not using it. Skills and templates created here will be used by future projects. Quality and thoughtfulness in design are paramount.
 
-Once core commands exist, we'll use Praxisity to build Praxisity (eating our own dog food). The `.plans/` directory contains our own specifications and designs.
+We use Praxisity to build Praxisity. The `.plans/` directory contains our own specifications and designs.
 
 ## Current Focus
 
 **For current tasks and session state, see `PLANNING.md`.**
 
-PLANNING.md contains:
-- Active command/task context
-- Gathered state during command execution
-- Completed work this session
-- Next steps
-
-This separation keeps CLAUDE.md stable while PLANNING.md handles dynamic session state.
-
-Commands read PLANNING.md on start, update it during execution, record completion and next steps. It is archived to `.plans/archive/PLANNING-[timestamp].md` at task end or new session.
+This separation keeps CLAUDE.md stable while PLANNING.md handles dynamic session state. Skills read PLANNING.md on start, update it during execution, record completion and next steps.
 
 ## Design-First Workflow
 
-Every Praxisity project follows: Specify -> Design -> Breakdown -> Implement
+Every Praxisity project follows: Describe -> Design -> Plan -> Do
 
-This framework enforces that workflow through command dependencies:
-- `/spec` creates specifications
-- `/architect` requires specs to exist
-- `/breakdown` requires designs to exist
-- `/define` requires both specs and designs
-- `/build` requires DIPs to exist
+Each phase has a corresponding skill. Refer to the available skills for specifics — they are loaded into context automatically. See CHARTER.md for the authoritative scope and principles.
 
-## Important Files
+## Key References
 
-**praxisity-foundation-plan.md** - Source of truth for MVP scope. Reference when making decisions. Will be removed by `/new-project` for end users.
+**CHARTER.md** — Project constitution. Principles, scope, and constraints that guide all decisions.
+**PLANNING.md** — Dynamic session state. Current task, progress, next steps.
 
 ## Bootstrapping Principle
 

@@ -58,12 +58,12 @@ Build a design-first workflow framework enabling consistent, structured planning
 **Primary Success Metrics:**
 - Successfully self-bootstrap: use Praxisity skills to build Praxisity skills
 - End-to-end workflow validated: /charter → /describe → /design → /plan → /do
-- Agent consultation system produces measurably better design decisions than solo work
+- Agent consultation system consistently catches issues not identified in solo work, as evidenced by review reports
 
 **Milestones:**
 - All 5 workflow skills rewritten and validated (SPEC-004)
 - /gather support skill tested empirically across multiple sessions
-- Charter v2 complete (this session)
+- Charter v2 complete
 - Framework used to specify and build its own remaining skills (bootstrapping proven)
 
 **Quality Indicators:**
@@ -111,6 +111,21 @@ Build a design-first workflow framework enabling consistent, structured planning
 - Platform capabilities verified empirically (reference_skill_platform_capabilities.md)
 - Consistency reviewer catches cross-document drift
 - Bootstrapping: the framework tests itself by building itself
+
+---
+
+## Glossary
+
+| Term | Definition |
+|------|------------|
+| **Skill** | A directory-based prompt specification that an AI agent loads as instructions. Workflow skills are user-invoked and drive a specific phase of work. Support skills are auto-invoked by the agent when the context matches their purpose. |
+| **Agent** | A specialist AI persona with a defined review perspective (e.g., critic, designer, stakeholder). Agents provide multi-perspective input on work products. |
+| **Dispatch Modes** | How agents are consulted. Mode 1: single expert opinion. Mode 2: parallel independent reviews on a snapshot. Mode 3: persistent collaborative team that sees changes over time. |
+| **DIP** | Detailed Implementation Prompt — a self-contained prompt with full context for executing one unit of work from a design. |
+| **Spec** | A specification document defining WHAT to build — the problem, requirements, and acceptance criteria. |
+| **Lethal Trifecta** | A security model identifying three conditions that together create high risk for AI agents: (1) private data access, (2) untrusted content input, (3) exfiltration vectors (ability to send data outward). All three must be present for serious risk. Mitigate by limiting each pillar. |
+| **Memory-as-settings** | Pattern where skills store per-project preferences in the platform's memory system. First invocation calibrates; subsequent invocations load silently. No config files needed. |
+| **Behavioral standards** | Codified rules for how skills must behave. Mechanical standards (clear binary rules) are embedded inline in each skill. Judgment standards (rules requiring operational context) are implemented as support skills. |
 
 ---
 

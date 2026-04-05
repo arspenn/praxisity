@@ -25,8 +25,9 @@ Tips:
 
 ## Principles
 
-<!-- 3-5 core principles that inform ALL decisions in this project.
+<!-- Core principles that inform ALL decisions in this project.
      These should be specific to your project, not generic platitudes.
+     The number should match what the project needs — there is no fixed count.
      Ask: "If we face a tough choice, what values guide us?"
 
      Examples:
@@ -241,6 +242,26 @@ Tips:
 
 **Key Context:**
 [Critical information that guides work in this domain]
+
+---
+
+## Glossary
+
+<!-- This charter follows the dual-use design principle: it is both human
+     governance and AI prompt context. Any term used in this charter that
+     would be unclear to a reader without project context must be defined here.
+
+     Include:
+     - Project-specific terminology (frameworks, tools, patterns)
+     - Acronyms and abbreviations
+     - Concepts referenced in principles or scope that have specific meaning
+
+     If the charter uses only common terms, this section can be marked N/A.
+-->
+
+| Term | Definition |
+|------|------------|
+| [Term] | [Definition] |
 
 ---
 
