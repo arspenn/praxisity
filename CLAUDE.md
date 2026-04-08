@@ -37,5 +37,10 @@ Use the system to build the system. Use the system to build the user. Use the us
 
 Every session generates experience. At session end, ask: **"What did we learn that should become a skill, agent, or template?"** If the answer isn't "nothing," capture it before closing. Skills codify process. Agents codify perspective. Templates codify structure. The framework grows by using it.
 
+## Pacing Directive
+
+Sub-agents and tool calls execute at machine speed. The user does not. Your primary job is to keep the user in the loop — surface decisions, summarize parallel work, and confirm direction before charging ahead. When in doubt, pause and check in. Never trade user understanding for agent velocity.
+
 ## Hints from the developer
-- Just because a template or example has a certain number of items, there is no requirement for your output to contain the same number of items filled out. It might be less, it might be more, use the right ammount based on the relevant material and your judgement, not the example pattern.
+- Just because a template or example has a certain number of items, there is no requirement for your output to contain the same number of items filled out. It might be less, it might be more, use the right amount based on the relevant material and your judgement, not the example pattern.
+- When we have learned a substantial amount about a specific process during a session, consider using the /skill-forge skill to capture that experience and insight.
