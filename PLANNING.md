@@ -2,59 +2,78 @@
 
 ## Active Context
 
-**Last Command:** /charter (updating project charter)
-**Status:** Complete — charter v2 saved, committed, CLAUDE.md synced
+**Last Command:** SPEC-007 /skill-forge — spec + prototype + plugin review
+**Status:** Support skills complete (gather, charter, skill-forge). Auditing existing skills against new standards.
 **Date:** 2026-04-04
 **Version:** 0.6.0
 
 ## Completed This Session
 
-1. Mechanical updates to SPEC-004 and bug report (/new-project dropped, counts updated, BUG-009 citation adjusted)
-2. DESIGN-005 updated to v0.5 (templates bundled, /new-project dropped, renames, DEC-8 memory-as-settings, stale references fixed)
-3. SPEC-006 written for /gather skill — gathered using the gather skill prototype itself (bootstrapping)
-4. /gather SKILL.md prototype built
-5. 5-agent Mode 2 review of SPEC-006 + prototype (critic, PE, designer, consistency-reviewer, spot)
-6. SKILL.md iterated based on review:
-   - Positive framing (Before You Send) replaced negative prohibitions (elephants fix)
-   - Observable drafting gate replaced self-assessed "sufficient context"
-   - Explicit "fill in the rest" example added
-   - Memory-as-settings implemented (REQ-G8/G9) with two fixed calibration questions
-   - Removed unsupported `when_to_use` frontmatter field
-7. DESIGN-006 written for /gather skill (5 design decisions, 3 components, 2 interfaces)
-8. Consistency pass: 8 stale `when_to_use` references fixed across SPEC-006 and DESIGN-005
-9. Discovered: `when_to_use` is not a supported skill frontmatter field — auto-invocation uses `description` field for context matching
+1. Mechanical updates to SPEC-004 and bug report (/new-project dropped, counts updated)
+2. DESIGN-005 updated to v0.5 (templates bundled, renames, DEC-8 memory-as-settings)
+3. SPEC-006 /gather skill — spec, prototype, 5-agent review, iterated
+4. DESIGN-006 /gather skill design
+5. /charter skill built — first workflow skill, pattern-setter
+6. /charter run live — updated project charter v2 (7 principles, glossary, security)
+7. Charter skill meta-review — 6 patterns for all future skills
+8. CLAUDE.md overhauled — removed stale command names, minimized, points to charter
+9. SPEC-007 /skill-forge — spec + prototype with Praxisity patterns reference
+10. Reviewed skill-creator plugin — extracted 3 concepts (progressive loading, trigger mechanism, explain-the-why)
 
-## Key Decisions This Session
+## Skills Status
 
-1. **Templates bundled in skill directories** — end-user templates with skills, development templates in `.praxisity/`
-2. **Charter first** as pattern-setter (not /describe) — simplest, immediate utility, bootstrapping
-3. **/new-project dropped** from SPEC-004 scope (sunset candidate) — 5 skills: describe, charter, design, plan, do
-4. **/gather as support skill** — auto-invokable, not a shared file. Eliminates cross-references.
-5. **Memory-as-settings pattern** — skills check project memory for preferences on every invocation, calibrate on first run. Framework-wide pattern.
-6. **Positive framing over prohibitions** — "Before You Send" verification checks instead of "What You Must Not Do" lists
-7. **Observable gates over self-assessment** — drafting requires pointing to specific prior input, not judgment calls
-8. **Skill frontmatter** — `when_to_use` not supported; `description` drives auto-invocation. `disable-model-invocation` and `user-invocable` both default correctly for support skills.
+### Support Skills (auto-invokable)
+| Skill | Status | Spec | Notes |
+|-------|--------|------|-------|
+| /gather | Prototype iterated | SPEC-006 | Memory-as-settings not yet tested empirically |
+| /skill-forge | Prototype | SPEC-007 | General + Praxisity patterns reference |
+| /consult-team | Existing (pre-standards) | None | Needs audit against new standards |
+| /agent-authoring | Existing (pre-standards) | None | Needs audit against new standards |
 
-## Documents Updated/Created
+### Workflow Skills (user-invoked)
+| Skill | Status | Spec | Notes |
+|-------|--------|------|-------|
+| /charter | Built + validated | SPEC-004 | Pattern-setter, live-tested, reviewed |
+| /describe | Not started | SPEC-004 | Next workflow skill to build |
+| /design | Not started | SPEC-004 | |
+| /plan | Not started | SPEC-004 | |
+| /do | Not started | SPEC-004 | |
 
-- SPEC-004 v0.3 — /new-project dropped, Q-3/Q-4 resolved, scope narrowed to 5 skills
-- SPEC-006 v0.2 — gather skill spec (BUG-034 removed, REQ-G3 exception, QG-1 resolved)
-- DESIGN-005 v0.5 — templates bundled, DEC-8 memory-as-settings, stale refs fixed, DATA-2 updated
-- DESIGN-006 v0.1 — gather skill design (DEC-G1 through DEC-G5)
-- /gather SKILL.md — iterated prototype with all review fixes applied
-- Bug report disposition table — /new-project bugs deferred (26+1 in scope)
-- Session reviews in `.plans/reviews/SESSION-4-4-26/`
+### Prototype Commands (to sunset)
+| Command | Status | Notes |
+|---------|--------|-------|
+| _prototype-charter | Renamed | Skill replacement validated |
+| spec | Active (not yet replaced) | Will become /describe |
+| architect | Active (not yet replaced) | Will become /design |
+| define | Active (not yet replaced) | Will become /plan |
+| build | Active (not yet replaced) | Will become /do |
+| new-project | Active (sunset candidate) | |
+| deliver | Active (deferred) | Separate spec needed |
+| breakdown | Active (deferred) | Separate spec needed |
+
+## Current Task
+
+Audit existing skills (/consult-team, /agent-authoring) against the standards established by /skill-forge and /charter:
+- Frontmatter (correct supported fields only)
+- Directory structure
+- Prompt engineering patterns (positive framing, observable gates, phase-boundary placement)
+- Progressive loading model
+- Dual-use clarity
+
+## Verified Platform Capabilities
+
+See `reference_skill_platform_capabilities.md` for full tracking. Key verifications this session:
+- `${CLAUDE_SKILL_DIR}` — VERIFIED (resolved correctly during /charter run)
+- `disable-model-invocation: true` — loaded correctly on /charter
+- Auto-invocation via description — still needs fresh-session testing (QG-2/QSF-2)
 
 ## Next Steps
 
-1. **Build `/charter` skill** — pattern-setter, first workflow skill
-   - Create `.claude/skills/charter/` directory
-   - Bundle charter template from `.praxisity/templates/`
-   - Write SKILL.md applying inline standards (F1, F2, F5), per-skill F4
-   - /gather auto-invokes during Gather phase (test QG-2 empirically)
-   - Address BUG-010 through BUG-016
-   - Set `disable-model-invocation: true` (workflow skill)
-2. **Use `/charter` to update the project charter** — security principles, skills-first direction, drop Todoist mandate
-3. **Build `/describe` skill** — then use it to specify remaining skills (bootstrapping)
+1. **Audit /consult-team and /agent-authoring** against skill-forge standards
+2. **Build /describe skill** — use /skill-forge patterns, test with /gather
+3. **Use /describe to specify remaining skills** (bootstrapping)
 4. **Build remaining skills:** design → plan → do
-5. **Deferred:** Q-5 agent prompt fixes (4 agents), skill-standards development template
+5. **Deferred:** Q-5 agent prompt fixes (4 agents), /gather memory-as-settings testing, auto-invocation testing
+
+## Developer scratch pad (out of session notes)
+- Consider adding an 'ex nihilo' pattern for the skill forge. Consider using this pattern to create new deep research skill. Consider adding that to the 'ex nihilo' pattern we used to create it.
