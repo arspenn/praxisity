@@ -15,9 +15,7 @@ Assigned as PM teammate on a collaborative review of SPEC-008. Special responsib
 3. **Daily report** — Summarize each agent's findings, capture reasoning chains, identify agreement/disagreement, list unresolved tensions, propose sequenced action plan for v0.3.
 4. **Scope guard** — Flag anything that belongs in future work, not this iteration.
 
-Materials reviewed: spec, design (DESIGN-007), v0.2 prompt, Query Report test output, Research Report test output, instructor baseline, PE review of v0.1, clarity check, plus three teammate reports (User Advocate, Critic, Stakeholder).
-
-**Note:** The Prompt Engineer report was still being written when this report was finalized. PE completed all analysis tasks (#1-4) but the compiled report (#5) was not yet on disk. This report synthesizes findings from the three completed teammate reports and will note where the PE report may add additional perspective.
+Materials reviewed: spec, design (DESIGN-007), v0.2 prompt, Query Report test output, Research Report test output, instructor baseline, PE review of v0.1, clarity check, plus four teammate reports (Prompt Engineer, User Advocate, Critic, Stakeholder).
 
 ---
 
@@ -152,13 +150,31 @@ SPEC-008 (done) ────> DESIGN-007 (done) ────> v0.2 prompt (done)
 
 7. **[Minor] "Independently verified" disclaimer is honest but impractical.** "Verified how? By whom? To what standard?" Suggests concrete, proportionate guidance instead.
 
+### Prompt Engineer Report
+
+**Focus:** v0.1 finding remediation, new issues from test data, design decision validation, open question recommendations, baseline comparison.
+
+**Key Findings:**
+
+1. **v0.1 remediation scorecard:** 8 of 15 v0.1 findings fully addressed in v0.2, 3 partially addressed, 3 not yet implemented, 1 N/A. The three highest-priority items (self-check theater, no orientation, artifact panel) are all fixed. Three design-documented fixes still missing from v0.2 prompt text: DEC-7 tone directive, one-follow-up rule during gathering, closing block with follow-up options.
+
+2. **[New] ISSUE-T4: Query Report commits to infeasible search phases.** The Query Report planned 5 search phases; 3 produced no platform-specific results (Instagram, Reddit, Quora). The Problem Log honestly reported these gaps, but the failures were preventable — the prompt should instruct Sonnet to only commit to search phases where web search is likely to return usable results.
+
+3. **DQ-1 tactical disagreement with Critic:** PE explicitly warns against the Critic's "do not add sections not defined there" fix, calling it an elephant. Instead recommends tightening the output template structure in the prompt — define each topic subsection as containing only "platform-by-platform findings with direct quotes and URLs" so there's no structural slot for editorial commentary. Structural fix over prohibition.
+
+4. **DEC-8 verification mechanism not yet in v0.2 prompt.** The design specifies "search for article title + source organization" but the v0.2 prompt text only says "use web search to confirm it leads to the correct content." The specific mechanism needs to be added for v0.3. Test data (NPR homepage) confirms this gap.
+
+5. **DEC-5 factual disagreement with Critic.** PE says fixed limitations text was "reproduced verbatim." Critic says Sonnet paraphrased it in the Research Report. (Note: Both are partially correct — the Query Report reproduced it verbatim; the Research Report used a different paraphrase.)
+
+6. **Token budget assessment:** v0.2 is ~1500 tokens. All 9 PE-recommended additions estimated at 200-300 additional tokens, bringing v0.3 to ~1800 — well within the 4000 minimum.
+
 ---
 
 ## Cross-Cutting Analysis
 
-### Areas of Agreement (All Three Reports)
+### Areas of Agreement (All Four Reports)
 
-1. **The unsolicited "Public Health Relevance" sections must go.** All three agents flag these — Advocate calls them "domain flexibility undercutting usefulness," Critic calls them "unsourced editorial synthesis violating chain-readiness," Stakeholder calls them "a methodology violation a supervisor would catch." DQ-1's fix is universally endorsed. **This is the highest-confidence finding of the session.**
+1. **The unsolicited "Public Health Relevance" sections must go.** All four agents flag these — Advocate calls them "domain flexibility undercutting usefulness," Critic calls them "unsourced editorial synthesis violating chain-readiness," Stakeholder calls them "a methodology violation a supervisor would catch," PE identifies the root cause (Sonnet extended its own Query Report contract). **This is the highest-confidence finding of the session.**
 
 2. **The Problem Log is a genuine innovation that works.** All three agents praise it despite noting specific flaws (Advocate: mixed actionable/informational; Critic: entry #5 has fabricated justification; Stakeholder: "the single most impressive part"). The net assessment is positive. The design decision (DEC-2) is validated.
 
@@ -178,7 +194,9 @@ SPEC-008 (done) ────> DESIGN-007 (done) ────> v0.2 prompt (done)
 
    **Chain of reasoning:** The Stakeholder and Advocate agree on the symptom (wrong topics for the audience) but disagree on the cause (question scoping vs. gathering design). The Critic locates the root cause in the domain-identity contradiction. All three paths converge on the same fix: the gathering phase should help the user scope to their domain. The disagreement is about where in the architecture this fix belongs (prompt identity vs. gathering questions).
 
-   **PM assessment:** The Advocate's suggested gathering question ("Should I focus specifically on public health topics, or look at general trending topics?") is the simplest fix that addresses all three perspectives. It doesn't require resolving the domain-identity question — it just asks the user to decide. This is appropriate for v0.3.
+   **PM assessment:** The Advocate's suggested gathering question ("Should I focus specifically on public health topics, or look at general trending topics?") is the simplest fix that addresses all three perspectives. This is appropriate for v0.3.
+
+   **Resolution (2026-04-09):** Developer decided: prompt stays PH-focused. Domain generalization deferred to post-BSI internship. This aligns with the Critic's option (a) and resolves the three-way document contradiction. The gathering question becomes PH-specific rather than generic.
 
 2. **Whether "chain-ready over publication-ready" is a valid principle.**
 
@@ -242,7 +260,7 @@ Sequenced by dependency, priority, and effort. Incorporates teammate findings.
 | 2 | Close DQ-2: Add "If using Wikipedia, note it as a secondary/aggregation source in the Problem Log." | 1 sentence | Critic, PM | Test showed 4 Wikipedia uses, none flagged. |
 | 3 | Close DQ-3: Add "Every URL must point to a specific page, not a homepage or section landing page." | 1 sentence | Critic, PM | Test showed NPR homepage cited twice. |
 | 4 | Remove remaining elephant constructions (lines 59, 61) | Remove 2 sentences | Critic | Already covered by positive instructions. Low risk. |
-| 5 | Add domain-scoping question to gathering: "Should I focus specifically on [audience's domain] topics, or look at general trending topics and highlight their [domain] implications?" | 1 question | Advocate, Stakeholder, Critic | All three agents identified topic selection as the biggest output problem. |
+| 5 | Add PH-scoping question to gathering: "Should I focus specifically on public health topics, or look at general trending topics and highlight their public health implications?" (Developer confirmed PH focus for this iteration.) | 1 question | Advocate, Stakeholder, Critic + developer decision | All three agents identified topic selection as the biggest output problem. Developer resolved: stay PH-focused, defer generalization. |
 | 6 | Add one sentence to Closing Block: "These two documents are designed to be checked. You can start a new conversation, paste the Research Report, and ask Claude to verify the sources and claims." | 1 sentence | Advocate | Teaches prompt chaining concept in plain language. |
 | 7 | Strengthen Problem Log paraphrasing instruction: require concrete reason (paywall, snippet only, length) instead of allowing vague justifications | Minor revision | Critic | Entry #5 showed fabricated "citation limits" rationale. |
 
@@ -250,25 +268,26 @@ Sequenced by dependency, priority, and effort. Incorporates teammate findings.
 
 | # | Action | Effort | Source | Rationale |
 |---|--------|--------|--------|-----------|
-| 8 | Update DQ-1, DQ-2, DQ-3 status to "Resolved" with test evidence notes | 3 lines | Critic | They're no longer open. |
-| 9 | Update DEC-5 rationale to note that "include this text exactly" was paraphrased in testing; decide if paraphrased version is acceptable | 2 sentences | Critic | Implementation already failed; design should acknowledge. |
-| 10 | Update DEC-9 rationale to be honest about what the two-artifact split provides for the target audience vs. theoretical benefits | Paragraph rewrite | Critic, Stakeholder | Reframe around supervisor audit and bad-scope catching, not "independent verification by non-technical users." |
-| 11 | Acknowledge in design that "chain-ready over publication-ready" is aspirational, not enforced; current output is hybrid | 1 sentence | Critic | Prevents future agents from flagging the same gap. |
+| 8 | Update spec metadata + DEC-10 to own PH specialization; defer domain generalization to post-BSI | Metadata + 1 paragraph | Developer decision | Resolves the three-way contradiction (spec/design/prompt). |
+| 9 | Update DQ-1, DQ-2, DQ-3 status to "Resolved" with test evidence notes | 3 lines | Critic | They're no longer open. |
+| 10 | Update DEC-5 rationale to note that "include this text exactly" was paraphrased in testing; decide if paraphrased version is acceptable | 2 sentences | Critic | Implementation already failed; design should acknowledge. |
+| 11 | Update DEC-9 rationale to be honest about what the two-artifact split provides for the target audience vs. theoretical benefits | Paragraph rewrite | Critic, Stakeholder | Reframe around supervisor audit and bad-scope catching, not "independent verification by non-technical users." |
+| 12 | Acknowledge in design that "chain-ready over publication-ready" is aspirational, not enforced; current output is hybrid | 1 sentence | Critic | Prevents future agents from flagging the same gap. |
 
 ### Must-Do (Testing)
 
 | # | Action | Effort | Source | Rationale |
 |---|--------|--------|--------|-----------|
-| 12 | Run v0.3 test with PH-scoped topic (to match Q-3 intent) | 1 test run | Stakeholder, PM | v0.2 test used general topics; need PH-specific validation. |
-| 13 | Session viability test: complete full workflow within one free-tier session, 2/3 runs | 2-3 test runs | PM | Biggest feasibility risk. |
-| 14 | Manual spot-check 5+ URLs from test output | 30 min | PM, Critic | Only 1/50 marked unconfirmed — verify this isn't superficial compliance. |
-| 15 | Token audit after prompt changes | Measurement | PM | Verify still under 6000 tokens. |
+| 13 | Run v0.3 test with PH-scoped topic (to match Q-3 intent) | 1 test run | Stakeholder, PM | v0.2 test used general topics; need PH-specific validation. |
+| 14 | Session viability test: complete full workflow within one free-tier session, 2/3 runs | 2-3 test runs | PM | Biggest feasibility risk. |
+| 15 | Manual spot-check 5+ URLs from test output | 30 min | PM, Critic | Only 1/50 marked unconfirmed — verify this isn't superficial compliance. |
+| 16 | Token audit after prompt changes | Measurement | PM | Verify still under 6000 tokens. |
 
 ### Defer (Future Work)
 
 | # | Item | Why | Source |
 |---|------|-----|--------|
-| D1 | Domain generalization (make prompt truly domain-agnostic) | DEC-10: test PH first, generalize later. After internship use case validates. | Critic |
+| D1 | Domain generalization (make prompt truly domain-agnostic) | **Developer decision 2026-04-09:** Stay PH-focused. Generalize after BSI internship validates. Spec/design should own PH specialization for this iteration. | Critic, Developer |
 | D2 | Problem Log category restructuring (actionable vs. informational) | Test current format first; revisit if v0.3 test shows users confused | Advocate |
 | D3 | User-facing prompt header (2-3 sentences for the human reader) | Good idea but adds tokens and complexity; evaluate after v0.3 test | Advocate |
 | D4 | Output depth calibration (landscape scan vs. deep dive) | Design-level change to Query Report output structure; needs more test data | Stakeholder |
@@ -280,7 +299,7 @@ Sequenced by dependency, priority, and effort. Incorporates teammate findings.
 
 ## Unresolved Tensions Requiring Developer Input
 
-### 1. Domain identity: PH-specific or domain-flexible?
+### 1. Domain identity: PH-specific or domain-flexible? -- RESOLVED
 
 **The tension:** Spec says domain-agnostic. Design says domain-flexible. Prompt says public health. Three documents, three positions.
 
@@ -289,9 +308,9 @@ Sequenced by dependency, priority, and effort. Incorporates teammate findings.
 - Stakeholder: The output failed because it wasn't PH-focused enough.
 - Advocate: Add a gathering question that lets the user decide.
 
-**Why this needs developer input:** The Advocate's gathering question (action #5) is a good v0.3 fix but doesn't resolve the identity question. Should the spec/design be updated to say "public health research prompt" for this iteration? Or should the domain-flexible framing stand with the gathering question as the mechanism?
+**Developer decision (2026-04-09):** The prompt stays public health focused for this iteration. Domain generalization is deferred until after the BSI internship validates the PH use case. This resolves the Critic's "Important #1" finding and simplifies DEC-10.
 
-**PM recommendation:** Accept the Critic's option (a) for this iteration. Rename to "Portable Public Health Research Prompt" in the spec metadata. Keep the prompt's structure domain-flexible (so generalization later is straightforward) but own the PH defaults and PH gathering question for now. This eliminates the contradiction and matches the actual use case (BSI internship).
+**Impact on action plan:** Action #5 (gathering question) should be PH-specific: "Should I focus specifically on public health topics, or look at general trending topics and highlight their public health implications?" The spec metadata and DEC-10 should be updated to explicitly own PH specialization. Domain generalization moves to the Deferred list with a clear trigger (post-BSI internship).
 
 ### 2. Link verification: genuine or theater?
 
