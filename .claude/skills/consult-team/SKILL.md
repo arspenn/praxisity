@@ -65,10 +65,10 @@ Mode 3 uses Claude Code's experimental agent teams feature. This requires `CLAUD
 - The user can interact with any teammate directly via Shift+Down
 - Let teammates finish their work and write their own reports before shutting them down
 
-**Wrapping up:**
-- Each teammate writes their own report to `.plans/reviews/`
-- Write a lead review synthesizing all findings, including reconstitution notes for future sessions
-- Shut down teammates gracefully, then clean up the team
+**Team lifecycle:**
+- The user decides when the team shuts down, not the lead agent. Never shut down teammates without the user's explicit request.
+- Initial reports are the beginning of Mode 3 work, not the end. After reports are in, present findings and ask the user what's next. The team should persist through the full iteration cycle — review, implement, re-review — so teammates can see changes and react.
+- When the user requests shutdown: each teammate writes their final report to `.plans/reviews/`, the lead writes a review synthesizing all findings with reconstitution notes, then teammates are shut down gracefully.
 
 ## Session Management and Output Preservation
 
