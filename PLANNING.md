@@ -2,9 +2,9 @@
 
 ## Active Context
 
-**Last Command:** SPEC-007 /skill-forge — spec + prototype + plugin review
-**Status:** Support skills complete (gather, charter, skill-forge). Auditing existing skills against new standards.
-**Date:** 2026-04-04
+**Last Command:** /architect for SPEC-008 (portable research prompt)
+**Status:** Designing prompt architecture based on v0.2 prototype and PE review
+**Date:** 2026-04-08
 **Version:** 0.6.0
 
 ## Completed This Session
