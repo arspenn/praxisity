@@ -290,8 +290,9 @@ Sequenced by dependency, priority, and effort. Incorporates teammate findings.
 | D1 | Domain generalization (make prompt truly domain-agnostic) | **Developer decision 2026-04-09:** Stay PH-focused. Generalize after BSI internship validates. Spec/design should own PH specialization for this iteration. | Critic, Developer |
 | D2 | Problem Log category restructuring (actionable vs. informational) | Test current format first; revisit if v0.3 test shows users confused | Advocate |
 | D3 | User-facing prompt header (2-3 sentences for the human reader) | Good idea but adds tokens and complexity; evaluate after v0.3 test | Advocate |
-| D4 | Output depth calibration (landscape scan vs. deep dive) | Design-level change to Query Report output structure; needs more test data | Stakeholder |
+| D4 | Output depth calibration (landscape scan vs. deep dive) | Design-level change to output structure; needs more test data | Stakeholder |
 | D5 | Concrete verification guidance in Limitations Statement | Stakeholder suggested "confirm by visiting linked source" — evaluate after v0.3 | Stakeholder |
+| D6 | Purpose-built verification prompt | **Developer decision 2026-04-09:** Lethal trifecta verification handled by a dedicated prompt that reviews the research output. Not SPEC-008 scope — separate future deliverable. | Developer |
 
 **Estimated total effort for Must-Do items:** One working session for a solo developer — prompt changes (30 min), design doc updates (30 min), testing (2-3 hours including run time).
 
@@ -312,7 +313,40 @@ Sequenced by dependency, priority, and effort. Incorporates teammate findings.
 
 **Impact on action plan:** Action #5 (gathering question) should be PH-specific: "Should I focus specifically on public health topics, or look at general trending topics and highlight their public health implications?" The spec metadata and DEC-10 should be updated to explicitly own PH specialization. Domain generalization moves to the Deferred list with a clear trigger (post-BSI internship).
 
-### 2. Link verification: genuine or theater?
+### 2. Two artifacts or one? -- RESOLVED
+
+**The tension:** The two-artifact split (Query Report + Research Report) was justified by DEC-9 (independent verification per lethal trifecta). But all agents found problems with the separation: users don't understand why two documents (Advocate), the verification model is circular for non-technical users (Critic), the Query Report is process documentation not a deliverable (Stakeholder), and the output structure contract in the Query Report isn't enforceable because it's generated (PE).
+
+**Developer decision (2026-04-09, via direct conversation):** Merge into a single output artifact. The rationale:
+
+1. The two-artifact split was causing more confusion than value. The Query Report was "just for admin."
+2. The lethal trifecta verification will be handled by a separate, purpose-built verification prompt (future work, not SPEC-008 scope) — designed specifically to verify claims in the research output.
+3. The single output must be readable by the verification agent but is NOT designed for arbitrary downstream prompt chaining. It's a terminal document that gets reviewed.
+
+**PM assessment:** This is a sound simplification. What it preserves:
+- The approval gate (user reviews research plan before research begins) — happens in conversation, not tied to a separate artifact
+- The methodology section (search strategy, error handling) — becomes a section within the single document
+- The Problem Log and Limitations Statement — stay as sections
+- The high-value structural decisions (DEC-1, DEC-2, DEC-4, DEC-6, DEC-8)
+
+What it changes:
+- REQ-F3, REQ-F12, REQ-F13 need rewriting (one artifact, not two)
+- DEC-9 rationale changes fundamentally (verification by dedicated prompt, not by artifact separation)
+- COMP-3 and COMP-5 merge
+- The Closing Block no longer teaches prompt chaining — instead references the verification prompt (future work)
+- "Chain-ready over publication-ready" principle is retired (resolves Critic's finding #2)
+
+What it removes as concerns:
+- Advocate's blocking finding (user never told what to do with two documents)
+- Critic's lethal trifecta circularity (verification is now a dedicated prompt, not user responsibility)
+- Stakeholder's "Query Report is process documentation" concern
+- The entire "chain-ready" vs "publication-ready" tension
+
+**Impact on tasks:** Task #19 (prompt chaining guidance in Closing Block) should be revised — the closing block should reference that a verification review is the next step, without specifying the mechanism (since the verification prompt is future work). Task #14 (DQ-1) concept still applies but framing changes to the merged output structure. Task #25 (spec/design update) scope expands to include the artifact merge.
+
+**Agents consulted:** PE, Critic, and Advocate were asked for concerns. Responses pending at time of writing. No blocking concerns anticipated — this resolves issues all three raised independently.
+
+### 3. Link verification: genuine or theater?
 
 **The tension:** Only 1 of ~50 links marked unconfirmed. We can't tell from the output whether Sonnet searched for each.
 
@@ -355,8 +389,73 @@ Sequenced by dependency, priority, and effort. Incorporates teammate findings.
 
 - **What worked well:** Writing the initial PM analysis from source materials alone, then updating with teammate findings, produced a report that has both an independent PM perspective and a team synthesis. The feasibility assessment and dependency map didn't change when teammate reports arrived — they were correct from the start. The "anticipated areas of agreement/disagreement" section was largely accurate, which suggests the PM can add value even before specialist reports are complete.
 
-- **What I struggled with:** The PE report wasn't available when I needed to finalize. This means the synthesis is missing the prompt engineering perspective — the agent most qualified to evaluate whether the prompt changes (actions #1-7) will interact well or create new problems. The action plan includes PE-informed items (elephant removal, verification strengthening) based on the v0.1 PE review and Critic findings, but these haven't been validated by the PE against the v0.2 prompt specifically.
+- **What I struggled with:** The PE report wasn't available during the initial draft, requiring a supplemental section after the fact. The iterative update process worked but produced a longer document than ideal. In future sessions, waiting for all reports before writing — or writing a skeleton that's explicitly designed for incremental updates — would produce a cleaner artifact. The DQ-1 tactical disagreement (PE vs. Critic) was caught because I read both reports carefully; in a larger team, these cross-agent conflicts could easily be missed.
 
 - **Prompt improvement suggestions:** Two changes to the PM agent prompt would improve future sessions:
   1. Replace "wait for teammate reports to come in before writing your daily report" with "Begin your analysis immediately from source materials. Write a preliminary report. Update it as teammate reports arrive." This prevents the blocking dependency I encountered.
   2. Add guidance on scope guarding: "When agents recommend improvements, evaluate each against the current iteration's scope. Defer items that require architectural changes, add scope, or solve problems that haven't been empirically demonstrated. The action plan should distinguish between 'must-do for this iteration' and 'good idea for a future iteration.'"
+
+---
+
+## Supplemental: PE Report Integration
+
+*Added after the PE report landed on disk. The PE summary was incorporated into the Teammate Report Summaries and Cross-Cutting Analysis sections above. This section documents the specific impacts on the action plan and task list.*
+
+### PE Findings That Changed the Action Plan
+
+1. **ISSUE-T4 (infeasible search phases) is a new finding no other agent raised.** The PE identified that the Query Report committed to 5 search phases, 3 of which returned nothing. This is preventable with a prompt instruction. **New task #26 created.** This is a should-do — it improves the methodology section's credibility but isn't blocking.
+
+2. **Three v0.1 findings were designed but never implemented in v0.2 prompt text.** These are low-effort, high-value additions:
+   - DEC-7 tone directive (one line) — **new task #27**
+   - One-follow-up rule during gathering — **new task #28**
+   - DEC-8 concrete verification mechanism ("search for title + org") — **new task #29**
+
+   The closing block (v0.1 finding #15) is already covered by task #19, which was updated for the single-artifact model. The approval rejection path (v0.1 finding #10) is low priority and can be deferred — the current prompt handles the common case; the edge case (user wants to change the entire research question) is rare enough to handle conversationally.
+
+3. **Token budget is confirmed safe.** PE estimates v0.2 at ~1500 tokens and all additions at 200-300 tokens, bringing v0.3 to ~1800. With the new tasks (#26-29) adding perhaps another 50-100 tokens, v0.3 is still well under the 4000-token floor. No compression needed.
+
+### PE Recommendations That Conflict With or Reinforce Other Agents
+
+**DQ-1 tactical disagreement (PE vs. Critic) — resolved in PE's favor.**
+
+The Critic recommended: "Use only the section headings defined in your Query Report. Do not add sections not defined there." The PE explicitly flags this as an elephant — "do not add sections" teaches Sonnet what adding sections looks like, priming the behavior. Instead, the PE recommends tightening the output template to define what each subsection contains (platform-by-platform findings, direct quotes, URLs), leaving no structural slot for editorial commentary.
+
+This is the same structural-over-prohibitive principle that drove the v0.1-to-v0.2 improvements (DEC-4). Task #14 was already updated to reflect the PE's approach before this supplemental section was written.
+
+**DEC-5 factual disagreement (PE vs. Critic) — resolved by examining both artifacts.**
+
+PE says fixed limitations text was "reproduced verbatim." Critic says Sonnet paraphrased it. Both are partially correct: the Query Report reproduced the text verbatim; the Research Report used a different paraphrase. In the merged single-artifact model, this becomes simpler — there's one output, one limitations statement. Whether "include this text exactly" holds in v0.3 testing will determine if additional structural reinforcement (e.g., markdown blockquote) is needed.
+
+**PE reinforces all agents on Problem Log.** PE calls it "the single best design decision in the artifact set" and notes the pattern should be extracted as reusable. All four agents now agree on this.
+
+**PE reinforces Critic on DEC-8 gap.** Both agents identify that the design's concrete verification mechanism ("search for article title + source organization") is not yet in the v0.2 prompt text. Task #29 addresses this.
+
+### Updated Task Summary
+
+**Prompt changes for v0.3 (11 tasks, all pending):**
+
+| Task | Subject | Source | Priority |
+|------|---------|--------|----------|
+| #14 | Tighten output structure (DQ-1) — structural, not prohibitive | All agents, PE approach | Must-do |
+| #15 | Wikipedia flagging in Problem Log (DQ-2) | Critic, PM | Must-do |
+| #16 | Specific-page URL instruction (DQ-3) | Critic, PM | Must-do |
+| #17 | Remove remaining elephant constructions | Critic | Must-do |
+| #18 | PH-scoping question in gathering | All agents + developer | Must-do |
+| #19 | Update Closing Block for single-artifact model | Advocate + developer | Must-do |
+| #20 | Strengthen Problem Log paraphrasing instruction | Critic | Must-do |
+| #25 | Update spec/design for PH specialization + artifact merge | Developer decisions | Must-do |
+| #26 | Search phase feasibility constraint | PE (ISSUE-T4) | Should-do |
+| #27 | Tone directive | PE (DEC-7) | Should-do |
+| #28 | One-follow-up rule in gathering | PE (v0.1 #4) | Should-do |
+| #29 | DEC-8 verification mechanism in prompt text | PE + Critic | Must-do |
+
+**Testing tasks (4 tasks, blocked by prompt changes):**
+
+| Task | Subject | Blocked By |
+|------|---------|------------|
+| #21 | PH-scoped test | All prompt tasks |
+| #22 | Session viability test | All prompt tasks |
+| #23 | Manual URL spot-check | #21 |
+| #24 | Token audit | All prompt tasks |
+
+**Estimated total effort (revised):** Still one working session. The PE additions are small — one line each for tone, one-follow-up, feasibility constraint, and verification mechanism. The artifact merge simplifies the prompt (removing "create a separate artifact" instruction). Net prompt length change is roughly neutral.
