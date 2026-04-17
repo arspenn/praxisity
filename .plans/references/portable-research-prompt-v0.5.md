@@ -12,7 +12,7 @@ Then ask the first gathering question.
 
 ## Gathering Phase
 
-Ask these questions one at a time. Send one question, wait for my response, then send the next. If I answered a question previously present that answer with each question for approval.
+Ask these questions one at a time. Send one question, wait for my response, then send the next. If I already answered a question in a previous response, present that answer for my approval instead of re-asking.
 
 First, ask what public health topic I want to research. If my answer is very broad, ask one follow-up to narrow the scope, then accept whatever I give.
 
@@ -38,7 +38,7 @@ After I confirm, present a research plan in the conversation (not as an artifact
 
 **Source Priority** — Start with authoritative public health sources: CDC, WHO, NIH, state and national health departments, peer-reviewed journals (PubMed, NEJM, JAMA, The Lancet). Expand beyond these based on my guidance during gathering.
 
-**Report Structure** — Define the section headings the report will use. The report will contain only these sections plus a Source List and Problem Log. No other sections.
+**Report Structure** — Define the section headings the report will use. The report will contain only these sections plus a Source List and Problem Log. No other sections, subsections, or commentary categories.
 
 **Error Handling** — What you will do in each of these situations:
 - A source link does not work or does not lead to the expected content
@@ -55,7 +55,7 @@ Once I approve the plan, begin researching. Follow these rules:
 
 **Use web search for every claim.** Search for current, authoritative sources for each point you include.
 
-**Quote directly from sources.** Use the exact words from the source in quotation marks. When you must describe rather than quote, stay as close to the original language as possible and log it in the Problem Log.
+**Quote directly from sources.** Use the exact words from the source in quotation marks. When you must describe rather than quote, stay as close to the original language as possible and log it in the Problem Log with the reason (paywall, snippet only, too long to quote, or source uses non-quotable format like a data table).
 
 **One source at a time.** Present each source's findings in its own paragraph or block. Attribute every claim to its specific source. If I want you to compare or combine findings across sources, I will ask.
 
@@ -76,7 +76,7 @@ Create a markdown document in the artifact panel titled "Research Report". Use m
 - The source name and organization
 - The URL where this information can be found
 
-Stick to the section headings defined in the research plan. Do not add sections that were not part of the approved plan.
+Stick to the section headings defined in the research plan. Do not add sections, subsections, or commentary categories that were not part of the approved plan.
 
 **Source List** at the end with every source referenced in the report. For each source, include: the organization or author name, the title of the page or document, and the URL. Group sources by the report section they support.
 
@@ -84,7 +84,7 @@ Stick to the section headings defined in the research plan. Do not add sections 
 - You could not confirm a link points to the right page (marked [link unconfirmed])
 - Two sources contradicted each other and you presented both
 - You could not find a source for something relevant to the research question
-- You described or summarized rather than quoting directly, and why
+- You described or summarized rather than quoting directly, and the reason (paywall, snippet only, too long to quote, or non-quotable format)
 - You used Wikipedia or another secondary/aggregation source — note what it was used for and that it should be verified against primary sources
 
 The Problem Log shows what happened during research. It is not a self-assessment.
@@ -93,7 +93,7 @@ The Problem Log shows what happened during research. It is not a self-assessment
 
 ## After Delivery
 
-After delivering the report, ask if I want to expand any section, search for additional sources, or revise anything.
+After delivering the report, ask if I want to expand any section, search for additional sources, or revise anything. If I am satisfied, suggest starting a new conversation to verify the report's claims and links independently.
 
 ## Start Now
 
