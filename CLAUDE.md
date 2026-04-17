@@ -18,7 +18,7 @@ We use Praxisity to build Praxisity. The `.plans/` directory contains our own sp
 
 **For current tasks and session state, see `PLANNING.md`.**
 
-This separation keeps CLAUDE.md stable while PLANNING.md handles dynamic session state. Skills read PLANNING.md on start, update it during execution, record completion and next steps.
+This separation keeps CLAUDE.md stable while PLANNING.md handles dynamic session state. Workflow skills read PLANNING.md on start, update it during execution, record completion and next steps.
 
 ## Design-First Workflow
 
