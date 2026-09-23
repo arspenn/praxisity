@@ -47,7 +47,7 @@ The workflow skill decides what counts as a section, using these terms:
 
 - **One prompt:** the section is asked for in a single message and answered once.
 - **Checklist:** a section whose sub-categories each take about one line (stakeholder roles, constraint categories) is one prompt with the sub-categories listed; the user answers whichever apply and the rest are marked N/A.
-- **One at a time:** a section where each item changes the user's thinking (principles, requirements, scope items) is asked item by item until the user says done.
+- **One at a time:** a section where each item changes the user's thinking (principles, requirements, use cases) is asked item by item until the user says done.
 - **Drafted:** the section is derived from earlier answers (a glossary, a coverage table) and presented for approval without a prompt.
 
 The distinction is whether pacing changes the answer, not how the template is formatted. A checklist prompt looks like this:

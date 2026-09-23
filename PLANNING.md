@@ -3,8 +3,8 @@
 ## Active Context
 
 **Branch:** `consolidate` (off main at 758f13a — if this goes badly, delete the branch and start over)
-**Last Command:** charter skill re-review and rewrite (manual, Mode 2 team)
-**Status:** Step 1b complete; next is step 2 (/describe)
+**Last Command:** /describe skill built and reviewed (manual, Mode 2 team)
+**Status:** Step 2 complete; next is step 3 (/design)
 **Date:** 2026-09-22
 **Version:** 0.6.0 → targeting 0.7.0 at end of consolidation
 
@@ -27,7 +27,7 @@ Andrew completed the MPH and started a doctorate of education in instructional s
 |------|------|--------|
 | 1 | Commit SPEC-009 as shelved, create `consolidate` branch | Done |
 | 1b | Re-review `/charter` before it becomes the pattern (4-agent Mode 2, two rounds); rewrite charter skill, template, and gather skill | Done — see `.plans/reviews/SESSION-2026-09-22/charter-skill-lead-review.md` |
-| 2 | Build `/describe` skill from `/spec` command, bundle spec template | Not started |
+| 2 | Build `/describe` skill from `/spec` command, bundle spec template | Done — two-round Mode 2 review; see `describe-skill-lead-review.md`. Not yet live-tested. |
 | 3 | Build `/design` skill from `/architect` command, bundle design template | Not started |
 | 4 | Build `/plan` skill from `/define` command, bundle DIP template | Not started |
 | 5 | Build `/do` skill from `/build` command (no template) | Not started |
@@ -40,7 +40,9 @@ Build order for steps 2–5 follows the pattern set by the revised `/charter` (2
 
 Decisions made 2026-09-22: Domain Context is generic (three transferable questions, examples per field in the template comment); Stakeholders/Success Criteria/Constraints are checklist prompts; `TBD — revisit at [milestone]` is a marker distinct from N/A; source material conventionally lives in `.plans/references/`.
 
-To verify in step 8: skill invoking `gather` via the Skill tool; `${CLAUDE_SKILL_DIR}` inside a plugin; `@CHARTER.md` import in CLAUDE.md actually loads.
+To verify in step 8: skill invoking `gather` via the Skill tool; `${CLAUDE_SKILL_DIR}` inside a plugin; `@CHARTER.md` import in CLAUDE.md actually loads; `$ARGUMENTS` inside a skill.
+
+ID pattern for /design and /plan (from the /describe review): IDs assigned on approval, highest-ever-plus-one, never renumbered; removed cited items kept as struck rows; coverage gates withhold the save option rather than "flag".
 
 ## Skills Status
 
@@ -48,7 +50,7 @@ To verify in step 8: skill invoking `gather` via the Skill tool; `${CLAUDE_SKILL
 | Skill | Status | Notes |
 |-------|--------|-------|
 | /charter | Rewritten 2026-09-22, not yet live-tested | Pattern-setter. Live test on the Praxisity charter update (step 9) or a school project. |
-| /describe | Not started | From `/spec` command |
+| /describe | Built 2026-09-22, not yet live-tested | IDs assigned on approval, never renumbered; revise flow with struck rows; MUST→AC coverage gate |
 | /design | Not started | From `/architect` command |
 | /plan | Not started | From `/define` command |
 | /do | Not started | From `/build` command |
@@ -70,8 +72,8 @@ See `reference_skill_platform_capabilities.md` in project memory. Re-checked 202
 
 ## Next Steps
 
-1. Start step 2: `/describe` skill
-2. Live-test it by writing a real spec (a school project or the plugin packaging itself)
+1. Step 3: `/design` skill from `/architect` command, bundle design template (556 lines; expect heavy trimming)
+2. Live-test `/charter` and `/describe` on a real project once `/design` exists, so a full chain can be exercised
 
 ## Developer scratch pad (out of session notes)
 - Consider adding an 'ex nihilo' pattern for the skill forge. Consider using this pattern to create new deep research skill. Consider adding that to the 'ex nihilo' pattern we used to create it.
