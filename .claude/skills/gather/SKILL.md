@@ -50,7 +50,7 @@ The workflow skill decides what counts as a section, using these terms:
 - **One at a time:** a section where each item changes the user's thinking (principles, requirements, use cases) is asked item by item until the user says done.
 - **Drafted:** the section is derived from earlier answers (a glossary, a coverage table) and presented for approval without a prompt.
 
-The distinction is whether pacing changes the answer, not how the template is formatted. A checklist prompt looks like this:
+A workflow skill may compound these for one template section ("two prompts: In, then Out"; "drafted, then one prompt"); each part follows its own term. The distinction is whether pacing changes the answer, not how the template is formatted. A checklist prompt looks like this:
 
 > **Constraints.** These are the limits that make the plan realistic. Which of these apply? Timeline · Resources · Technical · Regulatory/Compliance · Other. Give a line for each that does; skip the rest.
 

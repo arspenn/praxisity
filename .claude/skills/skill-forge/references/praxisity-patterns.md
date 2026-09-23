@@ -104,6 +104,19 @@ All output documents follow the dual-use design principle — they are both huma
 - Don't reference implementation evidence (bug IDs, version numbers) in governance documents — state principles conceptually
 - The document must make sense to a reader with no project context
 
+## Reference Conventions (2026-09-23)
+
+Every Praxisity document uses the same four reference forms. Each template carries the identical block in its header comment (copy it verbatim into any new template; it is stripped from output, so finished documents do not restate it); skills apply the forms at generate time.
+
+| Referring to | Form | Example |
+|--------------|------|---------|
+| An element with an ID from another document | ID plus a short label in parentheses, always in tables and Satisfies lists, and on first mention under each heading in prose. Label is two to four words, coined by the first citing document, reused verbatim downstream. Qualify by document when more than one parent is in play. Same-document IDs are never labeled. | `REQ-F1 (search latency)`, `SPEC-003 REQ-F2` |
+| A section | Section sign, then number or name, then title; link the document first when it is elsewhere | `§7.4 Non-Functional Approach`, `[CHARTER.md](../../CHARTER.md) §Scope` |
+| Another document | Relative markdown link, from the citing file, whose text is the document ID or file name | `[SPEC-005](../specs/005-agent-consultation-system.md)` |
+| A removed item | Its ID struck through, with the version, wherever it appears | `~~REQ-F3~~ (removed v0.2)` |
+
+IDs are assigned when the user approves an item, take the highest number ever used in their series plus one, and are never renumbered. One parent document per child (one spec per design, one design per DIP); split or merge rather than cite two.
+
 ## Naming Conventions
 
 - Workflow skills: named for what they produce (charter, describe, design, plan, do)

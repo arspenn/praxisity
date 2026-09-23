@@ -3,9 +3,9 @@
 ## Active Context
 
 **Branch:** `consolidate` (off main at 758f13a — if this goes badly, delete the branch and start over)
-**Last Command:** /describe skill built and reviewed (manual, Mode 2 team)
-**Status:** Step 2 complete; next is step 3 (/design)
-**Date:** 2026-09-22
+**Last Command:** /design skill built and reviewed (manual, Mode 2 team); reference convention adopted
+**Status:** Step 3 complete; next is step 4 (/plan)
+**Date:** 2026-09-23
 **Version:** 0.6.0 → targeting 0.7.0 at end of consolidation
 
 ## Goal of This Branch
@@ -28,7 +28,7 @@ Andrew completed the MPH and started a doctorate of education in instructional s
 | 1 | Commit SPEC-009 as shelved, create `consolidate` branch | Done |
 | 1b | Re-review `/charter` before it becomes the pattern (4-agent Mode 2, two rounds); rewrite charter skill, template, and gather skill | Done — see `.plans/reviews/SESSION-2026-09-22/charter-skill-lead-review.md` |
 | 2 | Build `/describe` skill from `/spec` command, bundle spec template | Done — two-round Mode 2 review; see `describe-skill-lead-review.md`. Not yet live-tested. |
-| 3 | Build `/design` skill from `/architect` command, bundle design template | Not started |
+| 3 | Build `/design` skill from `/architect` command, bundle design template | Done 2026-09-23 — two-round Mode 2 review; reference convention adopted; see `design-skill-lead-review.md`. Not yet live-tested. |
 | 4 | Build `/plan` skill from `/define` command, bundle DIP template | Not started |
 | 5 | Build `/do` skill from `/build` command (no template) | Not started |
 | 6 | Delete `.claude/commands/` and `.praxisity/templates/`; move review reports and stale references to `.plans/archive/` | Not started |
@@ -42,7 +42,9 @@ Decisions made 2026-09-22: Domain Context is generic (three transferable questio
 
 To verify in step 8: skill invoking `gather` via the Skill tool; `${CLAUDE_SKILL_DIR}` inside a plugin; `@CHARTER.md` import in CLAUDE.md actually loads; `$ARGUMENTS` inside a skill.
 
-ID pattern for /design and /plan (from the /describe review): IDs assigned on approval, highest-ever-plus-one, never renumbered; removed cited items kept as struck rows; coverage gates withhold the save option rather than "flag".
+ID pattern for /plan (from the /describe and /design reviews): IDs assigned on approval, highest-ever-plus-one, never renumbered; removed items kept with the ID struck; coverage gates withhold the save option and name their exits; `MMM` for a parent document's number; one parent per child.
+
+Reference convention (2026-09-23, canonical block in every template header and in skill-forge's praxisity-patterns): `REQ-F1 (short label)` for cross-document elements; `§7.4 Title` for sections; relative link with ID text for documents; `~~REQ-F3~~ (removed v0.2)` for removals.
 
 ## Skills Status
 
@@ -51,7 +53,7 @@ ID pattern for /design and /plan (from the /describe review): IDs assigned on ap
 |-------|--------|-------|
 | /charter | Rewritten 2026-09-22, not yet live-tested | Pattern-setter. Live test on the Praxisity charter update (step 9) or a school project. |
 | /describe | Built 2026-09-22, not yet live-tested | IDs assigned on approval, never renumbered; revise flow with struck rows; MUST→AC coverage gate |
-| /design | Not started | From `/architect` command |
+| /design | Built 2026-09-23, not yet live-tested | Generic Architecture (context, approach, key choices); coverage gate with design-wide and deliberate-gap escapes; spec-diff on revise |
 | /plan | Not started | From `/define` command |
 | /do | Not started | From `/build` command |
 
@@ -72,8 +74,9 @@ See `reference_skill_platform_capabilities.md` in project memory. Re-checked 202
 
 ## Next Steps
 
-1. Step 3: `/design` skill from `/architect` command, bundle design template (556 lines; expect heavy trimming)
-2. Live-test `/charter` and `/describe` on a real project once `/design` exists, so a full chain can be exercised
+1. Step 4: `/plan` skill from `/define` command, bundle DIP template (210 lines). DIP links to both a design and a spec; needs the design's IDs and the spec's acceptance criteria.
+2. Step 5: `/do` skill from `/build` command (execution skill, different phase structure, no template)
+3. Live-test the chain on a real project once `/plan` exists
 
 ## Developer scratch pad (out of session notes)
 - Consider adding an 'ex nihilo' pattern for the skill forge. Consider using this pattern to create new deep research skill. Consider adding that to the 'ex nihilo' pattern we used to create it.

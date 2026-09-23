@@ -59,7 +59,7 @@ Gather in the order of the table below, which follows the template except that d
 | Open Questions | One prompt | Optional. Anything the user hedged on earlier is a candidate; list those as a draft. Assign Q-n on approval. |
 | Charter Reference, Related Documents, References | Drafted by you | Charter Reference names the charter principles this spec serves. Related Documents come from Dependencies, as relative links from `.plans/specs/`. References come from source material plus the charter. Present together for approval. |
 
-**Update flow (revising an existing spec).** Ask "What has changed since [Last Updated date]?" and show a one-line index of sections with any TBD, N/A, or Open question flagged. Walk the sections the user's answer touches, every TBD section, every Open question, and any section whose structure differs between the existing spec and the current template (present the old content mapped into the new fields as a draft). Then offer a quick pass over the rest. A removed item keeps its row with the text struck through and "removed in v[version]", so any design or DIP that cites the ID still resolves. Re-derive acceptance criteria coverage for any changed MUST. The filename and Status stay as they are unless the user changes them. In update mode, "skip" means keep the existing content unchanged.
+**Update flow (revising an existing spec).** Ask "What has changed since [Last Updated date]?" and show a one-line index of sections with any TBD, N/A, or Open question flagged. Walk the sections the user's answer touches, every TBD section, every Open question, and any section whose structure differs between the existing spec and the current template (present the old content mapped into the new fields as a draft). Then offer a quick pass over the rest. A removed item keeps its row with the ID struck through and the version, per the template's reference conventions, so any design or DIP that cites the ID still resolves. Re-derive acceptance criteria coverage for any changed MUST. The filename and Status stay as they are unless the user changes them. In update mode, "skip" means keep the existing content unchanged.
 
 ### Review and Confirm
 
@@ -73,7 +73,7 @@ Copy the template, then Edit the copy. Edit keeps the template's structure as gr
 2. New spec: derive the slug from the title (lowercase, hyphens, no punctuation) and copy the template to `.plans/specs/NNN-[slug].md` with `cp` in Bash, NNN zero-padded to three digits. Update: copy the template over the existing file with `cp` in Bash.
 3. Read the fresh copy.
 4. Apply only these operations with Edit:
-   - **Placeholder substitution:** replace `[bracketed placeholders]` and `NNN` with gathered content, writing each item's already-assigned ID.
+   - **Placeholder substitution:** replace `[bracketed placeholders]` and `NNN` with gathered content, writing each item's already-assigned ID and every reference per the template's reference conventions.
    - **Comment stripping:** remove all `<!-- ... -->` blocks.
    - **Marking:** for a skipped section, replace its placeholder content with `N/A — [reason]` or `TBD — revisit at [milestone]`. The section stays. With no charter, Charter Reference and the inherited constraints are `N/A — no charter` and the charter link in References is removed.
    - **Row and block adjustment:** add or remove table rows and repeat the UC block once per use case, to fit the content. Template counts are illustrative.

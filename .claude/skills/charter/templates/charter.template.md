@@ -14,6 +14,21 @@ tables take as many rows as the project has content for.
 Two markers are allowed in place of content:
 - "N/A — [reason]" when a section genuinely does not apply
 - "TBD — revisit at [milestone]" when it cannot be known yet (common on a first pass)
+
+Reference conventions, identical in every Praxisity template:
+- An element with an ID from another document: the ID plus a short label in parentheses,
+  always in tables and Satisfies lists, and on first mention under each heading in prose:
+  REQ-F1 (search latency). The label is two to four words, coined by the first document
+  that cites the element and reused verbatim after that. Qualify with the document ID when
+  more than one parent is in play: SPEC-003 REQ-F2. IDs from this same document are never
+  labeled.
+- A section: section sign, then number or name, then title: §7.4 Non-Functional Approach,
+  §Scope. When the section is in another document, link the document first:
+  [CHARTER.md](../../CHARTER.md) §Scope.
+- Another document: a relative markdown link, from this file, whose text is the document
+  ID or file name: [SPEC-005](../specs/005-agent-consultation-system.md).
+- A removed item: its ID struck through, with the version, wherever it appears:
+  ~~REQ-F3~~ (removed v0.2).
 -->
 
 ## Mission
