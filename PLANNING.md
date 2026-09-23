@@ -3,8 +3,8 @@
 ## Active Context
 
 **Branch:** `consolidate` (off main at 758f13a — if this goes badly, delete the branch and start over)
-**Last Command:** none — session restarted after 4-month gap, framework re-evaluated
-**Status:** Consolidation plan agreed, work not yet started
+**Last Command:** charter skill re-review and rewrite (manual, Mode 2 team)
+**Status:** Step 1b complete; next is step 2 (/describe)
 **Date:** 2026-09-22
 **Version:** 0.6.0 → targeting 0.7.0 at end of consolidation
 
@@ -26,6 +26,7 @@ Andrew completed the MPH and started a doctorate of education in instructional s
 | Step | Task | Status |
 |------|------|--------|
 | 1 | Commit SPEC-009 as shelved, create `consolidate` branch | Done |
+| 1b | Re-review `/charter` before it becomes the pattern (4-agent Mode 2, two rounds); rewrite charter skill, template, and gather skill | Done — see `.plans/reviews/SESSION-2026-09-22/charter-skill-lead-review.md` |
 | 2 | Build `/describe` skill from `/spec` command, bundle spec template | Not started |
 | 3 | Build `/design` skill from `/architect` command, bundle design template | Not started |
 | 4 | Build `/plan` skill from `/define` command, bundle DIP template | Not started |
@@ -35,14 +36,18 @@ Andrew completed the MPH and started a doctorate of education in instructional s
 | 8 | Package as plugin (`.claude-plugin/plugin.json`, `skills/`, `agents/`), test install into a scratch project with `--plugin-dir` | Not started |
 | 9 | Update README, CHARTER scope/milestones, CHANGELOG to 0.7.0; merge to main | Not started |
 
-Build order for steps 2–5 follows the pattern set by `/charter`: sequential pre-flight with PLANNING.md gate, gather via `/gather`, copy-then-edit template, completion gate, per-skill success message. Use at most one or two Mode 2 agent reviews per skill (prompt-engineer and spot are the cheap defaults). No Mode 3.
+Build order for steps 2–5 follows the pattern set by the revised `/charter` (2026-09-22): inline PLANNING.md contract, sequential pre-flight with reasons, explicit gather invocation, template owns section guidance, pacing table using gather's four terms, copy-then-edit with a closed operations list, cancel paths reset PLANNING.md, offer-only post-save, completion gate, honest success message. Review each clone with prompt-engineer + critic + spot in Mode 2 (they hold checklists in agent memory from the charter review). No Mode 3.
+
+Decisions made 2026-09-22: Domain Context is generic (three transferable questions, examples per field in the template comment); Stakeholders/Success Criteria/Constraints are checklist prompts; `TBD — revisit at [milestone]` is a marker distinct from N/A; source material conventionally lives in `.plans/references/`.
+
+To verify in step 8: skill invoking `gather` via the Skill tool; `${CLAUDE_SKILL_DIR}` inside a plugin; `@CHARTER.md` import in CLAUDE.md actually loads.
 
 ## Skills Status
 
 ### Workflow Skills (user-invoked)
 | Skill | Status | Notes |
 |-------|--------|-------|
-| /charter | Built + validated | Pattern-setter |
+| /charter | Rewritten 2026-09-22, not yet live-tested | Pattern-setter. Live test on the Praxisity charter update (step 9) or a school project. |
 | /describe | Not started | From `/spec` command |
 | /design | Not started | From `/architect` command |
 | /plan | Not started | From `/define` command |
@@ -51,7 +56,7 @@ Build order for steps 2–5 follows the pattern set by `/charter`: sequential pr
 ### Support Skills (auto-invokable)
 | Skill | Status | Notes |
 |-------|--------|-------|
-| /gather | Built | Memory-as-settings still untested empirically |
+| /gather | Rewritten 2026-09-22 | Defaults instead of calibration questions; four pacing terms; TBD/N/A skip states; owns drafting rule |
 | /skill-forge | Built | Platform reference stale (step 7) |
 | /consult-team | Built | References `.plans/reviews/` paths — update in step 6 |
 | /agent-authoring | Built | Plugin agents cannot use `memory:` — note in step 8 |

@@ -1,112 +1,89 @@
-# Project Charter
+# [Project Name] — Project Charter
 
 <!--
-This template guides you in creating your project's constitution.
-The charter is a governance document that guides all decisions and AI behavior.
-Fill in each section thoughtfully - this document shapes your entire project.
+This template produces the project's constitution: the document that guides every
+decision in the project, including how AI assists. Claude reads it at the start of
+each session (via CLAUDE.md), so it is written for two readers at once: the humans
+who own the project and the AI that works on it. That means it must be self-contained —
+a reader with no other project context should understand every term in it.
 
-Tips:
-- Be specific but concise
-- Revisit and update as the project evolves
-- Use this document to align stakeholders and guide AI assistance
-- Remove these comments when complete
+Each section's comment says what the section needs and gives examples. The comments
+are stripped from the finished charter. Placeholder rows are illustrative: lists and
+tables take as many rows as the project has content for.
+
+Two markers are allowed in place of content:
+- "N/A — [reason]" when a section genuinely does not apply
+- "TBD — revisit at [milestone]" when it cannot be known yet (common on a first pass)
 -->
 
 ## Mission
 
-<!-- One clear sentence: What does this project exist to accomplish?
+<!-- One clear sentence: what does this project exist to accomplish?
      Good: "Reduce hospital readmissions for heart failure patients through AI-powered care coordination"
-     Bad: "Make healthcare better"
-     Good: "Build a collaborative text editor with real-time multiplayer editing"
-     Bad: "Create a web application"
+     Bad:  "Make healthcare better"
+     Good: "Design a self-paced onboarding module that gets new volunteers field-ready in one week"
+     Bad:  "Create a training course"
 -->
 
 [One sentence mission statement]
 
 ## Principles
 
-<!-- Core principles that inform ALL decisions in this project.
-     These should be specific to your project, not generic platitudes.
-     The number should match what the project needs — there is no fixed count.
-     Ask: "If we face a tough choice, what values guide us?"
+<!-- The values that decide hard choices. Ask: "If we face a tough trade-off, what settles it?"
+     Specific to this project, not generic platitudes. As many as the project needs, no fixed count.
 
      Examples:
-     - Privacy-first: User data never leaves their device
-     - Evidence-based: Every intervention backed by peer-reviewed research
-     - Accessibility-first: WCAG AAA compliance is non-negotiable
-     - Fail-safe: System defaults to safe state on any error
-     - Community-driven: Feature decisions based on user research, not assumptions
+     - Privacy-first: user data never leaves their device
+     - Evidence-based: every intervention is backed by peer-reviewed research
+     - Learner-paced: no timed assessments; mastery is demonstrated, not scheduled
+     - Fail-safe: the system defaults to a safe state on any error
 -->
 
-1. [First principle and what it means in practice]
-2. [Second principle and what it means in practice]
-3. [Third principle and what it means in practice]
-4. [Fourth principle - optional]
-5. [Fifth principle - optional]
+1. [Principle, and what it means in practice]
+2. [Principle, and what it means in practice]
 
 ## Scope
 
-<!-- Clear boundaries prevent scope creep and guide decisions.
-     Be explicit about what you WILL and WON'T do.
+<!-- Clear boundaries prevent scope creep. Out of Scope is the more important half:
+     list the things people might reasonably expect that this project will not deliver.
 -->
 
 ### In Scope
 
-<!-- What this project WILL do. Be specific about:
-     - Features/capabilities
-     - User groups served
-     - Problems addressed
-     - Deliverables
-
+<!-- Features, capabilities, deliverables, and audiences this project addresses.
      Examples:
      - Web-based interface for desktop and mobile browsers
-     - Support for English and Spanish languages
+     - One asynchronous module covering the intake workflow, ~90 minutes of learner time
      - Integration with existing EHR systems via FHIR API
-     - Intervention delivery during business hours only
 -->
 
-- [Specific feature/capability]
-- [Specific feature/capability]
-- [Specific feature/capability]
-- [User groups/stakeholders served]
-- [Deliverables/outputs]
+- [In-scope item]
+- [In-scope item]
 
 ### Out of Scope
 
-<!-- What this project will NOT do. Being explicit about this is critical.
-     Include things that users/stakeholders might EXPECT but you won't deliver.
-
-     Examples:
+<!-- Examples:
      - Native mobile apps (web only for MVP)
-     - 24/7 monitoring (business hours only)
-     - Support for legacy systems pre-2015
+     - Instructor-led delivery (self-paced only)
      - Diagnostic capabilities (care coordination only)
-     - Multi-language support beyond English/Spanish
 -->
 
-- [Explicitly excluded feature]
-- [Explicitly excluded feature]
-- [Explicitly excluded user group/use case]
-- [Explicitly excluded deliverable]
+- [Excluded item]
+- [Excluded item]
 
 ## Stakeholders
 
-<!-- Who is involved in or affected by this project?
-     Include both contributors and beneficiaries.
-
-     Examples:
-     - Primary users: Nurses coordinating patient discharge
-     - Secondary users: Patients receiving follow-up care
-     - Contributors: Development team, clinical advisory board
-     - Beneficiaries: Hospital administrators (reduced readmissions)
-     - Affected parties: IT department (maintains integration)
+<!-- Who is involved or affected. Fill the categories that apply; a solo project may
+     list one person in two roles.
+     Examples: learners in the module; nurses coordinating discharge; the instructor
+     grading the deliverable; an IT department that maintains an integration.
 -->
 
 **Primary Users/Beneficiaries:**
-- [Who directly uses/benefits from this project]
+- [Who directly uses or benefits from this project]
 
 **Contributors:**
-- [Who builds/maintains this project]
+- [Who builds or maintains it]
 
 **Secondary Stakeholders:**
 - [Who is indirectly affected or has input]
@@ -116,50 +93,39 @@ Tips:
 
 ## Success Criteria
 
-<!-- How do you know when you've succeeded?
-     Be specific and measurable where possible.
-     Think: outcomes, not just outputs.
-
+<!-- How you will know it worked. Outcomes, not just outputs. Measurable where possible.
+     On a first pass it is normal not to know these yet; mark them TBD with the milestone
+     at which you will.
      Examples:
      - Reduce 30-day readmission rate by 15% within 6 months
-     - Support 100 concurrent users with <200ms latency
-     - Achieve 80% user satisfaction in post-deployment survey
-     - Publish 3 peer-reviewed papers using the research platform
-     - Complete IRB approval and enroll first participant by Q2 2026
+     - 80% of pilot learners pass the post-module assessment on the first attempt
+     - Complete IRB approval and enroll the first participant by Q2 2026
 -->
 
 **Primary Success Metrics:**
 - [Measurable outcome]
-- [Measurable outcome]
 
 **Milestones:**
 - [Time-bound achievement]
-- [Time-bound achievement]
 
 **Quality Indicators:**
-- [How you measure quality/success]
-- [How you measure quality/success]
+- [How quality is judged]
 
 ## Constraints
 
-<!-- What limits your work? Be honest about limitations.
-     Constraints guide realistic planning.
-
-     Categories to consider:
-     - Timeline: Deadlines, funding periods, seasonal factors
-     - Budget: Funding limits, resource availability
-     - Technical: Platform requirements, integration needs, performance requirements
-     - Regulatory: IRB, HIPAA, GDPR, accessibility laws
-     - Organizational: Team size, skills, approval processes
-     - Domain: Theoretical frameworks, methodological requirements
+<!-- What limits the work. Honest constraints make realistic plans.
+     Timeline: deadlines, funding periods, term dates
+     Resources: budget, team size, tooling, available hours
+     Technical: platform requirements, integrations, performance
+     Regulatory/Compliance: IRB, HIPAA, FERPA, GDPR, accessibility law
+     Other: organizational, methodological, anything else that narrows choices
 -->
 
 **Timeline:**
 - [Deadline or time constraint]
-- [Deadline or time constraint]
 
 **Resources:**
-- [Budget, team size, or resource limitation]
+- [Budget, people, or tooling limitation]
 
 **Technical:**
 - [Platform, performance, or integration constraint]
@@ -168,95 +134,50 @@ Tips:
 - [Legal, ethical, or domain-specific requirement]
 
 **Other:**
-- [Any other constraints that limit choices]
+- [Any other constraint that limits choices]
 
 ## Domain Context
 
-<!-- Project-specific context that guides work.
-     This is where domain expertise lives.
-     Tailor this section to your field.
-     Remove domain sections below that don't apply to your project.
+<!-- The field-specific knowledge that shapes the work. Three questions transfer across
+     every domain; answer them in the vocabulary of this project's field.
+
+     1. Guiding frameworks — which theories, models, standards, or evidence base direct the work?
+        Software: architecture style and why. Public health: theoretical framework, evidence base,
+        theory of change. Research: research questions, theoretical framework. Instructional
+        design: ID model (ADDIE, SAM, Dick & Carey...), learning theory, learner analysis.
+     2. Methods and tools — how is the work delivered, and with what?
+        Software: tech stack, infrastructure. Public health: intervention and delivery model,
+        target population. Research: methodology, data sources, analysis plan. Instructional
+        design: delivery modality, authoring tools, LMS.
+     3. Quality and evaluation — how does this field judge whether the work is good?
+        Software: testing, performance targets, security. Public health: evaluation approach.
+        Research: contribution to the field, validity. Instructional design: evaluation model
+        (Kirkpatrick...), assessment strategy, accessibility standards.
 -->
 
-### For Software Projects:
+**Domain:** [The field this project belongs to]
 
-**Tech Stack:**
-- [Language/framework and why]
-- [Database/storage and why]
-- [Deployment/infrastructure]
+**Guiding Frameworks:**
+- [Theory, model, standard, or evidence base — and how it applies here]
 
-**Architecture Approach:**
-[Monolith/microservices/serverless/etc and reasoning]
+**Methods and Tools:**
+- [How the work is delivered and what it is built with]
 
-**Quality Standards:**
-- [Testing approach]
-- [Performance targets]
-- [Security requirements]
-
-### For Public Health Projects:
-
-**Theoretical Framework:**
-[What models/theories guide this intervention?]
-- [Framework name and how it applies]
-
-**Evidence Base:**
-[What research supports this approach?]
-
-**Target Population:**
-- [Demographics]
-- [Health status/conditions]
-- [Geographic/institutional setting]
-
-**Intervention Model:**
-[How does the intervention work? Theory of change?]
-
-**Evaluation Approach:**
-[How will outcomes be measured?]
-
-### For Research Projects:
-
-**Research Questions:**
-1. [Primary research question]
-2. [Secondary research question]
-
-**Methodology:**
-[Qualitative/quantitative/mixed-methods and why]
-
-**Theoretical Framework:**
-[What theories guide this research?]
-
-**Data Sources:**
-- [Where data comes from]
-- [Sample size/population]
-
-**Analysis Plan:**
-[How will data be analyzed?]
-
-**Contribution:**
-[How does this advance the field?]
-
-### For Other Domains:
-
-**Domain:**
-[Your specific field]
+**Quality and Evaluation:**
+- [How this field judges the work, and how this project will be judged]
 
 **Key Context:**
-[Critical information that guides work in this domain]
+- [Anything else a newcomer to this domain must know to work on this project]
 
 ---
 
 ## Glossary
 
-<!-- This charter follows the dual-use design principle: it is both human
-     governance and AI prompt context. Any term used in this charter that
-     would be unclear to a reader without project context must be defined here.
-
-     Include:
-     - Project-specific terminology (frameworks, tools, patterns)
-     - Acronyms and abbreviations
-     - Concepts referenced in principles or scope that have specific meaning
-
-     If the charter uses only common terms, this section can be marked N/A.
+<!-- Define every term in this charter that a reader without project context would not
+     know: project-specific terminology, acronyms, and any concept in the principles or
+     scope that carries a specific meaning here. The charter is read by AI as well as
+     people, so undefined terms are a real gap, not a style issue.
+     If only common terms are used, mark this section N/A.
 -->
 
 | Term | Definition |
@@ -267,20 +188,17 @@ Tips:
 
 ## Charter Maintenance
 
-<!-- The charter is a living document -->
+<!-- Review schedule: quarterly, after major milestones, or when scope questions arise.
+     Amendment process: how changes are made and who approves. For a solo project,
+     "update via /charter" is a complete answer.
+-->
 
-**Review Schedule:** [Quarterly | After major milestones | When scope questions arise]
+**Review Schedule:** [When the charter is revisited]
 
-**Amendment Process:** [How are changes made? Who approves?]
+**Amendment Process:** [How changes are made and approved]
 
 ---
 
 *Charter established: [DATE]*
 *Last reviewed: [DATE]*
 *Next review: [DATE]*
-
-<!--
-Remember: This charter guides AI behavior throughout the project.
-When Claude faces uncertainty, it should reference this document.
-Keep it updated as understanding evolves.
--->
