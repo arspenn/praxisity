@@ -18,7 +18,7 @@ Build a design-first workflow framework enabling consistent, structured planning
 
 ### In Scope
 
-- Skills-driven workflow: /describe → /design → /plan → /do (with /charter as the entry point)
+- Skills-driven workflow: /describe → /design → /detail → /do (with /charter as the entry point)
 - Support skills for cross-cutting concerns (/gather, /consult-team, /agent-authoring)
 - Agent consultation system (9-agent roster, Mode 1/2/3 dispatch)
 - Document templates bundled with skills (charter, spec, design, DIP)
@@ -57,7 +57,7 @@ Build a design-first workflow framework enabling consistent, structured planning
 
 **Primary Success Metrics:**
 - Successfully self-bootstrap: use Praxisity skills to build Praxisity skills
-- End-to-end workflow validated: /charter → /describe → /design → /plan → /do
+- End-to-end workflow validated: /charter → /describe → /design → /detail → /do
 - Agent consultation system consistently catches issues not identified in solo work, as evidenced by review reports
 
 **Milestones:**

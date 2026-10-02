@@ -21,7 +21,7 @@ Every project follows four phases, each driven by a skill:
     ↓
 /design         Architect how it works (structure, interfaces, trade-offs)
     ↓
-/plan           Generate implementation prompts (DIPs — self-contained build instructions)
+/detail         Turn one design element into a DIP (a self-contained implementation prompt)
     ↓
 /do             Execute with git safety
 ```
@@ -37,7 +37,7 @@ Skills are specialized instructions that Claude Code follows when you invoke the
 | `/charter` | Create or update project constitution |
 | `/describe` | Write specification documents |
 | `/design` | Create design documents from specs |
-| `/plan` | Generate Detailed Implementation Prompts (DIPs) |
+| `/detail` | Turn one design element into a Detailed Implementation Prompt (DIP) |
 | `/do` | Execute DIPs with git safety controls |
 
 **Support skills** are invoked automatically when the context matches, or called directly when needed.
@@ -113,7 +113,7 @@ See [CHARTER.md](CHARTER.md) for the full project constitution.
 
 **Version:** 0.6.0 (pre-alpha)
 
-The framework is under active development. `/charter` is built and validated. The remaining workflow skills (`/describe`, `/design`, `/plan`, `/do`) are being built using the framework itself — bootstrapping in practice.
+The framework is under active development. `/charter` is built and validated. The remaining workflow skills (`/describe`, `/design`, `/detail`, `/do`) are being built using the framework itself — bootstrapping in practice.
 
 Praxisity is currently a solo project. Contributions will be welcomed after the core workflow is stable.
 

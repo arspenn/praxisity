@@ -6,7 +6,7 @@ Read this reference when building a skill for the Praxisity framework. These pat
 
 Praxisity distinguishes workflow skills from support skills:
 
-**Workflow skills** drive a specific phase of the design-first workflow (Describe → Design → Plan → Do). They are user-invoked only (`disable-model-invocation: true`). Each workflow skill follows a standard phase structure:
+**Workflow skills** drive a specific phase of the design-first workflow (Describe → Design → Detail → Do). They are user-invoked only (`disable-model-invocation: true`). Each workflow skill follows a standard phase structure:
 
 ```
 Pre-Flight → Gather → Generate-from-template → Post-Save → Completion Gate → Success Message
@@ -119,6 +119,6 @@ IDs are assigned when the user approves an item, take the highest number ever us
 
 ## Naming Conventions
 
-- Workflow skills: named for what they produce (charter, describe, design, plan, do)
+- Workflow skills: named for the verb of the phase (charter, describe, design, detail, do). "Detail" was chosen over "plan" (collides with Claude Code's plan mode) and "define" (overlaps with describe, and names the scoping stage in instructional design vocabulary).
 - Support skills: named for what they enable (gather, consult-team, skill-forge)
 - Prototype commands (being sunset): prefixed with `_prototype-` in `.claude/commands/`
