@@ -3,8 +3,8 @@
 ## Active Context
 
 **Branch:** `consolidate` (off main at 758f13a — if this goes badly, delete the branch and start over)
-**Last Command:** /detail skill built and reviewed (manual, Mode 2 team); fourth phase renamed plan → detail
-**Status:** Step 4 complete; next is step 5 (/do)
+**Last Command:** /do skill built and reviewed (manual, Mode 2 team). All five workflow skills now exist.
+**Status:** Step 5 complete; next is step 6 (delete legacy commands and templates, archive reviews)
 **Date:** 2026-10-02
 **Version:** 0.6.0 → targeting 0.7.0 at end of consolidation
 
@@ -30,7 +30,7 @@ Andrew completed the MPH and started a doctorate of education in instructional s
 | 2 | Build `/describe` skill from `/spec` command, bundle spec template | Done — two-round Mode 2 review; see `describe-skill-lead-review.md`. Not yet live-tested. |
 | 3 | Build `/design` skill from `/architect` command, bundle design template | Done 2026-09-23 — two-round Mode 2 review; reference convention adopted; see `design-skill-lead-review.md`. Not yet live-tested. |
 | 4 | Build `/detail` skill from `/define` command, bundle DIP template | Done 2026-10-02 — two-round Mode 2 review; see `detail-skill-lead-review.md`. Not yet live-tested. |
-| 5 | Build `/do` skill from `/build` command (no template) | Not started |
+| 5 | Build `/do` skill from `/build` command (no template) | Done 2026-10-02 — two-round Mode 2 review; see `do-skill-lead-review.md`. Not yet live-tested. |
 | 6 | Delete `.claude/commands/` and `.praxisity/templates/`; move review reports and stale references to `.plans/archive/` | Not started |
 | 7 | Refresh skill-forge platform reference (frontmatter fields changed: `when_to_use` now supported, plus `model`, `effort`, `context: fork`) | Not started |
 | 8 | Package as plugin (`.claude-plugin/plugin.json`, `skills/`, `agents/`), test install into a scratch project with `--plugin-dir` | Not started |
@@ -55,7 +55,7 @@ Reference convention (2026-09-23, canonical block in every template header and i
 | /describe | Built 2026-09-22, not yet live-tested | IDs assigned on approval, never renumbered; revise flow with struck rows; MUST→AC coverage gate |
 | /design | Built 2026-09-23, not yet live-tested | Generic Architecture (context, approach, key choices); coverage gate with design-wide and deliberate-gap escapes; spec-diff on revise |
 | /detail | Built 2026-10-02, not yet live-tested | Cite-only reference sections, full-text steps; Status lifecycle shared with /do; artifacts may be locations inside a file |
-| /do | Not started | From `/build` command |
+| /do | Built 2026-10-02, not yet live-tested | Status row is the durable record; user-performed steps; completion gate before commit; legacy DIPs refused |
 
 ### Support Skills (auto-invokable)
 | Skill | Status | Notes |
@@ -74,8 +74,10 @@ See `reference_skill_platform_capabilities.md` in project memory. Re-checked 202
 
 ## Next Steps
 
-1. Step 5: `/do` skill from `/build` command. Execution skill, no template, different phase structure. The DIP contract it consumes is listed in `detail-skill-lead-review.md` under "What /do needs from a DIP": Status values and who sets them, legacy DIPs without Status, step block shape, three Verify forms, Artifacts in Scope as the git safety list with the DIP/PLANNING.md exemption, bookkeeping edits committed with the work.
-2. Live-test the chain on a real project once `/do` exists
+1. Step 6: delete `.claude/commands/` (8 files) and `.praxisity/templates/` (now bundled in skills; keep `claude.template.md`, `readme.template.md`, `gitignore.template`, `changelog.template.md`, `adr.template.md` somewhere or decide they go too); move `.plans/reviews/` pre-2026-09 reports and stale `.plans/references/` into `.plans/archive/`; update `/consult-team` paths.
+2. Step 7: refresh skill-forge (`when_to_use` now supported; `model`, `effort`, `context: fork`; plugin notes) and praxisity-patterns (PLANNING.md contract, pacing terms, gates, Status lifecycle, `context: fork` prohibition for interactive skills).
+3. Step 8: plugin packaging and the verification list.
+4. Live-test the full chain on a real project, ending with a `/do` run that halts on purpose, is revised with `/detail`, and resumes.
 
 ## Developer scratch pad (out of session notes)
 - Consider adding an 'ex nihilo' pattern for the skill forge. Consider using this pattern to create new deep research skill. Consider adding that to the 'ex nihilo' pattern we used to create it.

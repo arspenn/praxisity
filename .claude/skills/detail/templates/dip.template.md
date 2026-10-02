@@ -34,11 +34,11 @@ Reference conventions, identical in every Praxisity template:
 -->
 
 > **For the executor, person or agent:** follow these instructions as written. Read every item
-> under Required Reading before the first step and tick it. Verify each step before starting
-> the next. If a verification fails or an instruction is unclear, stop and ask rather than
-> improvise. When every step and criterion has passed, set Status to Done. ID key: REQ
-> requirement, UC use case, AC acceptance criterion (from the spec); COMP component, INT
-> interface, DATA data entity, DEC decision (from the design).
+> under Required Reading before the first step. Verify each step before starting the next
+> and record progress in the Status row. If a verification fails or an instruction is
+> unclear, stop and ask rather than improvise. When the last step is done and every criterion
+> has passed or been deferred, set Status to Done. ID key: REQ requirement, UC use case, AC acceptance criterion (from the
+> spec); COMP component, INT interface, DATA data entity, DEC decision (from the design).
 
 ## Context
 
@@ -53,10 +53,11 @@ Reference conventions, identical in every Praxisity template:
 | Author | [Name] |
 | Created | [YYYY-MM-DD] |
 
-<!-- Status: /detail sets Ready. The executor sets In Progress, then Done, or
-     "Halted — Step N: [reason]" when stopped; the Status row is the durable record of a
-     halt. A Ready or Halted DIP may be revised (Halted returns to Ready); an In Progress or
-     Done DIP is not, and a follow-up DIP is written instead, naming it under Follows. -->
+<!-- Status: /detail sets Ready. The executor sets "In Progress — Step N passed" as it goes,
+     "Halted — Step N: [reason]" when stopped, and Done at the end; the Status row is the
+     durable record of progress and halts. A Ready or Halted DIP may be revised (Halted
+     returns to Ready, with "resume at Step K" in the Revision History row); an In Progress
+     or Done DIP is not, and a follow-up DIP is written instead, naming it under Follows. -->
 
 ## Objective
 
@@ -74,21 +75,22 @@ Reference conventions, identical in every Praxisity template:
      apply. The DIP cites; it does not restate. -->
 
 ### From [DESIGN-DDD](../designs/DDD-slug.md)
-- [ ] §3 COMP-n (short label)
-- [ ] §4 INT-n (short label), or N/A
-- [ ] §5 DATA-n (short label), or N/A
-- [ ] §6 DEC-n (short label), or N/A
+- §3 COMP-n (short label)
+- §4 INT-n (short label), or N/A
+- §5 DATA-n (short label), or N/A
+- §6 DEC-n (short label), or N/A
 
 ### From [SPEC-MMM](../specs/MMM-slug.md)
-- [ ] §3 REQ-Fn (short label)
-- [ ] §4 UC-n (short label)
-- [ ] §5 AC-n (short label)
+- §3 REQ-Fn (short label)
+- §4 UC-n (short label)
+- §5 AC-n (short label)
 
 ### From [CHARTER.md](../../CHARTER.md)
-- [ ] §Principles: [the principle that applies, in a phrase]
-- [ ] §Constraints: [the constraint that applies, in a phrase]
+- §Principles: [the principle that applies, in a phrase]
+- §Constraints: [the constraint that applies, in a phrase]
 
-<!-- A block with nothing to read is a single line "N/A — [reason]" with no checkbox. -->
+<!-- A block with nothing to read is a single line "N/A — [reason]". The executor tracks these
+     in its own task list; nothing is ticked here. -->
 
 ## Implementation Steps
 
@@ -154,7 +156,7 @@ Reference conventions, identical in every Praxisity template:
 
 ### DO NOT
 - [Action that is not part of this task]
-- Do not change anything outside Artifacts in Scope; this DIP's Status row and PLANNING.md are bookkeeping, not scope
+- Do not change anything outside Artifacts in Scope; edits to this DIP's Status and Notes and to PLANNING.md are bookkeeping, not scope
 
 ### Artifacts in Scope
 ```
@@ -195,13 +197,15 @@ Reference conventions, identical in every Praxisity template:
 
 <!-- The executor confirms each before finishing. The first three apply to any work; the
      last two only under version control and are removed otherwise. Bookkeeping edits
-     (this DIP's Status row, PLANNING.md) are not scope violations. -->
+     (this DIP's Status and Notes, PLANNING.md) are not scope violations and are committed
+     with the work. The executor confirms items aloud and in the commit body; nothing is
+     ticked here. -->
 
-- [ ] No secrets, keys, or credentials in the changes
-- [ ] Only artifacts in scope were changed, plus this DIP's Status row and PLANNING.md
-- [ ] Verification passed
-- [ ] Each artifact staged by name; no `git add .` or `git add -A`
-- [ ] No unrelated changes in the commit
+- No secrets, keys, or credentials in the changes
+- Only artifacts in scope were changed, plus this DIP's Status and Notes and PLANNING.md
+- Verification passed
+- Each artifact staged by name; no `git add .` or `git add -A`
+- No unrelated changes in the commit
 
 ## Commit Instructions
 
@@ -218,8 +222,9 @@ Satisfies: REQ-Fn, REQ-Fn"
 
 ## Notes
 
-<!-- Anything else the executing agent should know: known pitfalls, environment setup, a
-     decision deferred to execution time, or N/A. -->
+<!-- Anything else the executor should know: known pitfalls, environment setup, a decision
+     deferred to execution time, or N/A. During execution, deviations (a skipped step, a
+     fix applied on retry) are appended here as dated lines. -->
 
 [Additional guidance, or N/A]
 
