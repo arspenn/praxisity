@@ -31,7 +31,7 @@ Andrew completed the MPH and started a doctorate of education in instructional s
 | 3 | Build `/design` skill from `/architect` command, bundle design template | Done 2026-09-23 — two-round Mode 2 review; reference convention adopted; see `design-skill-lead-review.md`. Not yet live-tested. |
 | 4 | Build `/detail` skill from `/define` command, bundle DIP template | Done 2026-10-02 — two-round Mode 2 review; see `detail-skill-lead-review.md`. Not yet live-tested. |
 | 5 | Build `/do` skill from `/build` command (no template) | Done 2026-10-02 — two-round Mode 2 review; see `do-skill-lead-review.md`. Not yet live-tested. |
-| 6 | Delete `.claude/commands/` and `.praxisity/templates/`; move review reports and stale references to `.plans/archive/` | Not started |
+| 6 | Delete `.claude/commands/`; bundle or park remaining templates; archive pre-September reviews and references | In progress 2026-10-02 — commands deleted; reviews and references archived; claude/readme/changelog/gitignore templates rewritten and bundled in `/charter` (Post-Save checklist), `/do` appends to CHANGELOG.md; `adr.template.md` parked in `.praxisity/templates/` for a future `/decide` skill. Awaiting a one-round review of the charter extension. |
 | 7 | Refresh skill-forge platform reference (frontmatter fields changed: `when_to_use` now supported, plus `model`, `effort`, `context: fork`) | Not started |
 | 8 | Package as plugin (`.claude-plugin/plugin.json`, `skills/`, `agents/`), test install into a scratch project with `--plugin-dir` | Not started |
 | 9 | Update README, CHARTER scope/milestones, CHANGELOG to 0.7.0; merge to main | Not started |
@@ -78,6 +78,10 @@ See `reference_skill_platform_capabilities.md` in project memory. Re-checked 202
 2. Step 7: refresh skill-forge (`when_to_use` now supported; `model`, `effort`, `context: fork`; plugin notes) and praxisity-patterns (PLANNING.md contract, pacing terms, gates, Status lifecycle, `context: fork` prohibition for interactive skills).
 3. Step 8: plugin packaging and the verification list.
 4. Live-test the full chain on a real project, ending with a `/do` run that halts on purpose, is revised with `/detail`, and resumes.
+
+## First skill after consolidation
+
+`/decide` — decision-support skill producing an ADR from `.praxisity/templates/adr.template.md` into `.plans/decisions/`. Cross-cutting decisions that would already be ADRs: shelving SPEC-009, the reference convention, naming the fourth phase `detail`, tracking in Status row + task list + commit body rather than ticks. Write them when the skill exists.
 
 ## Developer scratch pad (out of session notes)
 - Consider adding an 'ex nihilo' pattern for the skill forge. Consider using this pattern to create new deep research skill. Consider adding that to the 'ex nihilo' pattern we used to create it.

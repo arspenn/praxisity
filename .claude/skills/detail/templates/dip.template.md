@@ -156,7 +156,7 @@ Reference conventions, identical in every Praxisity template:
 
 ### DO NOT
 - [Action that is not part of this task]
-- Do not change anything outside Artifacts in Scope; edits to this DIP's Status and Notes and to PLANNING.md are bookkeeping, not scope
+- Do not change anything outside Artifacts in Scope; edits to this DIP's Status and Notes, to PLANNING.md, and to CHANGELOG.md are bookkeeping, not scope
 
 ### Artifacts in Scope
 ```
@@ -197,12 +197,12 @@ Reference conventions, identical in every Praxisity template:
 
 <!-- The executor confirms each before finishing. The first three apply to any work; the
      last two only under version control and are removed otherwise. Bookkeeping edits
-     (this DIP's Status and Notes, PLANNING.md) are not scope violations and are committed
+     (this DIP's Status and Notes, PLANNING.md, CHANGELOG.md) are not scope violations and are committed
      with the work. The executor confirms items aloud and in the commit body; nothing is
      ticked here. -->
 
 - No secrets, keys, or credentials in the changes
-- Only artifacts in scope were changed, plus this DIP's Status and Notes and PLANNING.md
+- Only artifacts in scope were changed, plus this DIP's Status and Notes, PLANNING.md, and CHANGELOG.md
 - Verification passed
 - Each artifact staged by name; no `git add .` or `git add -A`
 - No unrelated changes in the commit

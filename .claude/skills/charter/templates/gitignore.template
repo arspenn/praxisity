@@ -1,0 +1,10 @@
+# Agent memory is a local working asset and may hold personal details
+.claude/agent-memory/
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+
+# Python caches
+__pycache__/
+*.pyc

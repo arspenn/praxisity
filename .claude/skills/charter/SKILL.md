@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 Create or update the project's charter. The charter is the project's constitution: it states the mission, principles, scope, and constraints. When CLAUDE.md points to it, Claude reads it at the start of every session, so it shapes the AI's judgment calls as much as the user's.
 
-**Template:** `${CLAUDE_SKILL_DIR}/templates/charter.template.md`. The template is read-only input shared by every future run; all edits target the project's CHARTER.md.
+**Templates:** `${CLAUDE_SKILL_DIR}/templates/charter.template.md` for the charter, and in the same directory `claude.template.md`, `readme.template.md`, `changelog.template.md`, and `gitignore.template` for the project files offered after saving. Templates are read-only input shared by every future run; all edits target the project's own files.
 
 ## Rules
 
@@ -28,7 +28,7 @@ Run these steps in order and finish each before starting the next. Step 2 lands 
 2. Update PLANNING.md: Last Command `/charter`, Status `in progress`, Date today.
 3. Invoke the `gather` skill with the Skill tool so its protocol is in context before the first section is presented.
 4. If CHARTER.md exists, read it in full and offer three options: **(r)eview and update**, **(s)tart fresh** (a new charter; the established date resets to today), or **(c)ancel**. On cancel, set PLANNING.md Status to `cancelled` and stop.
-5. If CLAUDE.md exists, read it for the project name, type, and mission as defaults. If it does not exist, gather the project name along with the Mission.
+5. If CLAUDE.md exists, read it for the project name, domain, and mission as defaults. If it does not exist, gather the project name along with the Mission.
 6. Read the template. Its HTML comments define what each section needs and carry the examples.
 
 ## Introduction
@@ -73,10 +73,14 @@ Copy the template, then Edit the copy. Edit keeps the template's structure as gr
 
 ## Post-Save
 
-Make both offers in one message so the user answers once, and do nothing on either without a yes.
+A charter is the first document in a project, so this is where the other project files get offered. Present the checklist below in one message, listing only the items that apply, so the user answers once; create nothing without a yes. Each file is made the same way as the charter: copy its template with `cp` in Bash, read the copy, substitute placeholders from the charter with Edit, strip the HTML comments (the gitignore's `#` lines are its content and stay).
 
-1. If CLAUDE.md exists and does not yet import the charter, offer to add an import line, `@CHARTER.md`, under a "Project constitution" heading, so the charter is loaded into context every session rather than merely mentioned. If CLAUDE.md does not exist, offer to create a minimal one with the project name, the mission, and that import line.
-2. If the project is a git repository, offer to commit CHARTER.md with `charter: create project charter` or `charter: update project charter`.
+1. **CLAUDE.md.** If missing, create it from `claude.template.md`: name, domain, mission, and the `@CHARTER.md` import line that loads the charter into every session. If present and it does not import the charter, offer to add that line under a "Project Constitution" heading.
+2. **README.md.** If missing, create it from `readme.template.md`. Show the drafted Overview (from the mission and scope) before creating the file; later sections stay as placeholders or N/A.
+3. **CHANGELOG.md.** If missing, create it from `changelog.template.md`; the first entry records the charter. `/do` appends to it as work completes.
+4. **.gitignore.** If the project is a git repository and has none, create it from `gitignore.template`.
+
+Then, if the project is a git repository, offer to commit CHARTER.md and any files just created, with `charter: create project charter` or `charter: update project charter`. Never commit without an explicit yes.
 
 ## Completion Gate
 

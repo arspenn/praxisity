@@ -1,6 +1,0 @@
-# Python
-__pycache__/
-*.pyc
-
-# Agent memory - local working asset, may contain personal details
-.claude/agent-memory/

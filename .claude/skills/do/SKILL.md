@@ -17,7 +17,7 @@ Execute a Detailed Implementation Prompt. `/detail` wrote the DIP so that someon
 - Ask when a step has two readings that would produce different Outputs. A choice that leaves the Output the same is yours to make; asking about it is noise.
 - Verify every step before starting the next. Read the Verify text to decide its form: runnable as written is a **command** (run it, check the result); text naming who judges is a **human judgment** (show the judge what to look at and ask pass or fail); anything else is an **observable check** (perform it, report what you saw, and decide against the Verify text).
 - One DIP per run. A DIP is sized for one sitting; chaining them hides where things went wrong.
-- The DIP's Status row is the durable record of progress: `In Progress — Step N passed` after each step, `Halted — Step N: [reason]` when stopped, `Done` at the end. Deviations are recorded as dated lines under the DIP's Notes. Live progress is tracked in your task list (TodoWrite in Claude Code); nothing else in the DIP is edited. Edits to the DIP's Status and Notes and to PLANNING.md are bookkeeping, outside the scope check, and are committed with the work.
+- The DIP's Status row is the durable record of progress: `In Progress — Step N passed` after each step, `Halted — Step N: [reason]` when stopped, `Done` at the end. Deviations are recorded as dated lines under the DIP's Notes. Live progress is tracked in your task list (TodoWrite in Claude Code); nothing else in the DIP is edited. Edits to the DIP's Status and Notes, to PLANNING.md, and to CHANGELOG.md are bookkeeping, outside the scope check, and are committed with the work.
 - Git safety: stage every artifact by name, never `git add .` or `git add -A`; do not stage anything matching secret patterns (`.env`, keys, tokens, credentials) unless the user names the file and says to include it; show the staged changes before committing; never commit without a yes.
 
 <!-- Maintainer note: this skill converses with the user throughout (human-judged verifications, user-performed steps, halts), so it must not be given `context: fork` in frontmatter. -->
@@ -39,7 +39,7 @@ Run these steps in order and finish each before starting the next. Step 2 lands 
    - **Done:** say so and stop unless the user explicitly asks to run it again.
    - **No Status row, or headings that do not match the current DIP template** (Files in Scope, Implementation Instructions, Verification Commands): the DIP predates the template. Say this skill executes DIPs in the current shape and point to `/detail DIP-NNN`, whose update flow maps the old sections into the new ones. Set PLANNING.md Status to `cancelled` and stop.
    To cancel at this step, set PLANNING.md Status to `cancelled` and stop; the DIP's Status is unchanged.
-5. Check the working tree. If the project is a git repository, run `git status`. On a resume, changes to this DIP's file, to PLANNING.md, and to the DIP's own Artifacts in Scope from the previous run are expected and do not count as dirty. If anything else is uncommitted, list it and ask for explicit approval to proceed, or suggest committing or setting it aside with `git stash` first; uncommitted work mixed into this run cannot be separated later. If it is not a git repository, note that the git items of the Safety Checklist and the Commit Instructions are N/A for this run.
+5. Check the working tree. If the project is a git repository, run `git status`. On a resume, changes to this DIP's file, to PLANNING.md, to CHANGELOG.md, and to the DIP's own Artifacts in Scope from the previous run are expected and do not count as dirty. If anything else is uncommitted, list it and ask for explicit approval to proceed, or suggest committing or setting it aside with `git stash` first; uncommitted work mixed into this run cannot be separated later. If it is not a git repository, note that the git items of the Safety Checklist and the Commit Instructions are N/A for this run.
 6. Read every item under the DIP's Required Reading, in the order listed. These are the sources the steps are written against; skipping them is how an executor builds the wrong thing confidently. Do not skip items you believe you remember from an earlier session. Track them in your task list, not in the DIP.
 7. Set the DIP's Status row to `In Progress`. Show the user the Objective and the list of step titles, and say which steps you expect the user to perform (any whose artifacts you cannot open, or any they claim). Create one task-list entry per step, plus one each for acceptance and for safety and commit.
 
@@ -72,9 +72,10 @@ This runs before anything is staged, so the commit carries the final state.
 
 1. Set the DIP's Status row to `Done`, or leave the Halted status if the run ended in a halt.
 2. Update PLANNING.md: Status `complete`; Next Steps naming the DIP and its outcome (done, or halted at step N with "resume with `/do DIP-NNN`"), any deviations, any deferred criteria, and the next element to detail per the design's §7.1 Implementation Order. Do not record the commit hash; it does not exist yet.
-3. Cancellations: before any step ran, PLANNING.md reads `cancelled` and the DIP is unchanged. After a step ran, PLANNING.md reads `complete` with the outcome, and the DIP reads `Halted — Step N: cancelled by user`.
+3. If the run ended Done and CHANGELOG.md exists, append one line under `## [Unreleased]`. The section comes from the DIP's commit type: `feat` → Added, `fix` → Fixed, a removal → Removed, anything else → Changed. The line is one imperative sentence from the Objective, ending with `(DIP-NNN)`. If the file has no Unreleased heading, insert one with the four sections above the newest version first. The changelog then maintains itself as work completes.
+4. Cancellations: before any step ran, PLANNING.md reads `cancelled` and the DIP is unchanged. After a step ran, PLANNING.md reads `complete` with the outcome, and the DIP reads `Halted — Step N: cancelled by user`.
 
-This is a hard gate: do not proceed to commit or show the success message until both files are updated, because the next session reads them before anything else.
+This is a hard gate: do not proceed to commit or show the success message until these files are updated, because the next session reads them before anything else.
 
 ## Safety and Commit
 
@@ -82,9 +83,9 @@ Skip this phase when the run ended in a halt; the work is not committed, and the
 
 1. Walk the DIP's Safety Checklist and confirm each item to the user. The three tool-neutral items apply to every run; the two git items only under version control. Nothing is ticked in the DIP; the confirmation goes in the commit body.
 2. If the project is not a git repository, stop here and say the work is not committed because there is no repository.
-3. Run `git status` and compare every changed path against Artifacts in Scope. The DIP file and PLANNING.md are bookkeeping and pass. Anything else outside scope is shown to the user and needs an explicit yes to be staged.
+3. Run `git status` and compare every changed path against Artifacts in Scope. The DIP file, PLANNING.md, and CHANGELOG.md are bookkeeping and pass. Anything else outside scope is shown to the user and needs an explicit yes to be staged.
 4. Scan the changed content for secret patterns. A match is shown and is not staged unless the user names it and says to include it.
-5. Stage by name: the artifacts in scope that changed, the DIP file, and PLANNING.md.
+5. Stage by name: the artifacts in scope that changed, the DIP file, PLANNING.md, and CHANGELOG.md if it was appended.
 6. Show the staged changes: `git diff --staged` for text artifacts; for binary artifacts show the file list and say the Verifies already passed are the review. Wait for the user to look.
 7. Commit per the DIP's Commit Instructions. In the body: acceptance results, deviations, and "safety checklist confirmed". Never commit without a yes.
 
