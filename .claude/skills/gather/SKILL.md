@@ -48,7 +48,7 @@ The workflow skill decides what counts as a section, using these terms:
 - **One prompt:** the section is asked for in a single message and answered once.
 - **Checklist:** a section whose sub-categories each take about one line (stakeholder roles, constraint categories) is one prompt with the sub-categories listed; the user answers whichever apply and the rest are marked N/A.
 - **One at a time:** a section where each item changes the user's thinking (principles, requirements, use cases) is asked item by item until the user says done.
-- **Drafted:** the section is derived from earlier answers (a glossary, a coverage table) and presented for approval without a prompt.
+- **Drafted by you:** the section is derived from earlier answers (a glossary, a coverage table) and presented for approval without a prompt.
 
 A workflow skill may compound these for one template section ("two prompts: In, then Out"; "drafted, then one prompt"); each part follows its own term. The distinction is whether pacing changes the answer, not how the template is formatted. A checklist prompt looks like this:
 
@@ -75,7 +75,7 @@ Before each gathering message, verify:
 
 Two skip states exist, and the difference matters for later updates:
 - **N/A — [reason]:** the section does not apply to this project.
-- **TBD — revisit at [milestone]:** it applies but cannot be known yet. Ask for the milestone. Update flows use these markers as their target list.
+- **TBD — revisit at [milestone]:** it applies but cannot be known yet. Ask for the milestone. Update flows walk every TBD section and show N/A sections in their index so the user can reconsider them.
 
 In an update flow, "skip" means keep the existing content unchanged.
 

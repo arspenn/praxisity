@@ -63,7 +63,7 @@ Gather in the order of the table below, which follows the template except that d
 
 ### Review and Confirm
 
-Show a compact outline: each section header with a one-line summary, the counts of requirements (MUST / SHOULD / COULD), use cases, acceptance criteria, and open questions, the count of TBD and N/A markers, and any MUST without an acceptance criterion. Not the full text; the user just approved it section by section. Offer **(y)es save**, **(e)dit a section**, or **(c)ancel**; while any MUST is uncovered, offer only edit or cancel. An edit that removes an item retires its ID; nothing renumbers. Struck-through items do not count toward coverage. On cancel, set PLANNING.md Status to `cancelled` and stop.
+Show a compact outline: each section header with a one-line summary, the counts of requirements (MUST / SHOULD / COULD), use cases, acceptance criteria, and open questions, the count of TBD and N/A markers, and any MUST without an acceptance criterion. Not the full text; the user just approved it section by section. Offer **(y)es save**, **(e)dit a section**, or **(c)ancel**. While any MUST is uncovered, offer instead: write a criterion for it, mark the Acceptance Criteria section TBD with a milestone, lower the requirement to SHOULD, or cancel. An edit that removes an item retires its ID; nothing renumbers. Struck-through items do not count toward coverage. On cancel, set PLANNING.md Status to `cancelled` and stop.
 
 ## Generate the Spec File
 

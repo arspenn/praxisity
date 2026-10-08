@@ -3,9 +3,9 @@
 ## Active Context
 
 **Branch:** `consolidate` (off main at 758f13a — if this goes badly, delete the branch and start over)
-**Last Command:** /do skill built and reviewed (manual, Mode 2 team). All five workflow skills now exist.
-**Status:** Step 5 complete; next is step 6 (delete legacy commands and templates, archive reviews)
-**Date:** 2026-10-02
+**Last Command:** skill-forge and praxisity-patterns refreshed (step 7)
+**Status:** Steps 1–7 complete; next is step 8 (plugin packaging and verification)
+**Date:** 2026-10-08
 **Version:** 0.6.0 → targeting 0.7.0 at end of consolidation
 
 ## Goal of This Branch
@@ -32,7 +32,7 @@ Andrew completed the MPH and started a doctorate of education in instructional s
 | 4 | Build `/detail` skill from `/define` command, bundle DIP template | Done 2026-10-02 — two-round Mode 2 review; see `detail-skill-lead-review.md`. Not yet live-tested. |
 | 5 | Build `/do` skill from `/build` command (no template) | Done 2026-10-02 — two-round Mode 2 review; see `do-skill-lead-review.md`. Not yet live-tested. |
 | 6 | Delete `.claude/commands/`; bundle or park remaining templates; archive pre-September reviews and references | In progress 2026-10-02 — commands deleted; reviews and references archived; claude/readme/changelog/gitignore templates rewritten and bundled in `/charter` (Post-Save checklist), `/do` appends to CHANGELOG.md; `adr.template.md` parked in `.praxisity/templates/` for a future `/decide` skill. Awaiting a one-round review of the charter extension. |
-| 7 | Refresh skill-forge platform reference (frontmatter fields changed: `when_to_use` now supported, plus `model`, `effort`, `context: fork`) | Not started |
+| 7 | Refresh skill-forge platform reference and praxisity-patterns | Done 2026-10-08 — both rewritten; prompt-engineer and consistency-reviewer passes applied (tested-vs-documented split, skeleton self-contained, patterns no longer over-generalize from /design; describe gate exits named; gather term "Drafted by you") |
 | 8 | Package as plugin (`.claude-plugin/plugin.json`, `skills/`, `agents/`), test install into a scratch project with `--plugin-dir` | Not started |
 | 9 | Update README, CHARTER scope/milestones, CHANGELOG to 0.7.0; merge to main | Not started |
 
