@@ -1,0 +1,14 @@
+{
+  "name": "arspenn",
+  "description": "Plugins by Andrew Robert Spenn. Praxisity: a design-first workflow framework for AI-assisted projects.",
+  "owner": {
+    "name": "Andrew Robert Spenn"
+  },
+  "plugins": [
+    {
+      "name": "praxisity",
+      "source": ".",
+      "description": "Design-first workflow framework: Describe → Design → Detail → Do, with /charter as the entry point."
+    }
+  ]
+}

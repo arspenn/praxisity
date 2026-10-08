@@ -103,5 +103,5 @@ Show all of the following:
   1. Read the design once as the person who will build it; every component should be something you could start tomorrow.
   2. Resolve or explicitly defer each Open question before writing implementation prompts.
   3. If the spec's Status is still Draft, consider marking it Approved now that a design depends on it.
-  4. If `consult-team` is installed, a designer or skeptic pass tests component boundaries and whether every part is needed.
+  4. If the Praxisity agent roster is installed in this project, a designer or skeptic pass through `consult-team` tests component boundaries and whether every part is needed. If it is not, `/agent-authoring` installs it.
   5. If the `detail` skill is installed, detail the first element with `/detail`; the resulting implementation prompt will cite these IDs.

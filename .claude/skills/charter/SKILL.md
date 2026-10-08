@@ -97,4 +97,4 @@ Show all of the following:
   1. Read the charter once as a reader rather than its author.
   2. Share it with an instructor, advisor, or collaborator if that would help alignment.
   3. Revisit at each TBD milestone; `/charter` will walk only what changed.
-  4. If the `describe` skill is installed, start the first specification with `/describe`. If `consult-team` is installed, it can run a multi-perspective review of the charter first.
+  4. If the `describe` skill is installed, start the first specification with `/describe`. If the Praxisity agent roster is installed in this project, `consult-team` can run a multi-perspective review of the charter first; `/agent-authoring` installs the roster.

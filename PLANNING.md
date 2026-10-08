@@ -3,8 +3,8 @@
 ## Active Context
 
 **Branch:** `consolidate` (off main at 758f13a — if this goes badly, delete the branch and start over)
-**Last Command:** skill-forge and praxisity-patterns refreshed (step 7)
-**Status:** Steps 1–7 complete; next is step 8 (plugin packaging and verification)
+**Last Command:** plugin packaged and verified headless (step 8a)
+**Status:** Steps 1–8a complete; next is 8b (agent pass: roster into agent-authoring)
 **Date:** 2026-10-08
 **Version:** 0.6.0 → targeting 0.7.0 at end of consolidation
 
@@ -33,14 +33,15 @@ Andrew completed the MPH and started a doctorate of education in instructional s
 | 5 | Build `/do` skill from `/build` command (no template) | Done 2026-10-02 — two-round Mode 2 review; see `do-skill-lead-review.md`. Not yet live-tested. |
 | 6 | Delete `.claude/commands/`; bundle or park remaining templates; archive pre-September reviews and references | In progress 2026-10-02 — commands deleted; reviews and references archived; claude/readme/changelog/gitignore templates rewritten and bundled in `/charter` (Post-Save checklist), `/do` appends to CHANGELOG.md; `adr.template.md` parked in `.praxisity/templates/` for a future `/decide` skill. Awaiting a one-round review of the charter extension. |
 | 7 | Refresh skill-forge platform reference and praxisity-patterns | Done 2026-10-08 — both rewritten; prompt-engineer and consistency-reviewer passes applied (tested-vs-documented split, skeleton self-contained, patterns no longer over-generalize from /design; describe gate exits named; gather term "Drafted by you") |
-| 8 | Package as plugin (`.claude-plugin/plugin.json`, `skills/`, `agents/`), test install into a scratch project with `--plugin-dir` | Not started |
+| 8a | Package skills as a plugin: `.claude-plugin/plugin.json` pointing `skills` at `./.claude/skills/`, marketplace.json (`arspenn`, `source: "."`); validate; test `--plugin-dir` | Done 2026-10-08 — `claude plugin validate .` passes; headless `/praxisity:charter` in `~/Dev/praxisity-test` ran full pre-flight (PLANNING.md to contract, gather defaults, intro, Mission prompt). Verified: namespaced load, `${CLAUDE_SKILL_DIR}` in plugin. Plugin ships agentless. Watch in live test: source-material invite and Mission prompt landed in one message. |
+| 8b | Agent pass: harvest `.claude/agent-memory/` insights into the nine agent definitions; rewrite `agent-authoring` to carry the roster as templates and install chosen agents into a project's `.claude/agents/` (consult-team, charter, describe, design already point at `/agent-authoring` for this); review with PE + critic | Not started |
 | 9 | Update README, CHARTER scope/milestones, CHANGELOG to 0.7.0; merge to main | Not started |
 
 Build order for steps 2–5 follows the pattern set by the revised `/charter` (2026-09-22): inline PLANNING.md contract, sequential pre-flight with reasons, explicit gather invocation, template owns section guidance, pacing table using gather's four terms, copy-then-edit with a closed operations list, cancel paths reset PLANNING.md, offer-only post-save, completion gate, honest success message. Review each clone with prompt-engineer + critic + spot in Mode 2 (they hold checklists in agent memory from the charter review). No Mode 3.
 
 Decisions made 2026-09-22: Domain Context is generic (three transferable questions, examples per field in the template comment); Stakeholders/Success Criteria/Constraints are checklist prompts; `TBD — revisit at [milestone]` is a marker distinct from N/A; source material conventionally lives in `.plans/references/`.
 
-To verify in step 8: skill invoking `gather` via the Skill tool; `${CLAUDE_SKILL_DIR}` inside a plugin; `@CHARTER.md` import in CLAUDE.md actually loads; `$ARGUMENTS` inside a skill.
+Verified 2026-10-08 in the plugin-dir run: `${CLAUDE_SKILL_DIR}` inside a plugin; namespaced skill load; gather hand-off (defaults saved). Still to verify in the interactive live test: `@CHARTER.md` import actually loads; `$ARGUMENTS` inside a skill; whether a marketplace-installed plugin's directory is readable without a prompt. Test project: `~/Dev/praxisity-test` (sibling repo, kept for repeated use; run with `claude --plugin-dir ~/Dev/praxisity --add-dir ~/Dev/praxisity`).
 
 ID pattern for /detail (from the /describe and /design reviews): IDs assigned on approval, highest-ever-plus-one, never renumbered; removed items kept with the ID struck; coverage gates withhold the save option and name their exits; `MMM` for a parent document's number; one parent per child.
 
