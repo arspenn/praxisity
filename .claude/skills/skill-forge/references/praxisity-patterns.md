@@ -99,7 +99,7 @@ Reference conventions, identical in every Praxisity template:
 - Placeholder rows and blocks are illustrative; the header comment says so, and the Generate operations include row and block adjustment.
 - The reference-conventions block and the two-markers note appear in every template header.
 - Copy-then-edit is absolute: `cp`, read, then one Edit per H2 section (an `old_string` never crosses a heading, so a whole-body replacement is impossible by construction) with a closed list of operations, strip HTML comments (a gitignore's `#` lines are content). Never Write a template-derived file.
-- The Generate phase ends by running `scripts/check-template-structure.py` (template, output, `--repeat` for templates with repeating blocks) and showing its output; `STRUCTURE CHECK OK` is the acceptance condition, not the agent's assertion. Identical copies of the script live in every template skill; edit all of them together.
+- The Generate phase ends by running `scripts/check-template-structure.sh` (bash, awk, grep, sed only; no Python) (template, output, `--repeat` for templates with repeating blocks) and showing its output; `STRUCTURE CHECK OK` is the acceptance condition, not the agent's assertion. Identical copies of the script live in every template skill; edit all of them together.
 
 ## The Status Lifecycle of a DIP
 
