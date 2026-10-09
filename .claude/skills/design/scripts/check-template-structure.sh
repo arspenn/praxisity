@@ -77,12 +77,14 @@ problems=$(awk -v mode="$MODE" '
 
 comments=$(grep -n -E '<!--|-->' "$O" | sed -E 's/^([0-9]+):.*/line \1: HTML comment not stripped/')
 
+# Placeholders are the template's `[...]` tokens, excluding markdown link text (`[text](url)`)
+# and bracketed headings (`## [0.1.0]`), which legitimately appear in both files.
 leftovers=""
 while IFS= read -r ph; do
-  case "$ph" in *.md*|*http*|'[Unreleased]') continue ;; esac
+  [ -n "$ph" ] || continue
   grep -qF -- "$ph" "$O" && leftovers="${leftovers}placeholder left unfilled: ${ph}
 "
-done < <(grep -oE '\[[^]]+\]' "$T" | sort -u)
+done < <(sed -E -e 's/\[[^]]*\]\([^)]*\)//g' -e 's/^#+ \[[^]]*\]//' "$T" | grep -oE '\[[^]]+\]' | sort -u)
 
 all=$(printf '%s\n%s\n%s' "$problems" "$comments" "$leftovers" | sed '/^$/d')
 if [ -n "$all" ]; then

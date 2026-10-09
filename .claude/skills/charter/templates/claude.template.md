@@ -34,7 +34,7 @@ Work follows Describe → Design → Detail → Do (`/describe`, `/design`, `/de
 
 ## Behavioral Corrections
 
-Add an entry here only after the agent has made the same mistake more than once. Format: **[Short name]:** what to do instead, and why. Keep an entry until the thing it refers to no longer exists, or until a new model release gives reason to test it: remove it, watch a few sessions, and restore it if the mistake returns. The agent cannot tell from the inside whether a correction is still doing work, so "the mistake stopped" is not evidence it can be removed.
+Add an entry here only after the agent has made the same mistake more than once. Format: a bold short name, a colon, then what to do instead and why. Keep an entry until the thing it refers to no longer exists, or until a new model release gives reason to test it: remove it, watch a few sessions, and restore it if the mistake returns. The agent cannot tell from the inside whether a correction is still doing work, so "the mistake stopped" is not evidence it can be removed.
 
 ## Non-Obvious Context
 

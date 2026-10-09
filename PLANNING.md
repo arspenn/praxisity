@@ -95,6 +95,8 @@ See `reference_skill_platform_capabilities.md` in project memory. Re-checked 202
 - README/charter overlap: README template trimmed to overview, status, getting started, one pointer; the one-document question deferred.
 - gather defaults: worked, no change.
 
+**2026-10-09, run 3.** Mostly worked. Two tweaks: agent-authoring's reinstall said "differs locally" when the roster had moved (now "differs from the roster", with the diff shown, memory path wording scope-neutral); the structure check flagged link text and bracketed changelog headings as unfilled placeholders (now excluded), and the CLAUDE.md template's format hint no longer uses brackets. All four of the test project's files pass the check.
+
 ## First skill after consolidation
 
 `/decide` — decision-support skill producing an ADR from `.praxisity/templates/adr.template.md` into `.plans/decisions/`. Cross-cutting decisions that would already be ADRs: shelving SPEC-009, the reference convention, naming the fourth phase `detail`, tracking in Status row + task list + commit body rather than ticks. Write them when the skill exists.
