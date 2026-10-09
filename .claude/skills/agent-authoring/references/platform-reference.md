@@ -49,14 +49,15 @@ When `memory` is set (e.g., `memory: project`), the platform automatically:
 - Injects ~150 lines of memory instructions into the agent's system prompt
 - Includes the first 200 lines / 25KB of the agent's `MEMORY.md`
 - Enables Read, Write, and Edit tools for the memory directory
-- Memory path: `.claude/agent-memory/<agent-name>/` (project scope)
+- Memory paths: `.claude/agent-memory-local/<agent-name>/` (local, never versioned; the roster default), `.claude/agent-memory/<agent-name>/` (project, "shareable via version control"; the injected boilerplate tells the agent so), `~/.claude/agent-memory/<agent-name>/` (user, across all projects; unsuitable for review agents, which would carry one project's conventions into another). Memory is inert when auto memory is disabled in settings.
 
 Reference: https://code.claude.com/docs/en/sub-agents.md#enable-persistent-memory
 
 ### Dispatch
 
-- **Standalone dispatch** (`Agent(subagent_type: "name")`): requires agent to be in session registry (loaded at startup or via `/agents`)
-- **Team dispatch** (`Agent(subagent_type: "name", team_name: "...", name: "...")`): scans `.claude/agents/` fresh at spawn time — can load agents created mid-session
+- **Loading** (verified live 2026-10-09 on Claude Code 2.1.296): Claude Code watches `.claude/agents/` and picks up new or changed files within seconds, but only for directories that existed when the session started. A project's first agent install therefore needs a session restart. The `/agents` wizard no longer exists.
+- **Standalone dispatch** (`Agent(subagent_type: "name")`): any agent the watcher has loaded.
+- **Team dispatch** (`Agent(subagent_type: "name", team_name: "...", name: "...")`): same loading rule; earlier notes that team dispatch scanned fresh predate the watcher.
 - **CLI dispatch** (`--agents` flag): agents can be defined as JSON objects at launch time
 
 Reference: https://code.claude.com/docs/en/sub-agents.md

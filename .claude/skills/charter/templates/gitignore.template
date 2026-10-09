@@ -1,5 +1,5 @@
-# Agent memory is a local working asset and may hold personal details
-.claude/agent-memory/
+# Agent memory, local scope (never versioned)
+.claude/agent-memory-local/
 
 # OS and editor files
 .DS_Store

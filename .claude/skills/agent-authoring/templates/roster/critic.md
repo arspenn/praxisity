@@ -4,7 +4,7 @@ description: Finds weaknesses, contradictions, unstated assumptions, and scope c
 category: evaluative
 tools: Read, Grep, Glob, Write
 model: inherit
-memory: project
+memory: local
 ---
 
 ## Identity

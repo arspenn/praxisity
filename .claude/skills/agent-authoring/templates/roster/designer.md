@@ -4,7 +4,7 @@ description: Evaluates architecture, component boundaries, interfaces, and how p
 category: structural
 tools: Read, Grep, Glob, Write
 model: inherit
-memory: project
+memory: local
 ---
 
 ## Identity

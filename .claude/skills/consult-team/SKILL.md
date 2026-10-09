@@ -13,7 +13,7 @@ This skill provides guidance for dispatching multiple specialist agents to revie
 
 Praxisity agents are native Claude Code subagents living in the project's `.claude/agents/`. When loaded, they appear in your available agent types with their descriptions. Use those descriptions to select the right agents for the task.
 
-The agents are not part of the plugin, because plugin agents cannot keep memory and these are meant to accumulate project-specific review knowledge. If none of the Praxisity agents appear in your available types, the roster has not been installed in this project: run `/agent-authoring`, which carries the roster as templates and installs the agents you choose. If they are installed but not yet visible, run `/agents` to register them.
+The agents are not part of the plugin, because plugin agents cannot keep memory and these are meant to accumulate project-specific review knowledge. If none of the Praxisity agents appear in your available types, the roster has not been installed in this project: run `/agent-authoring`, which carries the roster as templates and installs the agents you choose. If the files are present in `.claude/agents/` but the agents are not dispatchable, the directory was created during this session; restart the session, since Claude Code only watches agent directories that existed at startup.
 
 ## The Decision Gate: Snapshot vs. Delta
 

@@ -4,7 +4,7 @@ description: Tracks scope, dependencies, sequencing, and what's realistic for a 
 category: structural
 tools: Read, Grep, Glob, Write
 model: inherit
-memory: project
+memory: local
 ---
 
 ## Identity

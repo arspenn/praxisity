@@ -47,7 +47,13 @@ Reference conventions, identical in every Praxisity template:
 <!-- The values that decide hard choices. Ask: "If we face a tough trade-off, what settles it?"
      Specific to this project, not generic platitudes. As many as the project needs, no fixed count.
 
-     Examples:
+     Praxisity suggests one principle to every project, because the framework only grows
+     through use; include it if you want the sessions to practise it:
+     - Bootstrapping: use the system to build the system, and to build yourself. At the end
+       of each session, ask what was learned that should become a skill, agent, or template,
+       and capture it before closing.
+
+     Other examples:
      - Privacy-first: user data never leaves their device
      - Evidence-based: every intervention is backed by peer-reviewed research
      - Learner-paced: no timed assessments; mastery is demonstrated, not scheduled

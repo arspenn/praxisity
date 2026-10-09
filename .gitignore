@@ -1,7 +1,8 @@
 __pycache__/
 *.pyc
 
-# Agent memory - local working asset, may contain personal details
+# Agent memory (local scope is never versioned; project scope is ignored here by choice)
+.claude/agent-memory-local/
 .claude/agent-memory/
 
 # Installed copies of the agent roster (source: .claude/skills/agent-authoring/templates/roster/).

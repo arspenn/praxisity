@@ -16,7 +16,7 @@ Nine review agents, installed into a project's `.claude/agents/` by the agent-au
 
 **Default review set for a skill or template:** prompt-engineer, critic, user-advocate, spot, in parallel (Mode 2), two rounds: a cold read, then a delta pass on the revision. Add consistency-reviewer when a reference makes claims about other files; designer and skeptic for a design; stakeholder for anything a reader outside the project will receive.
 
-**Memory.** Agents with `memory: project` keep notes under `.claude/agent-memory/<name>/`, which should be gitignored. The Checklist section in each agent file is the baseline those notes grow from; when a pattern recurs across projects, it belongs in the roster file.
+**Memory.** Agents keep notes under `.claude/agent-memory-local/<name>/` (`memory: local`, never versioned); a project that wants the notes shared switches them to `memory: project` at install. The Checklist section in each agent file is the baseline those notes grow from, and the versioned form: when a pattern recurs, it is promoted there and the note retired.
 
 ## Not Yet Built
 

@@ -98,7 +98,8 @@ Reference conventions, identical in every Praxisity template:
 - Domain-specific content is generalized into transferable questions with per-field examples in the comment (the charter's Domain Context, the design's Architecture), never into parallel per-domain blocks.
 - Placeholder rows and blocks are illustrative; the header comment says so, and the Generate operations include row and block adjustment.
 - The reference-conventions block and the two-markers note appear in every template header.
-- Copy-then-edit is absolute: `cp`, read, Edit with a closed list of operations, strip HTML comments (a gitignore's `#` lines are content). Never Write a template-derived file.
+- Copy-then-edit is absolute: `cp`, read, then one Edit per H2 section (an `old_string` never crosses a heading, so a whole-body replacement is impossible by construction) with a closed list of operations, strip HTML comments (a gitignore's `#` lines are content). Never Write a template-derived file.
+- The Generate phase ends by running `scripts/check-template-structure.py` (template, output, `--repeat` for templates with repeating blocks) and showing its output; `STRUCTURE CHECK OK` is the acceptance condition, not the agent's assertion. Identical copies of the script live in every template skill; edit all of them together.
 
 ## The Status Lifecycle of a DIP
 

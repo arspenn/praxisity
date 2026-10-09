@@ -4,7 +4,7 @@ description: Evaluates whether files are optimized for dual consumption, human-r
 category: meta
 tools: Read, Grep, Glob, Write
 model: inherit
-memory: project
+memory: local
 ---
 
 ## Identity

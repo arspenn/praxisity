@@ -4,7 +4,7 @@ description: Cross-document consistency reviewer. Catches contradictions, mismat
 category: meta
 tools: Read, Grep, Glob, Write
 model: inherit
-memory: project
+memory: local
 ---
 
 ## Identity

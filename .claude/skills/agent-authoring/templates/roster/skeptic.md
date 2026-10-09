@@ -4,7 +4,7 @@ description: Challenges whether something is necessary at all. The YAGNI enforce
 category: evaluative
 tools: Read, Grep, Glob, Write
 model: inherit
-memory: project
+memory: local
 ---
 
 ## Identity

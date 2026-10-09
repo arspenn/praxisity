@@ -67,17 +67,18 @@ Show a compact outline: each section header with a one-line summary, the counts 
 
 ## Generate the Spec File
 
-Copy the template, then Edit the copy. Edit keeps the template's structure as ground truth; regenerating the file with Write reproduces it from memory and drifts (renamed headers, dropped sections, half-stripped comments, renumbered IDs).
+Copy the template, then Edit the copy, one section at a time. Edit's guarantee is that everything outside `old_string` survives verbatim; a whole-body replacement leaves nothing outside it and is a Write under another name, which is how templates drift (renamed headers, dropped sections, half-stripped comments, renumbered IDs).
 
 1. In update mode, re-read the existing spec now, immediately before the copy overwrites it, and note its Created date, Author, Status, Revision History, the content of every section the user kept, and every struck-through row.
 2. New spec: derive the slug from the title (lowercase, hyphens, no punctuation) and copy the template to `.plans/specs/NNN-[slug].md` with `cp` in Bash, NNN zero-padded to three digits. Update: copy the template over the existing file with `cp` in Bash.
 3. Read the fresh copy.
-4. Apply only these operations with Edit:
+4. Edit one H2 section per call: `old_string` runs from the section's heading to the line before the next heading, never across one. Within a section, apply only these operations:
    - **Placeholder substitution:** replace `[bracketed placeholders]` and `NNN` with gathered content, writing each item's already-assigned ID and every reference per the template's reference conventions.
    - **Comment stripping:** remove all `<!-- ... -->` blocks.
    - **Marking:** for a skipped section, replace its placeholder content with `N/A — [reason]` or `TBD — revisit at [milestone]`. The section stays. With no charter, Charter Reference and the inherited constraints are `N/A — no charter` and the charter link in References is removed.
    - **Row and block adjustment:** add or remove table rows and repeat the UC block once per use case, to fit the content. Template counts are illustrative.
 5. Set metadata. New spec: Status `Draft`, Created and Last Updated today, Author as gathered, Revision History row `0.1 — Initial draft`. Update: keep Created, Author, and Status, set Last Updated today, and append a Revision History row with the next minor version (0.1 → 0.2) and a one-line summary naming the IDs added, changed, or removed.
+6. Run the structure check and show its output: `python3 ${CLAUDE_SKILL_DIR}/scripts/check-template-structure.py ${CLAUDE_SKILL_DIR}/templates/spec.template.md .plans/specs/NNN-[slug].md --repeat` (`--repeat` because use-case blocks and table rows legitimately repeat). Proceed only on `STRUCTURE CHECK OK`; on a failure, fix the named sections with further single-section Edits and run it again. The check's output is the evidence; do not assert the structure matches without it.
 
 ## Post-Save
 

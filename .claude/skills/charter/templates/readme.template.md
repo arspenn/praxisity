@@ -4,7 +4,8 @@
 
 <!--
 The README is the first thing a human reads. It answers what this is, who it is for, where
-it stands, and how to get started. Draft the Overview from the charter's mission and scope;
+it stands, and how to get started; the charter holds the rest, so the README points at it
+rather than restating it. Draft the Overview from the charter's mission in one paragraph;
 the rest is filled as the project takes shape. Sections that do not apply yet are marked
 N/A rather than removed. HTML comments are stripped from the finished file.
 -->
@@ -36,17 +37,9 @@ N/A rather than removed. HTML comments are stripped from the finished file.
 
 [How to get the project running or the materials in hand]
 
-## Documentation
+## More
 
-- [CHARTER.md](CHARTER.md) — mission, principles, scope, and constraints
-- [CHANGELOG.md](CHANGELOG.md) — what has changed, by version
-- `.plans/specs/` — specifications: what is being built
-- `.plans/designs/` — designs: how it is built
-- `.plans/prompts/` — implementation prompts: the work, step by step
-
-## Workflow
-
-This project is managed with the Praxisity framework. Work moves through Describe → Design → Detail → Do, each phase driven by a skill (`/describe`, `/design`, `/detail`, `/do`) and governed by the charter.
+[CHARTER.md](CHARTER.md) holds the mission, principles, scope, and constraints; [CHANGELOG.md](CHANGELOG.md) records what changed. The project is managed with the Praxisity framework; its specifications, designs, and implementation prompts live in `.plans/`.
 
 ## License
 

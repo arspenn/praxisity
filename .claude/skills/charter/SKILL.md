@@ -42,7 +42,7 @@ Gather in template order, one section at a time, following the gather protocol, 
 | Section | Pacing | Charter-specific notes |
 |---------|--------|------------------------|
 | Mission | One prompt | Required. CLAUDE.md and source material count as loaded documents for the gather drafting rule. |
-| Principles | One at a time until the user says done | Pacing matters here: each principle changes how the user thinks about the project. Source material rarely states values, so if the user stalls, offer to draft a first principle from the Mission. |
+| Principles | One at a time until the user says done | Pacing matters here: each principle changes how the user thinks about the project. Open by offering the one principle Praxisity suggests to every project, the bootstrapping principle in the template comment, as a draft to accept, edit, or decline; it is what makes the framework's "what did we learn?" question operative in this project. Source material rarely states values, so if the user then stalls, offer to draft a principle from the Mission. |
 | Scope | Two prompts: In, then Out | Say why Out of Scope matters: it is what prevents scope creep. |
 | Stakeholders | One prompt, categories as a checklist | Short answers; a solo project may name one person in two roles. |
 | Success Criteria | One prompt, categories as a checklist | TBD is expected on a first pass; ask for the milestone at which it will be known. |
@@ -59,26 +59,27 @@ Show a compact outline: each section header with a one-line summary, and the cou
 
 ## Generate CHARTER.md
 
-Copy the template, then Edit the copy. Edit keeps the template's structure as ground truth; regenerating the file with Write reproduces it from memory and drifts (renamed headers, dropped sections, half-stripped comments).
+Copy the template, then Edit the copy, one section at a time. Edit's guarantee is that everything outside `old_string` survives verbatim; a whole-body replacement leaves nothing outside it and is a Write under another name, which is how templates drift (renamed headers, dropped sections, half-stripped comments).
 
 1. In update mode, re-read CHARTER.md now, immediately before the copy overwrites it, and note its "Charter established" date and the content of every section the user kept.
 2. Copy the template to `CHARTER.md` with `cp` in Bash.
 3. Read the fresh copy.
-4. Apply only these operations with Edit:
+4. Edit one H2 section per call: `old_string` runs from the section's heading to the line before the next heading, never across one. Within a section, apply only these operations:
    - **Placeholder substitution:** replace `[bracketed placeholders]` with gathered content.
-   - **Comment stripping:** remove all `<!-- ... -->` blocks.
+   - **Comment stripping:** remove the section's `<!-- ... -->` block.
    - **Marking:** for a skipped section, replace its placeholder content with `N/A — [reason]` or `TBD — revisit at [milestone]`. The section stays.
    - **Row adjustment:** add or remove list rows and table rows to fit the content. Template row counts are illustrative.
 5. Set dates. New charter: established and last reviewed are today. Update: keep the original established date, set last reviewed to today. In both cases, next review is today plus the interval when the review schedule names one (quarterly, monthly); when it names an event instead ("after the pilot"), write that event in place of a date.
+6. Run the structure check and show its output: `python3 ${CLAUDE_SKILL_DIR}/scripts/check-template-structure.py ${CLAUDE_SKILL_DIR}/templates/charter.template.md CHARTER.md`. It compares headings, labels, rules, and footer lines against the template and reports unstripped comments and unfilled placeholders. Proceed only on `STRUCTURE CHECK OK`; on a failure, fix the named sections with further single-section Edits (or re-copy and redo) and run it again. The check's output is the evidence; do not assert the structure matches without it.
 
 ## Post-Save
 
-A charter is the first document in a project, so this is where the other project files get offered. Present the checklist below in one message, listing only the items that apply, so the user answers once; create nothing without a yes. Each file is made the same way as the charter: copy its template with `cp` in Bash, read the copy, substitute placeholders from the charter with Edit, strip the HTML comments (the gitignore's `#` lines are its content and stay).
+A charter is the first document in a project, so this is where the other project files get offered. Present the checklist below in one message, listing only the items that apply, so the user answers once; create nothing without a yes. Each file is made the same way as the charter: copy its template with `cp` in Bash, read the copy, substitute placeholders from the charter with one Edit per section, strip the HTML comments (the gitignore's `#` lines are its content and stay), and run the same structure check against its template before moving on.
 
 1. **CLAUDE.md.** If missing, create it from `claude.template.md`: name, domain, mission, and the `@CHARTER.md` import line that loads the charter into every session. If present and it does not import the charter, offer to add that line under a "Project Constitution" heading.
 2. **README.md.** If missing, create it from `readme.template.md`. Show the drafted Overview (from the mission and scope) before creating the file; later sections stay as placeholders or N/A.
 3. **CHANGELOG.md.** If missing, create it from `changelog.template.md`; the first entry records the charter. `/do` appends to it as work completes.
-4. **.gitignore.** If the project is a git repository and has none, create it from `gitignore.template`.
+4. **Version control.** If the project is not a git repository, offer to initialize one (`git init`); the charter is usually a project's first commit. If it is one, or the user accepts, and there is no `.gitignore`, create it from `gitignore.template`.
 
 Then, if the project is a git repository, offer to commit CHARTER.md and any files just created, with `charter: create project charter` or `charter: update project charter`. Never commit without an explicit yes.
 

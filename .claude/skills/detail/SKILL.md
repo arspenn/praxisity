@@ -72,17 +72,17 @@ Show a compact outline: the objective, the step titles with each one's Verify in
 
 ## Generate the DIP File
 
-Copy the template, then Edit the copy. Edit keeps the template's structure as ground truth; regenerating the file with Write reproduces it from memory and drifts (renamed headers, dropped sections, half-stripped comments, lost verifications).
+Copy the template, then Edit the copy, one section at a time. Edit's guarantee is that everything outside `old_string` survives verbatim; a whole-body replacement leaves nothing outside it and is a Write under another name, which is how templates drift (renamed headers, dropped sections, half-stripped comments, lost verifications).
 
 1. In update mode, re-read the existing DIP now, immediately before the copy overwrites it, and note its Created date, Author, Status, Revision History, and the content of every section the user kept.
 2. New DIP: derive the slug from the title (lowercase, hyphens, no punctuation) and copy the template to `.plans/prompts/NNN-[slug].md` with `cp` in Bash, NNN zero-padded to three digits. Update: copy the template over the existing file with `cp` in Bash.
 3. Read the fresh copy.
-4. Apply only these operations with Edit:
+4. Edit one H2 section per call: `old_string` runs from the section's heading to the line before the next heading, never across one. Within a section, apply only these operations:
    - **Placeholder substitution:** replace `[bracketed placeholders]` with gathered content. Tokens: `NNN` is the DIP number; `DDD` not followed by `-slug` is the design number and `DDD-slug` is the design's filename stem; likewise `MMM` and `MMM-slug` for the spec. A follow-up DIP names its predecessor under Follows. Write every reference per the template's reference conventions.
    - **Comment stripping:** remove all `<!-- ... -->` blocks.
    - **Marking:** for a skipped section, replace its placeholder content with `N/A — [reason]` or `TBD — revisit at [milestone]`. The section stays.
    - **Row and block adjustment:** add or remove table rows, checklist lines, and Step blocks to fit the content. Template counts are illustrative.
-5. Set metadata. New DIP: Status `Ready`, Created today, Author as gathered, Revision History row `0.1 — Initial draft`. Update: keep Created and Author, set Status `Ready` (a Halted DIP returns to Ready), append a Revision History row with the next minor version and a one-line summary of what changed. When the DIP was Halted at step N and the earlier steps' Outputs still stand, end the row with "resume at Step K" (K is N, or the first renumbered step whose Output no longer exists); when it was Halted at Acceptance or Verification, end it with "resume at Acceptance". Either lets `/do` offer to pick up there instead of restarting.
+5. Set metadata. New DIP: Status `Ready`, Created today, Author as gathered, Revision History row `0.1 — Initial draft`. Update: keep Created and Author, set Status `Ready` (a Halted DIP returns to Ready), append a Revision History row with the next minor version and a one-line summary of what changed. Then run the structure check and show its output: `python3 ${CLAUDE_SKILL_DIR}/scripts/check-template-structure.py ${CLAUDE_SKILL_DIR}/templates/dip.template.md .plans/prompts/NNN-[slug].md --repeat` (`--repeat` because Step blocks repeat). Proceed only on `STRUCTURE CHECK OK`; on a failure, fix the named sections with further single-section Edits and run it again. When the DIP was Halted at step N and the earlier steps' Outputs still stand, end the row with "resume at Step K" (K is N, or the first renumbered step whose Output no longer exists); when it was Halted at Acceptance or Verification, end it with "resume at Acceptance". Either lets `/do` offer to pick up there instead of restarting.
 
 ## Post-Save
 

@@ -4,7 +4,7 @@ description: Represents the solo practitioner being onboarded into structured AI
 category: perspective
 tools: Read, Grep, Glob, Write
 model: inherit
-memory: project
+memory: local
 ---
 
 ## Identity

@@ -68,11 +68,13 @@ They are installed into a project with `/agent-authoring` rather than bundled in
 
 ### Install the plugin
 
-From a local clone, for development or trial:
+From a local clone, for development or trial, run this from inside your project directory:
 
 ```bash
-claude --plugin-dir /path/to/praxisity --add-dir /path/to/praxisity
+claude --plugin-dir /path/to/praxisity
 ```
+
+Do not add `--add-dir /path/to/praxisity`: that makes the framework's own `.claude/` load as if it belonged to your project, so every support skill appears twice and the nine review agents appear uninstalled, keeping their memory in the wrong repository. If Claude needs to read a framework file, it will ask. To confirm the plugin is loaded, look for `praxisity:gather` in the available skills; the workflow skills are hidden from that list by design and appear only as `/praxisity:charter` and so on.
 
 From GitHub, in one step (Claude Code 2.1.275 or later):
 
@@ -87,7 +89,7 @@ Skills from the plugin are namespaced: `/praxisity:charter`, `/praxisity:describ
 ### Start a project
 
 1. In your project directory, run `/praxisity:charter`. It walks you through the charter one section at a time and offers to set up CLAUDE.md, README, CHANGELOG, and .gitignore.
-2. Run `/praxisity:agent-authoring` to install the agent roster, then `/agents` to register it.
+2. Run `/praxisity:agent-authoring` to install the agent roster. If this creates `.claude/agents/` for the first time, restart the session so Claude Code loads it.
 3. Follow the phases: `/praxisity:describe`, `/praxisity:design`, `/praxisity:detail`, `/praxisity:do`.
 
 ## Directory Structure

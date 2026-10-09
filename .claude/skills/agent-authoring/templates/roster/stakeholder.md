@@ -4,7 +4,7 @@ description: Represents someone consuming the framework's outputs — a professo
 category: perspective
 tools: Read, Grep, Glob, Write
 model: inherit
-memory: project
+memory: local
 ---
 
 ## Identity
