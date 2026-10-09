@@ -3,3 +3,15 @@ __pycache__/
 
 # Agent memory - local working asset, may contain personal details
 .claude/agent-memory/
+
+# Installed copies of the agent roster (source: .claude/skills/agent-authoring/templates/roster/).
+# Only the nine roster names are ignored, so agents authored here stay versioned.
+.claude/agents/consistency-reviewer.md
+.claude/agents/critic.md
+.claude/agents/designer.md
+.claude/agents/project-manager.md
+.claude/agents/prompt-engineer.md
+.claude/agents/skeptic.md
+.claude/agents/spot.md
+.claude/agents/stakeholder.md
+.claude/agents/user-advocate.md

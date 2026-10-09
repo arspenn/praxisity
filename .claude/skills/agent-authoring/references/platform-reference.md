@@ -39,7 +39,7 @@ Official documentation: https://code.claude.com/docs/en/sub-agents.md
 
 | Field | Purpose | Notes |
 |-------|---------|-------|
-| `category` | Agent grouping for consult-team skill. Options: `evaluative`, `perspective`, `structural`, `meta`. | Claude Code ignores this field. Used by Praxisity's consult-team skill for dispatch grouping. |
+| `category` | Agent grouping. Options: `evaluative`, `perspective`, `structural`, `meta`. | Claude Code ignores this field. Documentation only: the roster reference groups agents by it; no skill reads it. |
 
 ## Key Platform Behaviors
 
@@ -75,6 +75,10 @@ Reference: https://code.claude.com/docs/en/sub-agents.md (scope priority section
 - **Subagents cannot spawn other subagents.** An agent dispatched via the Agent tool cannot itself dispatch further agents. Design agents as single-level — the lead coordinates.
 - **Agents receive CLAUDE.md** but NOT the lead's conversation history.
 - **Team teammates** load CLAUDE.md, MCP servers, and skills from project/user settings.
-- **Plugin agents** cannot use `hooks`, `mcpServers`, or `permissionMode`.
+- **Plugin agents** cannot use `memory`, `hooks`, `mcpServers`, or `permissionMode` (documented 2026-09-22). This is why Praxisity ships its agents as templates installed into each project rather than bundling them in the plugin. Plugin agents appear as `plugin-name:agent-name`.
+
+### Installed copies
+
+The agent files in this framework's own `.claude/agents/` are installed copies of `.claude/skills/agent-authoring/templates/roster/`. Edit the roster file, then reinstall with the agent-authoring skill; do not edit the installed copy.
 
 Reference: https://code.claude.com/docs/en/sub-agents.md, https://code.claude.com/docs/en/agent-teams.md

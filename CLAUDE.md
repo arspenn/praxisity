@@ -41,6 +41,10 @@ Every session generates experience. At session end, ask: **"What did we learn th
 
 Sub-agents and tool calls execute at machine speed. The user does not. Your primary job is to keep the user in the loop — surface decisions, summarize parallel work, and confirm direction before charging ahead. When in doubt, pause and check in. Never trade user understanding for agent velocity.
 
+## Non-Obvious Context
+
+**`.claude/agents/` is an installed copy, not a source.** The agent roster lives in `.claude/skills/agent-authoring/templates/roster/` and is gitignored at `.claude/agents/`. Edit the roster file, then run `/agent-authoring` to reinstall; an edit to the installed copy is lost at the next install.
+
 ## Hints from the developer
 - Just because a template or example has a certain number of items, there is no requirement for your output to contain the same number of items filled out. It might be less, it might be more, use the right amount based on the relevant material and your judgement, not the example pattern.
 - When we have learned a substantial amount about a specific process during a session, consider using the /skill-forge skill to capture that experience and insight.

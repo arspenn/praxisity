@@ -1,81 +1,47 @@
 ---
 name: agent-authoring
-description: Guide the creation of new Praxisity agent definition files. Ensures native Claude Code subagent format, prompt engineering best practices, and integration with the consultation system. Use when creating a new agent for the roster.
+description: Install the Praxisity review agents (critic, skeptic, designer, project-manager, prompt-engineer, consistency-reviewer, spot, stakeholder, user-advocate) into a project, or author a new native Claude Code subagent definition. Use whenever a project needs the agent roster, when consult-team reports that no Praxisity agents are available, or when the user wants a new agent perspective.
 ---
 
 # Agent Authoring
 
-This skill guides the creation of new native Claude Code subagent files. It encodes prompt engineering best practices for agent definition files.
+Two jobs. **Install** puts the Praxisity agent roster, or the part of it the user wants, into the project's `.claude/agents/`. **Author** creates a new agent definition that follows the same conventions. Both end with the agents registered and usable by `consult-team`.
 
-## Before You Start
+**Roster:** `${CLAUDE_SKILL_DIR}/templates/roster/` holds one ready-to-install file per agent; `${CLAUDE_SKILL_DIR}/references/roster.md` describes them. The roster files are the single source for the agents: this framework's own `.claude/agents/` is an installed copy, like any other project's.
 
-1. Check if an agent with this name already exists in `.claude/agents/`. If so, offer to (r)eview and update or (s)tart fresh, unless the user says otherwise.
-2. Read an existing agent file as a reference — any file in `.claude/agents/` works. Note the structure: YAML frontmatter + markdown body. Minimal example:
+## Why the agents are installed, not bundled
 
-```markdown
----
-name: example-agent
-description: Brief description of when to use this agent.
-tools: Read, Grep, Glob, Write
-model: inherit
-memory: project
----
+Agents inside a plugin cannot use the `memory` field, and these agents are built to accumulate project-specific review knowledge (recurring weakness patterns, naming conventions, usability friction) across sessions. An agent file copied into a project's `.claude/agents/` is a project agent, where `memory: project` works. So the plugin ships the roster as templates and this skill installs them.
 
-## Identity
-You are the [Role]. Your core question: "[What do you ask?]"
+## Install the Roster
 
-## Reasoning Approach
-1. [First step]
-2. [Second step]
+1. List the roster from `references/roster.md`: each agent's name, category, and core question, one line each. For each that already exists in `.claude/agents/`, run `diff -q` against the roster file and mark it "installed, unchanged" or "installed, differs locally".
+2. Ask once which to install, as a checklist. The default is all nine; the workflow skills recommend specific agents by name, and a missing one is a dead end. For an agent that differs locally, ask whether to overwrite it, since the local edits would be lost; an unchanged one is simply refreshed. Agent memory under `.claude/agent-memory/` is untouched either way.
+3. For each chosen agent, copy the roster file with `cp` in Bash to `.claude/agents/[name].md`, creating the directory if it is missing. These are complete files: there are no placeholders to fill and no comments to strip.
+4. If the project is a git repository, offer to make `.gitignore` exclude `.claude/agent-memory/` (agent memory is a local working asset and may hold personal details), creating the file if there is none.
+5. Tell the user to run `/agents` so the new agents register in this session; agents installed mid-session are not dispatchable until then. From then on `consult-team` dispatches them.
 
-## Output Format
-Write your report to `.plans/reviews/` with findings and self-evaluation.
-```
+## Author a New Agent
+
+1. If an agent with this name already exists in `.claude/agents/`, offer to (r)eview and update it or (s)tart fresh.
+2. Read `${CLAUDE_SKILL_DIR}/templates/roster/critic.md` as the structural reference (spot is the one roster file that does not follow the full shape). The sections, in order: YAML frontmatter, Identity, Project Context, Reasoning Approach, Checklist (optional; it grows from experience), Critical Rules, Output Format with a self-evaluation block, and a closing line about memory.
+3. Gather, one at a time: the agent's role and core question; the perspective it holds that no existing agent holds; what it ignores; the output taxonomy it reports in, with each level defined in a line. Draft from the conversation when the user has already described the agent.
+4. Write the file to `.claude/agents/[name].md`. Write is correct here: an agent file is authored, not derived from a placeholder template, so there is no template ground truth to drift from. Before saving, confirm the headings match the roster file you read. If `.gitignore` excludes `.claude/agents/` wholesale, say so, because the new agent would be unversioned; the Praxisity source repo ignores only the nine roster names.
+5. If this project is the Praxisity framework repository (the roster directory is tracked here), offer to add the new agent to the roster as well when it is general enough to belong in every project. In any project, finish as Install does: run `/agents`, then test by dispatching the agent on a real artifact, optionally with spot reading its report.
 
 ## Frontmatter
 
-Every agent file starts with YAML frontmatter. The most common fields are listed here. For the full list of all 16+ supported fields (including advanced options like `permissionMode`, `maxTurns`, `skills`, `mcpServers`, `hooks`, `isolation`, and more), read `${CLAUDE_SKILL_DIR}/references/platform-reference.md` — it complements this skill with reference tables and official documentation links.
+Required by Claude Code: `name` (lowercase, hyphens; this is how the agent is dispatched) and `description` (one sentence saying when to use the agent; the platform routes on it).
 
-**Required by Claude Code:**
-- `name` — lowercase with hyphens (e.g., `domain-expert`). This is how the agent is dispatched.
-- `description` — one sentence describing when to use this agent. This is a routing hint the platform uses to decide when to delegate. Keep it concise.
+Common optional fields: `tools` (allowlist; review agents use `Read, Grep, Glob, Write`), `model` (`inherit`, `sonnet`, `opus`, `haiku`, or a full model ID; `inherit` unless there is a reason, as spot's `haiku` is), `memory` (`project` for agents meant to learn across sessions; omit for lightweight ones). `category` (`evaluative`, `perspective`, `structural`, `meta`) is Praxisity's own grouping field; Claude Code ignores it. The full field list and platform behaviours are in `${CLAUDE_SKILL_DIR}/references/platform-reference.md`.
 
-**Common optional fields:**
-- `tools` — allowlist of tools the agent can use (agent equivalent of `allowed-tools` in skill frontmatter). Default for review agents: `Read, Grep, Glob, Write`. Use `disallowedTools` for a denylist instead. Omit both to inherit all session tools, unless the user says otherwise.
-- `model` — `inherit` (uses session model), `sonnet`, `opus`, `haiku`, or a full model ID. Default to `inherit` unless you have a specific reason, unless the user says otherwise.
-- `memory` — `project` recommended by default. Options: `project` (shared via git, per-project), `user` (personal, across all projects), `local` (per-project, not shared via git). When enabled, the platform automatically injects memory instructions AND enables Read/Write/Edit tools for the memory directory. Omit for lightweight agents that don't need persistence, unless the user says otherwise.
+## Writing the Body
 
-**Praxisity-specific (not part of Claude Code):**
-- `category` — one of: `evaluative`, `perspective`, `structural`, `meta`. Claude Code ignores this field. Used by Praxisity's consult-team skill for dispatch grouping.
+- **Identity** is the attention anchor: who the agent is and the one question it keeps asking. Two or three sentences.
+- **Project Context** states the workflow (Describe → Design → Detail → Do, charter as entry) and where artifacts and IDs live. It is the same paragraph across the roster, varied only where the agent's focus needs a different emphasis.
+- **Reasoning Approach** is a numbered procedure plus "What you ignore" as plain boundary statements. Do not name other agents in those boundaries; it primes team awareness that is irrelevant when the agent is dispatched alone.
+- **Checklist** holds the recurring patterns the agent has learned to check, phrased as questions with observable answers, never as findings (a finding stated as a fact gets re-reported in every session, fixed or not). A new agent has no Checklist section; one is added when a pattern has recurred in the agent's memory, and it is kept to about a dozen items, retiring the rest to memory.
+- **Critical Rules** are a few calibration rules, always ending with "if the work is sound, say so".
+- **Output Format** names the report path (`.plans/reviews/[ARTIFACT-ID]-[name]-report.md`), the metadata, an Instructions Received section, findings in the agent's own taxonomy with each level defined, a strengths section, and a self-evaluation asking what worked, what the agent struggled with, and how its own prompt could improve.
 
-## Body Sections
-
-The markdown body defines the agent's persona. Four sections, consistent across all agents:
-
-**Identity** — Who this agent is. 2-3 sentences establishing perspective and a core question. This is the attention anchor the agent returns to throughout its work. Example patterns: "You are the [Role]. You ask: '[Core Question]?'"
-
-**Reasoning Approach** — How the agent thinks. A numbered checklist of what to do when reviewing, plus scope boundaries. Keep scope boundaries as simple negative statements ("What you ignore:") — do NOT reference other agents by name in these boundaries, as that primes team-roster awareness that's irrelevant for single-agent dispatch (Mode 1 — one agent consulted in isolation).
-
-**Output Format** — Structure for the agent's reports. Include: metadata (artifact, date, dispatch mode), Instructions Received section, findings section (with a domain-specific taxonomy), strengths section, and self-evaluation. Tell the agent to write its report to `.plans/reviews/` with naming convention `[ARTIFACT-ID]-[agent-name]-report.md`.
-
-**Self-Evaluation** — Part of the Output Format (included in the agent's report output, not as a separate section in the agent file). Three prompts for the agent to answer in its report: what worked well, what you struggled with, and how YOUR OWN agent prompt could be improved.
-
-## Prompt Engineering Principles
-
-Lessons from building and reviewing agents:
-
-- **Positive scoping over negation.** "What you ignore" lists are fine for simple boundary statements. Do NOT add cross-agent references ("that's the Critic's job") — this primes the agent with team awareness that dilutes its focus.
-- **No elephants.** Don't describe capabilities or behaviors you want the agent to avoid. Describing them activates them.
-- **Focused and concise.** Agent files should default to ~50-100 lines. If an agent is 150+ lines, it's probably over-specified — consider moving detail to the task prompt instead, unless the user says otherwise.
-- **Standalone operation.** The agent file must work without assuming anything will be appended. Customization comes via the task prompt, not by editing the file.
-- **Single-level dispatch.** Subagents cannot spawn other subagents. The lead agent coordinates all dispatch. Design agents to do their work and report back — not to delegate further.
-- **Dual consumption.** Every line must be useful to both a human reading the file AND an AI agent receiving it as a system prompt.
-- **Calibrated output taxonomies.** If you define severity levels (Critical/Important/Minor), define what they mean. Undefined taxonomies drift between sessions.
-
-## After Writing
-
-1. Save the file to `.claude/agents/[name].md`
-2. Update `.claude/agents/README.md` with the new agent's entry, unless the user says otherwise
-3. Register the agent: run `/agents` in Claude Code to add it to the session registry for standalone dispatch. Alternatively, team dispatch (using the `team_name` parameter when spawning) scans the agents directory fresh and can load agents created during the current session without registration.
-4. Test: dispatch the agent on a real artifact. Optionally dispatch spot to check whether the output is clear.
-5. If the agent will be part of the formal roster, update the roster documentation as needed
+Principles, learned the hard way: describe what to do, not what to avoid, because describing a behaviour activates it; keep files near 100 lines, since detail beyond that belongs in the task prompt; make the file standalone, with customization coming from the task prompt rather than edits; design for single-level dispatch, since subagents cannot spawn subagents; define every taxonomy level, because undefined ones drift between sessions.

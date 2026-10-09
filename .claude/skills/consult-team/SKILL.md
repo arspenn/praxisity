@@ -35,7 +35,7 @@ When in doubt, start with Mode 2. You can always escalate to Mode 3 if the work 
 
 ## Mode 2: Parallel Perspectives
 
-Select agents from the index based on what the work needs. Not every review needs all 8 — pick the perspectives that matter for this topic.
+Select agents based on what the work needs. Not every review needs all nine; pick the perspectives that matter for this topic. The roster reference in the agent-authoring skill suggests a default set per artifact type.
 
 **Dispatch each agent using the Agent tool:**
 - `subagent_type`: the agent's name (e.g., `"critic"`)

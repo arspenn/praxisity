@@ -47,7 +47,7 @@ Skills are specialized instructions that Claude Code follows when you invoke the
 | `/gather` | Structured input collection across multi-part forms |
 | `/skill-forge` | Create and refine skills |
 | `/consult-team` | Multi-perspective agent consultation |
-| `/agent-authoring` | Create new agent definitions |
+| `/agent-authoring` | Install the agent roster into a project, or create a new agent |
 
 ## Agent Consultation
 
