@@ -74,12 +74,13 @@ From a local clone, for development or trial:
 claude --plugin-dir /path/to/praxisity --add-dir /path/to/praxisity
 ```
 
-From the repository as a marketplace:
+From GitHub, in one step (Claude Code 2.1.275 or later):
 
 ```
-/plugin marketplace add <repository-url>
-/plugin install praxisity@arspenn
+/plugin install praxisity --marketplace arspenn/praxisity
 ```
+
+Or add the repository as a marketplace first: `/plugin marketplace add https://github.com/arspenn/praxisity.git`, then `/plugin install praxisity@arspenn`.
 
 Skills from the plugin are namespaced: `/praxisity:charter`, `/praxisity:describe`, and so on.
 
