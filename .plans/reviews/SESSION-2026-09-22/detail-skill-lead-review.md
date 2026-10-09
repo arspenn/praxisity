@@ -6,7 +6,7 @@
 
 ## Naming
 
-The fourth phase was `/plan` in the April design. Dropped because Claude Code has a built-in plan mode and the word recurs in PLANNING.md. Candidates: define (original), detail, devise. Both consulted agents ranked detail > devise > define. Detail names the behaviour (add resolution to one element) and shares a stem with the artifact; devise points semantically at "plan"; define overlaps describe for an agent choosing a skill and, in instructional design vocabulary, names the up-front scoping stage. Workflow is now Describe → Design → Detail → Do. Rename committed separately (fadb6b2).
+The fourth phase was `/plan` in the April design. Dropped because Claude Code has a built-in plan mode and the word recurs in PLANNING.md. Candidates: define (original), detail, devise. Both consulted agents ranked detail > devise > define. Detail names the behaviour (add resolution to one element) and shares a stem with the artifact; devise points semantically at "plan"; define overlaps describe for an agent choosing a skill and, in instructional design vocabulary, names the up-front scoping stage. Workflow is now Describe → Design → Detail → Do. Rename committed separately (769d499).
 
 ## Verdict
 

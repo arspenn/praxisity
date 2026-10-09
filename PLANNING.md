@@ -2,7 +2,7 @@
 
 ## Active Context
 
-**Branch:** `consolidate` (off main at 758f13a — if this goes badly, delete the branch and start over)
+**Branch:** `consolidate` (off main at 563de7c, history rewritten 2026-10-08 — if this goes badly, delete the branch and start over)
 **Last Command:** README and CHANGELOG updated (step 9a)
 **Status:** Steps 1–9a complete. Next session: 9b live test, starting with `/charter` update on this repo, then the chain in `~/Dev/praxisity-test`. Merge (9c) only after the live test passes.
 **Date:** 2026-10-08
