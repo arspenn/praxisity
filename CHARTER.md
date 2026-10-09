@@ -79,7 +79,7 @@ Build a design-first workflow framework enabling consistent, structured planning
 
 **Resources:**
 - Solo developer
-- Claude Code Max subscription ($200/mo — supports Mode 3 teams, sustained sessions)
+- Claude Code subscription that supports agent teams and sustained sessions
 
 **Technical:**
 - Claude Code platform (skills, agents, hooks, memory system)

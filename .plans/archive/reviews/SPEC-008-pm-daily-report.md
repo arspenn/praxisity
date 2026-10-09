@@ -1,6 +1,6 @@
 # Project Manager Daily Report: SPEC-008 Portable Research Prompt
 
-**Artifact:** SPEC-008 full artifact set (spec, design, v0.2 prompt, test outputs, instructor baseline, PE review)
+**Artifact:** SPEC-008 full artifact set (spec, design, v0.2 prompt, test outputs, baseline prompt, PE review)
 **Date:** 2026-04-09
 **Dispatch Mode:** Mode 3 (Collaborative Team)
 
@@ -15,7 +15,7 @@ Assigned as PM teammate on a collaborative review of SPEC-008. Special responsib
 3. **Daily report** — Summarize each agent's findings, capture reasoning chains, identify agreement/disagreement, list unresolved tensions, propose sequenced action plan for v0.3.
 4. **Scope guard** — Flag anything that belongs in future work, not this iteration.
 
-Materials reviewed: spec, design (DESIGN-007), v0.2 prompt, Query Report test output, Research Report test output, instructor baseline, PE review of v0.1, clarity check, plus four teammate reports (Prompt Engineer, User Advocate, Critic, Stakeholder).
+Materials reviewed: spec, design (DESIGN-007), v0.2 prompt, Query Report test output, Research Report test output, baseline prompt, PE review of v0.1, clarity check, plus four teammate reports (Prompt Engineer, User Advocate, Critic, Stakeholder).
 
 ---
 
@@ -102,7 +102,7 @@ SPEC-008 (done) ────> DESIGN-007 (done) ────> v0.2 prompt (done)
 
 5. **[Friction] Domain flexibility undercuts domain usefulness.** A PH intern using the prompt got general trending topics, not public health topics. Suggests adding a gathering question: "Should I focus specifically on public health topics, or look at general trending topics and highlight their public health implications?"
 
-6. **[Minor] v0.2 output is better research but worse deliverable.** The instructor baseline is more immediately usable. The v0.2 output is a 288-line evidence document requiring extraction. This is by design but may hurt first-time adoption.
+6. **[Minor] v0.2 output is better research but worse deliverable.** The baseline prompt is more immediately usable. The v0.2 output is a 288-line evidence document requiring extraction. This is by design but may hurt first-time adoption.
 
 ---
 
@@ -146,7 +146,7 @@ SPEC-008 (done) ────> DESIGN-007 (done) ────> v0.2 prompt (done)
 
 5. **[Minor-Positive] The Problem Log is genuinely valuable and builds trust.** "The single most impressive part of the output from a supervisor's perspective." Honest disclosure builds credibility.
 
-6. **[Weakened] The v0.2 output is less useful than the instructor baseline for the stated purpose.** "The baseline is a better answer to the right question with no way to check it. The v0.2 output is a worse answer to the wrong question with excellent traceability."
+6. **[Weakened] The v0.2 output is less useful than the baseline prompt for the stated purpose.** "The baseline is a better answer to the right question with no way to check it. The v0.2 output is a worse answer to the wrong question with excellent traceability."
 
 7. **[Minor] "Independently verified" disclaimer is honest but impractical.** "Verified how? By whom? To what standard?" Suggests concrete, proportionate guidance instead.
 
@@ -178,7 +178,7 @@ SPEC-008 (done) ────> DESIGN-007 (done) ────> v0.2 prompt (done)
 
 2. **The Problem Log is a genuine innovation that works.** All three agents praise it despite noting specific flaws (Advocate: mixed actionable/informational; Critic: entry #5 has fabricated justification; Stakeholder: "the single most impressive part"). The net assessment is positive. The design decision (DEC-2) is validated.
 
-3. **Source traceability is the v0.2 prompt's strongest differentiator.** The v0.2 output vastly outperforms the instructor baseline on sourcing discipline. Every agent acknowledges this.
+3. **Source traceability is the v0.2 prompt's strongest differentiator.** The v0.2 output vastly outperforms the baseline prompt on sourcing discipline. Every agent acknowledges this.
 
 4. **DQ-1, DQ-2, DQ-3 are confirmed problems, not open questions.** All three have test evidence. All three have candidate fixes. Close them in v0.3.
 
@@ -196,7 +196,7 @@ SPEC-008 (done) ────> DESIGN-007 (done) ────> v0.2 prompt (done)
 
    **PM assessment:** The Advocate's suggested gathering question ("Should I focus specifically on public health topics, or look at general trending topics?") is the simplest fix that addresses all three perspectives. This is appropriate for v0.3.
 
-   **Resolution (2026-04-09):** Developer decided: prompt stays PH-focused. Domain generalization deferred to post-BSI internship. This aligns with the Critic's option (a) and resolves the three-way document contradiction. The gathering question becomes PH-specific rather than generic.
+   **Resolution (2026-04-09):** Developer decided: prompt stays PH-focused. Domain generalization deferred to post-the internship. This aligns with the Critic's option (a) and resolves the three-way document contradiction. The gathering question becomes PH-specific rather than generic.
 
 2. **Whether "chain-ready over publication-ready" is a valid principle.**
 
@@ -268,7 +268,7 @@ Sequenced by dependency, priority, and effort. Incorporates teammate findings.
 
 | # | Action | Effort | Source | Rationale |
 |---|--------|--------|--------|-----------|
-| 8 | Update spec metadata + DEC-10 to own PH specialization; defer domain generalization to post-BSI | Metadata + 1 paragraph | Developer decision | Resolves the three-way contradiction (spec/design/prompt). |
+| 8 | Update spec metadata + DEC-10 to own PH specialization; defer domain generalization to post-the internship | Metadata + 1 paragraph | Developer decision | Resolves the three-way contradiction (spec/design/prompt). |
 | 9 | Update DQ-1, DQ-2, DQ-3 status to "Resolved" with test evidence notes | 3 lines | Critic | They're no longer open. |
 | 10 | Update DEC-5 rationale to note that "include this text exactly" was paraphrased in testing; decide if paraphrased version is acceptable | 2 sentences | Critic | Implementation already failed; design should acknowledge. |
 | 11 | Update DEC-9 rationale to be honest about what the two-artifact split provides for the target audience vs. theoretical benefits | Paragraph rewrite | Critic, Stakeholder | Reframe around supervisor audit and bad-scope catching, not "independent verification by non-technical users." |
@@ -287,7 +287,7 @@ Sequenced by dependency, priority, and effort. Incorporates teammate findings.
 
 | # | Item | Why | Source |
 |---|------|-----|--------|
-| D1 | Domain generalization (make prompt truly domain-agnostic) | **Developer decision 2026-04-09:** Stay PH-focused. Generalize after BSI internship validates. Spec/design should own PH specialization for this iteration. | Critic, Developer |
+| D1 | Domain generalization (make prompt truly domain-agnostic) | **Developer decision 2026-04-09:** Stay PH-focused. Generalize after the internship validates. Spec/design should own PH specialization for this iteration. | Critic, Developer |
 | D2 | Problem Log category restructuring (actionable vs. informational) | Test current format first; revisit if v0.3 test shows users confused | Advocate |
 | D3 | User-facing prompt header (2-3 sentences for the human reader) | Good idea but adds tokens and complexity; evaluate after v0.3 test | Advocate |
 | D4 | Output depth calibration (landscape scan vs. deep dive) | Design-level change to output structure; needs more test data | Stakeholder |
@@ -309,9 +309,9 @@ Sequenced by dependency, priority, and effort. Incorporates teammate findings.
 - Stakeholder: The output failed because it wasn't PH-focused enough.
 - Advocate: Add a gathering question that lets the user decide.
 
-**Developer decision (2026-04-09):** The prompt stays public health focused for this iteration. Domain generalization is deferred until after the BSI internship validates the PH use case. This resolves the Critic's "Important #1" finding and simplifies DEC-10.
+**Developer decision (2026-04-09):** The prompt stays public health focused for this iteration. Domain generalization is deferred until after the the internship validates the PH use case. This resolves the Critic's "Important #1" finding and simplifies DEC-10.
 
-**Impact on action plan:** Action #5 (gathering question) should be PH-specific: "Should I focus specifically on public health topics, or look at general trending topics and highlight their public health implications?" The spec metadata and DEC-10 should be updated to explicitly own PH specialization. Domain generalization moves to the Deferred list with a clear trigger (post-BSI internship).
+**Impact on action plan:** Action #5 (gathering question) should be PH-specific: "Should I focus specifically on public health topics, or look at general trending topics and highlight their public health implications?" The spec metadata and DEC-10 should be updated to explicitly own PH specialization. Domain generalization moves to the Deferred list with a clear trigger (post-the internship).
 
 ### 2. Two artifacts or one? -- RESOLVED
 

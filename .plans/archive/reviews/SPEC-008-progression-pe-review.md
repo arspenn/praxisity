@@ -1,19 +1,19 @@
 ## Prompt Engineer Review
 
-**Artifact:** `.plans/references/bsi-workshop-prompt-progression.md`
+**Artifact:** the workshop prompt progression (kept outside the repository)
 **Date:** 2026-04-14
 **Dispatch Mode:** Mode 1 (standalone consult)
 
 ## Instructions Received
 
-Review the BSI workshop prompt progression (Steps 0-5) for prompt engineering quality. The progression teaches public health professionals how prompt engineering differs from search engine querying. Each step builds on the last by adding one concept. Target platform is free-tier Claude.ai (Sonnet 4.6, 200K context, web search, artifacts). Evaluate for progression coherence, per-step prompt quality, session limit risk, educational clarity, missing steps, and cross-step consistency.
+Review the the workshop prompt progression (Steps 0-5) for prompt engineering quality. The progression teaches public health professionals how prompt engineering differs from search engine querying. Each step builds on the last by adding one concept. Target platform is free-tier Claude.ai (Sonnet 4.6, 200K context, web search, artifacts). Evaluate for progression coherence, per-step prompt quality, session limit risk, educational clarity, missing steps, and cross-step consistency.
 
 ## Dual-Consumption Assessment
 
 ### Ambiguity — "Role" field primes Sonnet toward general industry analysis, not public health research
 
 **Location:** All steps, `Role` field
-**Problem for AI:** "Act as an industry analyst for public health" is the instructor's baseline language. It tells Sonnet to be a generalist industry analyst *scoped to* public health. Compare the instructor's baseline output: it produced topics like the Iran war, No Kings protests, and Artemis II — general trending topics with public health relevance bolted on afterward ("Public Health Relevance" subsections). The v0.2 research report did the same. The Role never changed to match the progression's increasing source specificity. By Step 2, you're telling Sonnet to search CDC/WHO/NIH and include direct quotations from peer-reviewed journals, but the Role still says "industry analyst" — a persona that wouldn't naturally prioritize those sources.
+**Problem for AI:** "Act as an industry analyst for public health" is the baseline prompt language. It tells Sonnet to be a generalist industry analyst *scoped to* public health. Compare the baseline prompt output: it produced topics like the Iran war, No Kings protests, and Artemis II — general trending topics with public health relevance bolted on afterward ("Public Health Relevance" subsections). The v0.2 research report did the same. The Role never changed to match the progression's increasing source specificity. By Step 2, you're telling Sonnet to search CDC/WHO/NIH and include direct quotations from peer-reviewed journals, but the Role still says "industry analyst" — a persona that wouldn't naturally prioritize those sources.
 **Problem for humans:** Not visible to the audience. They won't notice that the Role field is working against the Sources field.
 **Suggested fix:** Change Role in Steps 1-5 to "Act as a public health research analyst" (matching v0.4). This aligns the persona with the source instructions and gives the audience an additional delta to observe between Step 0 and Step 1: "We didn't just add sources — we changed who the AI pretends to be."
 
@@ -24,14 +24,14 @@ Review the BSI workshop prompt progression (Steps 0-5) for prompt engineering qu
 **Location:** Step 0 vs Step 1
 **Problem for AI:** Step 0 has a `Steps` field with explicit search instructions (news outlets in the US, global outlets discussing the US). Step 1 replaces this with a `Sources` field but drops the sequential search strategy entirely. The audience is told "Added a `Sources` field directing the AI to authoritative public health sources instead of general news only" — but a `Steps` field was also removed. From Sonnet's perspective, Step 0's instructions tell it *how* to search (sequentially, two stages). Step 1 tells it *where* to look (source types) but not in what order or how many passes.
 **Problem for humans:** The "What changed" note only mentions the addition. A workshop attendee comparing the two prompts would notice the Steps field disappeared and wonder if that was intentional or an error. This undermines the "exactly one concept changed" framing.
-**Suggested fix:** Either (a) keep Step 0 as the true instructor baseline without the Steps field — just Role/Goal/Output — making it an even simpler "search engine query" baseline, or (b) acknowledge in the "What changed" note that the Steps field was replaced by Sources, and explain why ("We replaced a rigid procedure with a flexible source list — the AI decides the search order, but we control where it looks").
+**Suggested fix:** Either (a) keep Step 0 as the true baseline prompt without the Steps field — just Role/Goal/Output — making it an even simpler "search engine query" baseline, or (b) acknowledge in the "What changed" note that the Steps field was replaced by Sources, and explain why ("We replaced a rigid procedure with a flexible source list — the AI decides the search order, but we control where it looks").
 
 ---
 
 ### Noise — Step 4 structural constraint may not produce a visible delta
 
 **Location:** Step 4, the "Do not add editorial analysis" line
-**Problem for AI:** This is a prohibition — and the design doc itself flags the elephants risk. But the bigger issue for the progression is *visibility*. Whether Sonnet adds unsolicited "Implications" or "Analysis" sections is inconsistent across runs. The v0.2 test showed 5 unsolicited editorial sections; the instructor's baseline output also added "Analyst Notes" and "Cross-Platform Momentum Signals" sections. But in a live demo, Step 3 might not produce extra sections — in which case Step 4 has no visible effect, and the audience sees a step that "changed nothing." That's a progression failure.
+**Problem for AI:** This is a prohibition — and the design doc itself flags the elephants risk. But the bigger issue for the progression is *visibility*. Whether Sonnet adds unsolicited "Implications" or "Analysis" sections is inconsistent across runs. The v0.2 test showed 5 unsolicited editorial sections; the baseline prompt output also added "Analyst Notes" and "Cross-Platform Momentum Signals" sections. But in a live demo, Step 3 might not produce extra sections — in which case Step 4 has no visible effect, and the audience sees a step that "changed nothing." That's a progression failure.
 **Problem for humans:** If Step 3 and Step 4 produce identical-looking output, the audience loses confidence that prompt additions matter. The instructor would need to explain a counterfactual ("Step 3 *could have* added extra sections"), which is a weak pedagogical position.
 **Suggested fix:** Consider swapping the ordering: make structural control Step 3, and transparency (Problem Log) Step 4. The Problem Log is guaranteed to produce visible output (it's a new section that either appears or doesn't). That way, even if structural control doesn't produce a visible delta, it's followed by a step that definitely does. Alternatively, reframe Step 4's "What to look for" to be honest: "Compare to Step 3. If Step 3 already has no extra sections, the constraint was unnecessary — and that's a real prompt engineering lesson too. Not every addition matters every time."
 
@@ -75,7 +75,7 @@ Review the BSI workshop prompt progression (Steps 0-5) for prompt engineering qu
 
 | Step | Estimated Cost | Risk Level | Notes |
 |------|---------------|------------|-------|
-| 0 | Low | Safe | Confirmed working — this is the instructor baseline |
+| 0 | Low | Safe | Confirmed working — this is the baseline prompt |
 | 1 | Low | Safe | Same structure, slightly more specific search targets |
 | 2 | Medium | Watch | Web search verification adds search round-trips. "Find the original source" may cause Sonnet to do 5+ additional searches |
 | 3 | Medium | Watch | Problem Log adds output length but no extra searches. Marginal increase from Step 2 |
@@ -84,7 +84,7 @@ Review the BSI workshop prompt progression (Steps 0-5) for prompt engineering qu
 
 **Step 5 is the highest-risk step and the most likely to fail.** The progression note warns about this, which is good. But the warning is at the bottom of the step — in a workshop setting, attendees will paste first and read warnings second. Consider moving the session budget warning to the "What changed" note itself, or bolding it.
 
-**Step 2 is the hidden risk.** The "use web search to find the original source" instruction triggers additional search calls per claim. If Sonnet finds 5 topics and does 2-3 verification searches per topic, that's 10-15 extra searches on top of the initial research. Each search costs session budget. This is the step most likely to push the total session cost above the instructor baseline without being obviously interactive.
+**Step 2 is the hidden risk.** The "use web search to find the original source" instruction triggers additional search calls per claim. If Sonnet finds 5 topics and does 2-3 verification searches per topic, that's 10-15 extra searches on top of the initial research. Each search costs session budget. This is the step most likely to push the total session cost above the baseline prompt without being obviously interactive.
 
 ## What's Well-Engineered
 
@@ -102,6 +102,6 @@ Review the BSI workshop prompt progression (Steps 0-5) for prompt engineering qu
 
 ## Self-Evaluation
 
-- **What worked well:** Having the instructor baseline output, v0.2 test outputs, and design doc all in context let me evaluate the progression against empirical evidence rather than theorizing. The v0.3 session limit failure is the most important data point — it calibrates every risk assessment.
+- **What worked well:** Having the baseline prompt output, v0.2 test outputs, and design doc all in context let me evaluate the progression against empirical evidence rather than theorizing. The v0.3 session limit failure is the most important data point — it calibrates every risk assessment.
 - **What I struggled with:** Judging the Step 4 elephant issue. The design doc already flagged it, and the team already decided to keep it. My recommendation to rewrite as positive structure is the same recommendation the design doc's own principles would suggest, but the team may have kept the prohibition for a reason I can't see from the documents (e.g., positive-structure alternatives were tested and failed). I'm flagging it anyway because the progression is an educational artifact, and teaching prohibition in a progression that's supposed to demonstrate additive positive structure is a contradiction the audience might catch.
 - **Prompt improvement suggestions:** My review prompt should explicitly ask whether I have access to test outputs from the artifact under review. I evaluated against v0.2 and baseline outputs, but the progression itself hasn't been tested — I'm predicting behavior rather than analyzing results. That distinction should be clearer in my analysis.

@@ -1,6 +1,6 @@
 ## Critic Review
 
-**Artifact:** SPEC-008 full artifact set (spec, design, v0.2 prototype, test outputs, instructor baseline, PE review)
+**Artifact:** SPEC-008 full artifact set (spec, design, v0.2 prototype, test outputs, baseline prompt, PE review)
 **Date:** 2026-04-09
 **Dispatch Mode:** Mode 3 (collaborative team)
 
@@ -22,7 +22,7 @@ None of the documents chose. DEC-10 says "good defaults for the target use case"
 
 **Impact:** If someone uses this prompt for educational policy, technology trends, or legal research, Sonnet will dutifully start by searching CDC and WHO. The "expand based on my guidance during gathering" instruction relies on the user knowing to redirect — which directly contradicts REQ-N1 ("no prompt engineering experience needed"). A non-technical user won't know to say "don't search CDC for my education policy question."
 
-**Suggested fix:** Pick one and propagate it everywhere. Either: (a) Rename the spec to "Portable Public Health Research Prompt," update Section 8 to say the first iteration is domain-specific, and note generalization as future work. Or (b) Replace the hardcoded source list in the prompt with "Start with authoritative institutions relevant to the research topic. Choose starting sources based on what I describe during gathering." Option (a) is honest; option (b) adds risk that Sonnet picks poor defaults. Given the stated first use case is BSI internship public health work, (a) is the right call for v0.2.
+**Suggested fix:** Pick one and propagate it everywhere. Either: (a) Rename the spec to "Portable Public Health Research Prompt," update Section 8 to say the first iteration is domain-specific, and note generalization as future work. Or (b) Replace the hardcoded source list in the prompt with "Start with authoritative institutions relevant to the research topic. Choose starting sources based on what I describe during gathering." Option (a) is honest; option (b) adds risk that Sonnet picks poor defaults. Given the stated first use case is the internship public health work, (a) is the right call for v0.2.
 
 ---
 
@@ -194,7 +194,7 @@ These survived from v0.1 despite the PE review flagging them.
 
 **The fixed limitations statement (DEC-5) communicates the right message even when Sonnet paraphrases it.** Both the Query Report and Research Report include AI-generated disclaimers. Even though Sonnet didn't copy the text exactly, the spirit survived. This is defense-in-depth working.
 
-**The v0.2 test output is dramatically better than the instructor baseline for the stated use case.** The instructor baseline produces a single emoji-laden table with no sources, no URLs, no methodology, and unverifiable claims. The v0.2 output has 50+ sourced claims, a structured Problem Log, and a separation between plan and findings. The value-add is clear and substantial.
+**The v0.2 test output is dramatically better than the baseline prompt for the stated use case.** The baseline prompt produces a single emoji-laden table with no sources, no URLs, no methodology, and unverifiable claims. The v0.2 output has 50+ sourced claims, a structured Problem Log, and a separation between plan and findings. The value-add is clear and substantial.
 
 ---
 

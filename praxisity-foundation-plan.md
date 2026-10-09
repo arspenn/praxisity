@@ -17,7 +17,7 @@ Praxisity is a design-first workflow framework for AI-assisted planning and exec
 - External task management via Todoist MCP (not text files)
 - Self-bootstrapping (use Praxisity to build Praxisity)
 - Git-versioned documents with Pandoc output
-- Minimal cognitive overhead (ADHD-informed design)
+- Minimal cognitive overhead (low cognitive overhead by design)
 - Detailed Implementation Prompts (DIPs) for consistent AI output
 
 **Differentiation:**
@@ -41,7 +41,7 @@ Praxisity is a design-first workflow framework for AI-assisted planning and exec
 | Breakdown Command | Decompose designs into Todoist tasks via MCP |
 | Define Command | Generate DIPs for each task |
 | Build Command | Execute DIPs with git safety |
-| Todoist MCP Integration | External task store (ADHD requirement) |
+| Todoist MCP Integration | External task store (external-reminder requirement) |
 | Document Templates | Consistent output structure |
 | Pandoc PDF Generation | Deliverable output |
 | New-Project Command | Initialize clean project from framework |
@@ -259,7 +259,7 @@ See Todoist for active tasks
 ### Why Todoist (Not Text Files)
 
 1. **External accountability** - Tasks exist outside the AI conversation
-2. **ADHD-appropriate** - Reminders, due dates, mobile access
+2. **Low-overhead** - Reminders, due dates, mobile access
 3. **Micro-chunking** - AI breaks down tasks, Todoist stores them
 4. **Progress visibility** - See what's done without parsing markdown
 5. **No context pollution** - Tasks don't consume AI token budget
@@ -297,7 +297,7 @@ Todoist Project: [Project Name]
 
 1. Read the design document
 2. Identify implementation steps
-3. Apply ADHD-friendly micro-chunking:
+3. Apply micro-chunking:
    - Each task completable in <30 minutes
    - Clear, concrete action verbs
    - No ambiguous "figure out" tasks
@@ -429,8 +429,8 @@ Proceed anyway? (requires explicit confirmation)
 
 ## Todoist Account Recommendation
 
-**Premium ($4/month) - Recommended:**
-- Reminders (critical for ADHD)
+**Premium - Recommended:**
+- Reminders (critical for follow-through)
 - Labels (for categorization)
 - Filters (custom views)
 - Comments on tasks
@@ -459,7 +459,7 @@ Business tier not needed for solo use.
 | Perfectionism | High | "Working" beats "perfect" |
 | Abandonment mid-project | Medium | Use framework's own task management |
 
-### ADHD-Specific Risks
+### Solo-Developer Focus Risks
 
 | Risk | Likelihood | Mitigation |
 |------|------------|------------|

@@ -65,7 +65,7 @@ Provide guided, safe execution of DIPs with step-by-step verification and git sa
 | ID | Requirement | Priority | Rationale |
 |----|-------------|----------|-----------|
 | REQ-N1 | The command shall work for non-software DIPs (documents, research tasks) without assuming code-specific tooling | MUST | Multi-disciplinary framework |
-| REQ-N2 | The command shall provide clear progress indication for each step | SHOULD | ADHD-informed: visible progress reduces abandonment |
+| REQ-N2 | The command shall provide clear progress indication for each step | SHOULD | Visible progress reduces abandonment |
 
 ---
 

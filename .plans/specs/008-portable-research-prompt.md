@@ -155,7 +155,7 @@ Define a portable, self-contained prompt format that transforms a single paste i
 | Dependent | Relationship |
 |-----------|--------------|
 | Future Praxisity research sub-agent | This prompt pattern is a prototype for the portable research workflow the sub-agent will automate |
-| BSI internship deliverables | Direct use case — prompt will be used to produce internship work product |
+| the internship deliverables | Direct use case — prompt will be used to produce internship work product |
 | Framework prompt-chaining pattern library | First validated example of a self-contained portable prompt; informs future prompts in other domains |
 
 ---
@@ -180,14 +180,14 @@ The following are explicitly NOT part of this specification:
 |----|----------|--------|------------|
 | Q-1 | How does the prompt handle hitting the free-tier session usage limit mid-conversation? | Resolved | Mitigate through prompt brevity — maximize specificity while minimizing language. Test empirically and report back for next iteration. Not a prompt-level recovery feature. |
 | Q-2 | Should the query report artifact include estimated token/message budget? | Resolved | Desirable but not feasible for Sonnet to estimate accurately. Drop. |
-| Q-3 | What specific domain will the first test prompt target? | Resolved | Broad public health topic scan — "top 5 public health topics in the news." Gathering surfaces: intended audience/stakeholder, timeframe (user-specified date range if applicable, e.g., 2018–2023), geography. Output is a query report + research report, not a final deliverable. Designed for downstream prompt chaining. First test will be built immediately following this spec as a BSI internship deliverable. |
+| Q-3 | What specific domain will the first test prompt target? | Resolved | Broad public health topic scan — "top 5 public health topics in the news." Gathering surfaces: intended audience/stakeholder, timeframe (user-specified date range if applicable, e.g., 2018–2023), geography. Output is a query report + research report, not a final deliverable. Designed for downstream prompt chaining. First test will be built immediately following this spec as a the internship deliverable. |
 | Q-4 | Should the prompt instruct the AI to prefer certain source types? | Resolved | Default to primary sources of good repute. Hardcode known examples (CDC, WHO, NIH, state health departments). Flex beyond those based on user guidance during gathering. |
 
 ---
 
 ## 10. References
 
-- [Compass artifact: Claude free tier capabilities research](.plans/references/compass_artifact_wf-13120d19-5bce-4e73-9fff-357d7def829e_text_markdown.md) — Platform constraints and capabilities for free-tier Claude.ai
+- Claude free-tier capabilities research (kept outside the repository) — Platform constraints and capabilities for free-tier Claude.ai
 - Second brain architecture (project memory: reference_second_brain_architecture.md) — Lethal trifecta security model informing the verification separation pattern
 - [CHARTER.md](../../CHARTER.md) — Project principles, specifically bootstrapping and "framework builds the user"
 

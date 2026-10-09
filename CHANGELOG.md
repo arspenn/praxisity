@@ -166,7 +166,7 @@ Reduced CLAUDE.md from 373 to 44 lines (88% reduction) based on research showing
 **Commands:**
 - `/spec` - Create specification documents defining WHAT to build
 - `/architect` - Create design documents defining HOW to implement specs
-- `/breakdown` - Decompose designs into Todoist tasks with ADHD-friendly sizing
+- `/breakdown` - Decompose designs into Todoist tasks with micro-chunked sizing
 - `/define` - Generate DIPs from design elements or Todoist tasks
 
 **Architecture Decision Records:**

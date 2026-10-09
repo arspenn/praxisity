@@ -6,7 +6,7 @@
 
 ## Instructions Received
 
-Review the full artifact set for SPEC-008 Portable Research Prompt before v0.3 implementation. Focus areas: whether v0.2 addressed v0.1 PE findings, new issues revealed by test data (unsolicited editorial sections, Wikipedia without distinction, generic landing page URLs), recommendations on three open design questions (DQ-1, DQ-2, DQ-3), and baseline comparison against the instructor's barebones prompt output.
+Review the full artifact set for SPEC-008 Portable Research Prompt before v0.3 implementation. Focus areas: whether v0.2 addressed v0.1 PE findings, new issues revealed by test data (unsolicited editorial sections, Wikipedia without distinction, generic landing page URLs), recommendations on three open design questions (DQ-1, DQ-2, DQ-3), and baseline comparison against the baseline prompt output.
 
 ---
 
@@ -172,9 +172,9 @@ Two changes:
 
 ## Baseline Comparison Summary
 
-v0.2 dramatically outperforms the instructor's barebones prompt on every quality dimension the spec targets:
+v0.2 dramatically outperforms the baseline prompt on every quality dimension the spec targets:
 
-| Dimension | Instructor Baseline | v0.2 Output |
+| Dimension | Baseline Prompt | v0.2 Output |
 |---|---|---|
 | Source traceability | Generic source list at bottom, no per-claim attribution, no URLs | Per-claim attribution with quotations, URLs, source names |
 | Verifiability | Not independently verifiable | Chain-ready — can be pasted into new conversation for verification |

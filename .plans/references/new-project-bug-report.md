@@ -438,8 +438,8 @@ The spec says: "Show which spec is being designed for, list the requirements to 
 - Skippable sections (Interfaces, Data Model) were offered as skippable per spec
 - User's design decisions were accepted without over-validating (constraint respected)
 - Components correctly traced to requirements
-- Conversation was responsive to user tangents (template anchoring discussion, professor instructions, course context) without losing the design thread
-- The user's personal interest in pushback to risk management was captured as design context while respecting their desire to stay neutral in the interview
+- Conversation was responsive to user tangents (template anchoring discussion, assignment instructions, course context) without losing the design thread
+- The user's stated design interest was captured as context while respecting their wish to stay neutral in the interview
 
 ---
 

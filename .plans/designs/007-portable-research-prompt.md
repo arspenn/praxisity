@@ -21,15 +21,15 @@
 
 | Document | Relationship |
 |----------|--------------|
-| [portable-research-prompt-v0.4.md](../references/portable-research-prompt-v0.4.md) | Current prototype — minimal prompt based on instructor baseline |
+| [portable-research-prompt-v0.4.md](../references/portable-research-prompt-v0.4.md) | Current prototype — minimal prompt based on baseline prompt |
 | [portable-research-prompt-v0.3.md](../references/portable-research-prompt-v0.3.md) | Prior prototype — full conversational pipeline (exceeded free-tier limits) |
 | [portable-research-prompt-v0.2.md](../references/portable-research-prompt-v0.2.md) | Prior prototype — two-artifact pipeline |
-| [public_health_trending_topics_april2026.md](../references/public_health_trending_topics_april2026.md) | Baseline — instructor's prompt that works within free-tier limits |
+| Baseline prompt and output (kept outside the repository) | Baseline — instructor's prompt that works within free-tier limits |
 | [SPEC-008-prompt-v0.1-review.md](../reviews/SPEC-008-prompt-v0.1-review.md) | PE review of v0.1 |
-| [Query_Report1.md](../references/Query_Report1.md) | Test output — v0.2 query report |
-| [Research_Report1.md](../references/Research_Report1.md) | Test output — v0.2 research report |
+| Query Report test output (kept outside the repository) | Test output — v0.2 query report |
+| Research Report test output (kept outside the repository) | Test output — v0.2 research report |
 | Team review reports | Informs — `.plans/reviews/SPEC-008-*-team-report.md` |
-| [Compass artifact](../references/compass_artifact_wf-13120d19-5bce-4e73-9fff-357d7def829e_text_markdown.md) | Informs — free-tier capabilities and constraints |
+| Free-tier capabilities research (kept outside the repository) | Informs — free-tier capabilities and constraints |
 
 ---
 
@@ -39,9 +39,9 @@
 
 **v0.1–v0.3 designed a five-phase conversational pipeline (Orient → Gather → Plan → Research → Deliver). Empirical testing proved this exceeds free-tier session limits — a user ran out of usage after the second gathering question.** The conversation overhead (multiple round-trips before any research begins) consumes the limited free-tier message budget before the prompt can do its actual job.
 
-v0.4 pivots to the approach that already works: the instructor's single-shot prompt format. The user fills in their goal, pastes the prompt, and gets a single markdown artifact. No multi-turn gathering, no plan approval gate, no conversation flow control. The design challenge shifts from "how to control a multi-turn conversation" to "how much source quality can we add to a single-shot prompt without exceeding the session budget."
+v0.4 pivots to the approach that already works: the baseline single-shot prompt format. The user fills in their goal, pastes the prompt, and gets a single markdown artifact. No multi-turn gathering, no plan approval gate, no conversation flow control. The design challenge shifts from "how to control a multi-turn conversation" to "how much source quality can we add to a single-shot prompt without exceeding the session budget."
 
-The strategy is additive: start from the instructor's proven baseline (~95 words), add only what demonstrably improves output quality, and test each addition against the session limit. v0.4 adds three innovations validated by the Mode 3 team review: source verification, Problem Log, and structural constraint against editorial sections.
+The strategy is additive: start from the proven baseline (~95 words), add only what demonstrably improves output quality, and test each addition against the session limit. v0.4 adds three innovations validated by the Mode 3 team review: source verification, Problem Log, and structural constraint against editorial sections.
 
 ### 1.2 Design Principles
 
@@ -122,7 +122,7 @@ No conversation pipeline. One input, one output. All behavioral control is in th
 |---------|--------|-----------|
 | Model | Sonnet 4.6 (free tier) | Only option |
 | Output format | Markdown artifact | Explicitly specified; prevents JavaScript/React artifacts |
-| Prompt format | Role/Goal/Sources/Links/Output | Matches instructor's proven format |
+| Prompt format | Role/Goal/Sources/Links/Output | Matches the proven baseline format |
 | Domain | Public health | Hardcoded source list; generalization deferred post-internship |
 
 ---
@@ -267,7 +267,7 @@ No user gates. No mid-session approval. The trade-off for fitting within session
 
 **Context:** v0.1–v0.3 took a top-down approach (design the ideal, then cut). This consistently produced prompts that exceeded session limits.
 
-**Decision:** Start from the instructor's baseline (confirmed to work), add one feature at a time, test each addition against session limits. Only keep additions that survive testing.
+**Decision:** Start from the baseline prompt (confirmed to work), add one feature at a time, test each addition against session limits. Only keep additions that survive testing.
 
 **Rationale:** Bottom-up from proven baseline is safer than top-down from ideal specification when the binding constraint is empirical and unpublished.
 
@@ -293,7 +293,7 @@ No user gates. No mid-session approval. The trade-off for fitting within session
 
 | Risk | Impact | Mitigation |
 |------|--------|------------|
-| v0.4 still exceeds session limits | Can't complete; need to cut further | Fall back to instructor baseline + problem log only |
+| v0.4 still exceeds session limits | Can't complete; need to cut further | Fall back to baseline prompt + problem log only |
 | Sonnet ignores source verification at this token budget | Links unverified, output no better than baseline | Test and compare; if verification isn't happening, the instruction isn't earning its tokens |
 | Sonnet creates JavaScript artifact instead of markdown | User can't easily use the output | "Create a markdown artifact" explicit in v0.4 |
 | Problem Log is empty (Sonnet doesn't self-report issues) | Loses the standout feature | Test; if empty, may need more explicit Problem Log instruction (costs tokens) |
@@ -307,7 +307,7 @@ No user gates. No mid-session approval. The trade-off for fitting within session
 | Source quality | Check 3+ URLs from output | REQ-F6, F7 |
 | Problem Log presence | Verify Problem Log appears and contains entries | REQ-F8, DEC-2 |
 | Editorial suppression | Verify no unsolicited sections beyond goal | DEC-4 |
-| Baseline comparison | Compare v0.4 output quality to instructor baseline | REQ-N4 |
+| Baseline comparison | Compare v0.4 output quality to baseline prompt | REQ-N4 |
 | Additive testing | After each feature addition, rerun session viability | DEC-12 |
 
 ---
@@ -343,7 +343,7 @@ No user gates. No mid-session approval. The trade-off for fitting within session
 | DQ-1 | Editorial sections | Resolved | Single structural constraint: "Do not add editorial analysis or commentary sections beyond what the goal asks for." |
 | DQ-2 | Wikipedia flagging | Deferred | Not enough token budget in v0.4. Add in v0.5 if session allows. |
 | DQ-3 | Landing page URLs | Resolved | "Every URL must point to the specific page where the information was found, not a homepage." |
-| DQ-4 | Where is the session limit? | Open | Empirical testing required. v0.3 exceeded it. Instructor baseline fits. v0.4 is between them. |
+| DQ-4 | Where is the session limit? | Open | Empirical testing required. v0.3 exceeded it. The baseline prompt fits. v0.4 is between them. |
 | DQ-5 | Does source verification actually happen at ~180 tokens? | Open | Test required. If Sonnet ignores the instruction at this brevity, the tokens aren't earning their place. |
 
 ---
@@ -375,13 +375,13 @@ No user gates. No mid-session approval. The trade-off for fitting within session
 - [v0.4 Prototype](../references/portable-research-prompt-v0.4.md)
 - [v0.3 Prototype](../references/portable-research-prompt-v0.3.md)
 - [v0.2 Prototype](../references/portable-research-prompt-v0.2.md)
-- [v0.2 Test: Query Report](../references/Query_Report1.md)
-- [v0.2 Test: Research Report](../references/Research_Report1.md)
-- [Instructor Baseline](../references/public_health_trending_topics_april2026.md)
+- v0.2 test: Query Report (kept outside the repository)
+- v0.2 test: Research Report (kept outside the repository)
+- Baseline prompt and output (kept outside the repository)
 - [PE Review of v0.1](../reviews/SPEC-008-prompt-v0.1-review.md)
 - [Mode 3 Team Reports](../reviews/SPEC-008-*-team-report.md)
 - [PM Daily Report](../reviews/SPEC-008-pm-daily-report.md)
-- [Free-tier Capabilities Research](../references/compass_artifact_wf-13120d19-5bce-4e73-9fff-357d7def829e_text_markdown.md)
+- Free-tier capabilities research (kept outside the repository)
 
 ---
 
@@ -390,4 +390,4 @@ No user gates. No mid-session approval. The trade-off for fitting within session
 | Version | Date | Author | Changes |
 |---------|------|--------|---------|
 | 0.1 | 2026-04-09 | Andrew | Initial draft — 5-phase pipeline architecture |
-| 0.2 | 2026-04-09 | Andrew | Pivot to single-shot after free-tier session limit failure. Additive iteration from instructor baseline. v0.4 prompt. |
+| 0.2 | 2026-04-09 | Andrew | Pivot to single-shot after free-tier session limit failure. Additive iteration from baseline prompt. v0.4 prompt. |

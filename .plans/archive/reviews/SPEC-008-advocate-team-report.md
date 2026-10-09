@@ -1,12 +1,12 @@
 ## User Advocate Review
 
-**Artifact:** SPEC-008 Portable Research Prompt — v0.2 prompt, test outputs (Query Report + Research Report), instructor baseline, spec, design
+**Artifact:** SPEC-008 Portable Research Prompt — v0.2 prompt, test outputs (Query Report + Research Report), baseline prompt, spec, design
 **Date:** 2026-04-09
 **Dispatch Mode:** Mode 3 (Collaborative Team)
 
 ## Instructions Received
 
-Review the v0.2 portable research prompt and its test outputs from the perspective of the target user: a non-technical person (e.g., public health intern) who will copy-paste this prompt into Claude.ai's free tier. No prompt engineering experience. Evaluate whether the prompt serves them — will they understand what's happening, feel in control, and get useful output? Specific focus areas: first impressions, two-artifact structure clarity, Problem Log usefulness, comparison to instructor baseline, and prompt chaining accessibility.
+Review the v0.2 portable research prompt and its test outputs from the perspective of the target user: a non-technical person (e.g., public health intern) who will copy-paste this prompt into Claude.ai's free tier. No prompt engineering experience. Evaluate whether the prompt serves them — will they understand what's happening, feel in control, and get useful output? Specific focus areas: first impressions, two-artifact structure clarity, Problem Log usefulness, comparison to baseline prompt, and prompt chaining accessibility.
 
 ---
 
@@ -64,7 +64,7 @@ The Problem Log creates anxiety proportional to its length, not proportional to 
 
 **What a new user encounters:** The v0.2 prompt defaults to public health sources (CDC, WHO, NIH) but gathers the research question from the user. In the test, the user asked for "top 5 trending topics" — a general question. The prompt faithfully researched general trending topics (Iran war, protests, moon mission, gas prices, higher ed reform). Each topic includes a "Public Health Relevance" paragraph bolted on at the end.
 
-The instructor's baseline, by contrast, hardcoded "Act as an industry analyst for public health" and produced five directly relevant public health topics (measles, funding cuts, GLP-1 drugs, youth mental health, infrastructure).
+The baseline prompt, by contrast, hardcoded "Act as an industry analyst for public health" and produced five directly relevant public health topics (measles, funding cuts, GLP-1 drugs, youth mental health, infrastructure).
 
 **Why it's a problem:** A public health intern who uses the v0.2 prompt and gets a report about the Iran-Israel war and Artemis II moon mission will be confused about why a public health research tool produced geopolitics research. The "Public Health Relevance" paragraphs feel retrofitted — because they are. The prompt's gathering phase correctly captured what the user asked for, but a non-technical user may not know they should ask for public-health-specific topics. They'll assume the tool knows what they need.
 
@@ -88,7 +88,7 @@ The issue isn't the disclaimer — it's the lack of context around it. The user 
 
 ### [Impact: Minor] — The v0.2 output is better research but worse deliverable
 
-**What a new user encounters:** If they compare v0.2 output to what a simpler prompt produces (like the instructor baseline), they'll notice: the baseline is a clean, polished table they could email to their supervisor right now. The v0.2 output is a 289-line evidence document they'd need to read through, extract key findings from, and potentially reorganize before sharing.
+**What a new user encounters:** If they compare v0.2 output to what a simpler prompt produces (like the baseline prompt), they'll notice: the baseline is a clean, polished table they could email to their supervisor right now. The v0.2 output is a 289-line evidence document they'd need to read through, extract key findings from, and potentially reorganize before sharing.
 
 **Why it's a problem:** This isn't a design flaw — the v0.2 output is intentionally structured for verification, not presentation. But a student who needs to produce a deliverable today will prefer the simpler output. The v0.2 output's value proposition — traceability, source attribution, verification readiness — is invisible to someone who just needs "the answer."
 

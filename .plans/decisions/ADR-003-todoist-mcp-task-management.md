@@ -3,7 +3,7 @@
 **Date:** 2025-12-18
 **Status:** Accepted
 **Deciders:** Framework Architect
-**Tags:** task-management, todoist, mcp, adhd, external-accountability
+**Tags:** task-management, todoist, mcp, low-cognitive-overhead, external-accountability
 
 ## Context
 
@@ -20,7 +20,7 @@ Task management approaches available:
 4. **No task management** (rely on user's existing system)
 
 Requirements:
-- ADHD-friendly (reminders, due dates, mobile access)
+- Low cognitive overhead (reminders, due dates, mobile access)
 - External accountability (tasks exist outside AI conversation)
 - Minimal token consumption (don't pollute context)
 - Persistent across sessions
@@ -43,8 +43,8 @@ Framework commands (`/breakdown`, `/charter`, etc.) will use Todoist MCP to crea
 **External accountability:**
 Tasks in Todoist exist independent of the AI conversation. They persist across sessions, survive context window limits, and provide accountability outside the code editor. Users see tasks on mobile, get reminders, and can work without opening Claude Code.
 
-**ADHD-appropriate design:**
-Todoist provides critical ADHD support features:
+**Low-overhead design:**
+Todoist provides features that keep tasks out of working memory:
 - Due dates and reminders (external prompts)
 - Mobile access (check tasks anywhere)
 - Quick capture (add tasks from anywhere)
@@ -88,10 +88,10 @@ External task management aligns with the framework's philosophy:
 - Consumes token budget (tasks in every conversation)
 - No external accountability
 - Manual checkbox management
-- Not ADHD-friendly
+- No reminders or mobile capture
 - Tasks buried in text files
 
-**Why not chosen:** Text files fail the ADHD requirement. No reminders, no mobile access, no external accountability. Tasks become stale markdown that users ignore.
+**Why not chosen:** Text files fail the external-reminder requirement. No reminders, no mobile access, no external accountability. Tasks become stale markdown that users ignore.
 
 ### Alternative 2: GitHub Issues/Projects
 
@@ -110,9 +110,9 @@ External task management aligns with the framework's philosophy:
 - Heavier interface (not quick capture)
 - No mobile app optimization for personal tasks
 - Overkill for solo projects
-- Not ADHD-optimized
+- Not built for personal task capture
 
-**Why not chosen:** GitHub Issues are great for software collaboration but poor for personal task management. Too heavy, too software-centric, no ADHD features.
+**Why not chosen:** GitHub Issues are great for software collaboration but poor for personal task management. Too heavy, too software-centric, no reminders or quick capture.
 
 ### Alternative 3: Built-In Task System
 
@@ -149,7 +149,7 @@ External task management aligns with the framework's philosophy:
 - Different features across systems
 - Dilutes optimization for any one system
 
-**Why not chosen:** MVP needs focus. Start with Todoist (excellent for ADHD, good MCP support). Can add alternatives post-MVP if users request.
+**Why not chosen:** MVP needs focus. Start with Todoist (excellent for external reminders, good MCP support). Can add alternatives post-MVP if users request.
 
 ### Alternative 5: No Task Management
 
@@ -161,18 +161,18 @@ External task management aligns with the framework's philosophy:
 - Simplest implementation
 
 **Cons:**
-- Loses ADHD-friendly design goal
+- Loses the external-reminder design goal
 - No `/breakdown` micro-chunking workflow
 - Misses integration opportunity
 - Forces users to manually translate designs to tasks
 
-**Why not chosen:** Task management is core to the framework's value. The design → breakdown → tasks flow is what makes this framework useful for ADHD users.
+**Why not chosen:** Task management is core to the framework's value. The design → breakdown → tasks flow is what makes this framework useful for people who need their tasks held outside their head.
 
 ## Consequences
 
 ### Positive Consequences
 
-- **ADHD support:** Reminders, mobile access, due dates, quick capture
+- **Cognitive offload:** Reminders, mobile access, due dates, quick capture
 - **External accountability:** Tasks exist outside conversation
 - **Token efficiency:** No task lists consuming context
 - **Professional tool:** Todoist is well-designed and maintained
@@ -183,7 +183,7 @@ External task management aligns with the framework's philosophy:
 
 ### Negative Consequences
 
-- **External dependency:** Requires Todoist account (Premium recommended: $4/month)
+- **External dependency:** Requires Todoist account (Premium recommended)
 - **MCP requirement:** Users must configure Todoist MCP
 - **Lock-in risk:** Tasks stored in Todoist (but export available)
 - **Network dependency:** Need internet for task operations
@@ -192,7 +192,7 @@ External task management aligns with the framework's philosophy:
 ### Neutral Consequences
 
 - **Learning curve:** Users unfamiliar with Todoist need to learn it
-- **Cost:** Todoist Premium ($4/month) for best features (free tier works but limited)
+- **Cost:** Todoist Premium for best features (free tier works but limited)
 - **Privacy:** Tasks stored in Todoist's cloud (some users may object)
 
 ## Implementation Notes

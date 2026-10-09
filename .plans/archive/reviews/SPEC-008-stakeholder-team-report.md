@@ -1,9 +1,9 @@
 ## Stakeholder Review
 
-**Artifact:** SPEC-008 Portable Research Prompt — v0.2 test outputs (Research Report, Query Report), instructor baseline, spec, and design
+**Artifact:** SPEC-008 Portable Research Prompt — v0.2 test outputs (Research Report, Query Report), baseline prompt, spec, and design
 **Date:** 2026-04-09
 **Dispatch Mode:** Mode 3 (collaborative team)
-**Intended Audience:** BSI (public health) internship supervisor or professor receiving student research output; more broadly, anyone receiving AI-assisted research from a non-technical user
+**Intended Audience:** a public health internship supervisor or professor receiving student research output; more broadly, anyone receiving AI-assisted research from a non-technical user
 
 ## Instructions Received
 
@@ -11,7 +11,7 @@ Evaluate all SPEC-008 materials from the perspective of the person on the receiv
 
 1. If a student handed me the Research Report as preliminary research, what would my reaction be?
 2. Does the Problem Log increase or decrease confidence in the work?
-3. How does the instructor's baseline compare to the v0.2 Research Report? Which is more useful?
+3. How does the baseline prompt compare to the v0.2 Research Report? Which is more useful?
 4. Would the Query Report be valuable as a demonstration of research process?
 5. Is the "independently verified" disclaimer practical?
 6. Would I accept work produced this way?
@@ -24,7 +24,7 @@ Evaluate all SPEC-008 materials from the perspective of the person on the receiv
 
 **What the audience sees:** A student submits a 288-line Research Report on "top 5 trending topics in the United States." The five topics are: the Iran war, the No Kings protest movement, Artemis II, gas prices, and higher education reform. Each topic has a "Public Health Relevance" paragraph tacked onto the end.
 
-**Why it doesn't serve them:** A BSI supervisor asked for trending topics research. What they got back is essentially a general current events report with public health connections bolted on after the fact. The "Public Health Relevance" paragraphs feel like afterthoughts — because they are. Compare this to the instructor's baseline output, which identified measles outbreaks, federal health funding cuts, GLP-1 drugs, youth mental health, and public health infrastructure dismantling. Those ARE public health topics. The v0.2 output found topics that are trending in general and then searched for health angles.
+**Why it doesn't serve them:** A the internship supervisor asked for trending topics research. What they got back is essentially a general current events report with public health connections bolted on after the fact. The "Public Health Relevance" paragraphs feel like afterthoughts — because they are. Compare this to the baseline prompt output, which identified measles outbreaks, federal health funding cuts, GLP-1 drugs, youth mental health, and public health infrastructure dismantling. Those ARE public health topics. The v0.2 output found topics that are trending in general and then searched for health angles.
 
 This is not a failure of the prompt's engineering. The prompt did what it was told — find trending topics in the United States. But from the supervisor's chair, the student didn't actually research public health. They researched the news cycle and added health footnotes. A professor would circle this and write: "This is a current events summary, not a public health analysis."
 
@@ -46,7 +46,7 @@ This is not a failure of the prompt's engineering. The prompt did what it was to
 
 **Why it doesn't serve them:** A supervisor asking for "top 5 trending topics" wants a landscape overview, not a deep dive on each. The summary table (Section 2) is actually the most useful part of the report. The deep dives belong in a follow-up assignment where the student picks one topic to investigate thoroughly. Handing a supervisor 288 lines of dense sourcing when they wanted a 1-page overview creates two problems: (1) they won't read it all, and (2) the student looks like they don't understand the assignment's scope.
 
-The instructor's baseline output, for all its problems, is actually closer to the right length for this task — a single-page table with analyst notes. It answers "what's trending" without drowning the reader.
+The baseline prompt output, for all its problems, is actually closer to the right length for this task — a single-page table with analyst notes. It answers "what's trending" without drowning the reader.
 
 **Suggested improvement:** The prompt should calibrate output depth to the research question. A "what are the top 5" question calls for a summary with sources, not a monograph. The deep dive format would be appropriate for "analyze [Topic X] in depth." This is a design-level issue — the output structure in the Query Report should match the scope of the question.
 
@@ -96,25 +96,25 @@ However, the Query Report as written reads more like prompt engineering document
 
 **Why it doesn't fully serve them:** "Independently verified" is vague. What does that mean for a student? Check every link? Read every source? Run the same queries themselves? A supervisor reading this disclaimer would ask: "Verified how? By whom? To what standard?" The spec calls this the "lethal trifecta" — untrusted output needs external verification. But the implementation is "must be independently verified" with no guidance on what verification looks like.
 
-For a realistic BSI internship context: the student should spot-check 3-5 key claims by clicking through to the sources and confirming the quoted text exists on the page. That's a practical verification standard. "All findings must be independently verified" sounds like the student needs to redo the entire research project, which defeats the purpose of doing it in the first place.
+For a realistic the internship context: the student should spot-check 3-5 key claims by clicking through to the sources and confirming the quoted text exists on the page. That's a practical verification standard. "All findings must be independently verified" sounds like the student needs to redo the entire research project, which defeats the purpose of doing it in the first place.
 
 **Suggested improvement:** Make the verification guidance concrete and proportionate. Something like: "This report is AI-generated. Before relying on any specific claim, confirm it by visiting the linked source. The Problem Log identifies areas of particular uncertainty."
 
 ---
 
-### [Impact: Weakened] — The v0.2 output is less useful than the instructor's baseline for the stated purpose
+### [Impact: Weakened] — The v0.2 output is less useful than the baseline prompt for the stated purpose
 
-**What the audience sees (instructor baseline):** A focused, single-page table of five public health topics with cross-platform momentum signals, brief analyst notes, and a clean methodology statement. Topics: measles, health funding cuts, GLP-1 drugs, youth mental health, public health infrastructure.
+**What the audience sees (baseline prompt):** A focused, single-page table of five public health topics with cross-platform momentum signals, brief analyst notes, and a clean methodology statement. Topics: measles, health funding cuts, GLP-1 drugs, youth mental health, public health infrastructure.
 
 **What the audience sees (v0.2 output):** A 288-line general current events report with public health relevance paragraphs appended. Topics: Iran war, No Kings protests, Artemis II, gas prices, higher education reform.
 
-**Why the baseline serves better:** The baseline answers the actual question — "what's trending in public health?" The v0.2 output answers a different question — "what's trending in the U.S.?" — and then tries to connect it to public health. For a BSI supervisor, the baseline is immediately actionable. The v0.2 output requires the supervisor to mentally filter out the non-public-health content to find the health angles.
+**Why the baseline serves better:** The baseline answers the actual question — "what's trending in public health?" The v0.2 output answers a different question — "what's trending in the U.S.?" — and then tries to connect it to public health. For a the internship supervisor, the baseline is immediately actionable. The v0.2 output requires the supervisor to mentally filter out the non-public-health content to find the health angles.
 
 **What the v0.2 does better:** Sourcing. The baseline lists source types at the bottom but doesn't cite specific articles. The v0.2 output cites dozens of specific sources with URLs and direct quotations. If the baseline's claims are wrong, the supervisor has no way to check. If the v0.2's claims are wrong, the supervisor can verify in minutes.
 
 **The honest comparison:** The baseline is a better answer to the right question with no way to check it. The v0.2 output is a worse answer to the wrong question with excellent traceability. An ideal output would combine the baseline's topic selection with the v0.2's sourcing discipline.
 
-**Important caveat:** This comparison is somewhat unfair. The instructor's baseline was produced by a different prompt that explicitly scoped to public health from the start. The v0.2 prompt asked about trending topics generally and let the audience field do the scoping work. The v0.2 prompt's gathering phase didn't sufficiently constrain the domain. That's a prompt design issue, not a fundamental flaw in the approach.
+**Important caveat:** This comparison is somewhat unfair. The baseline prompt was produced by a different prompt that explicitly scoped to public health from the start. The v0.2 prompt asked about trending topics generally and let the audience field do the scoping work. The v0.2 prompt's gathering phase didn't sufficiently constrain the domain. That's a prompt design issue, not a fundamental flaw in the approach.
 
 ---
 

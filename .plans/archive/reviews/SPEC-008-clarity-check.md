@@ -121,11 +121,11 @@ The only substantive issues are:
 > Q-3: What specific domain will the first test prompt target? | Resolved | Broad public health topic scan — "top 5 public health topics in the news." Gathering surfaces: intended audience/stakeholder, timeframe, geography. Output is a query report + research report, not a final deliverable. Designed for downstream prompt chaining.
 
 **What's unclear:**
-- The resolution describes *what* the first prompt will do ("top 5 public health topics in the news") but doesn't specify *when* it will be built or *how* it relates to the internship use case mentioned in Section 7.2 ("BSI internship deliverables").
+- The resolution describes *what* the first prompt will do ("top 5 public health topics in the news") but doesn't specify *when* it will be built or *how* it relates to the internship use case mentioned in Section 7.2 ("the internship deliverables").
 - Is the "top 5 public health topics" prompt the final deliverable for the internship, or a prototype to test the pattern?
 
 **What's needed to understand:**
-- Link this open question's resolution to the project timeline or BSI internship scope.
+- Link this open question's resolution to the project timeline or the internship scope.
 
 **Impact:** Very low. This is internal process documentation; it doesn't affect the spec's functional requirements.
 

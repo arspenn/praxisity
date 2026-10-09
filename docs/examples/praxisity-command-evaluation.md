@@ -191,7 +191,7 @@ Estimated effort: 30 min per command
 
 ### `/breakdown`
 - Todoist MCP integration is unique value
-- Micro-chunking rules are ADHD-informed, keep them
+- Micro-chunking rules reduce cognitive load, keep them
 - Task creation loop could be simplified
 
 ### `/define`
