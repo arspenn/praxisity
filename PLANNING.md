@@ -3,8 +3,8 @@
 ## Active Context
 
 **Branch:** `consolidate` (off main at 758f13a — if this goes badly, delete the branch and start over)
-**Last Command:** agent pass: roster into agent-authoring (step 8b)
-**Status:** Steps 1–8b complete; next is step 9 (README, charter, changelog to 0.7.0, merge) then the live test
+**Last Command:** README and CHANGELOG updated (step 9a)
+**Status:** Steps 1–9a complete. Next session: 9b live test, starting with `/charter` update on this repo, then the chain in `~/Dev/praxisity-test`. Merge (9c) only after the live test passes.
 **Date:** 2026-10-08
 **Version:** 0.6.0 → targeting 0.7.0 at end of consolidation
 
@@ -35,7 +35,9 @@ Andrew completed the MPH and started a doctorate of education in instructional s
 | 7 | Refresh skill-forge platform reference and praxisity-patterns | Done 2026-10-08 — both rewritten; prompt-engineer and consistency-reviewer passes applied (tested-vs-documented split, skeleton self-contained, patterns no longer over-generalize from /design; describe gate exits named; gather term "Drafted by you") |
 | 8a | Package skills as a plugin: `.claude-plugin/plugin.json` pointing `skills` at `./.claude/skills/`, marketplace.json (`arspenn`, `source: "."`); validate; test `--plugin-dir` | Done 2026-10-08 — `claude plugin validate .` passes; headless `/praxisity:charter` in `~/Dev/praxisity-test` ran full pre-flight (PLANNING.md to contract, gather defaults, intro, Mission prompt). Verified: namespaced load, `${CLAUDE_SKILL_DIR}` in plugin. Plugin ships agentless. Watch in live test: source-material invite and Mission prompt landed in one message. |
 | 8b | Agent pass: roster as templates in `agent-authoring/templates/roster/` (single source; this repo's `.claude/agents/` is an installed, gitignored copy); checklists harvested from agent memory into critic, prompt-engineer, user-advocate, consistency-reviewer; severity levels defined in every roster file; `agent-authoring` rebuilt with Install and Author flows | Done 2026-10-08 — PE + critic review applied (checklists as conditional checks, diff-before-overwrite, default install all nine, roster promotion only in the source repo, gitignore narrowed to roster names). |
-| 9 | Update README, CHARTER scope/milestones, CHANGELOG to 0.7.0; merge to main | Not started |
+| 9a | README and CHANGELOG (Unreleased → 0.7.0) | Done 2026-10-08 |
+| 9b | Live test on the branch: open the next session with `/charter` in update mode on Praxisity's own charter (scope and milestones are stale; also exercises the update flow, the Domain Context remap, and the post-save checklist against a project that has every file). Then the chain in `~/Dev/praxisity-test`, ending with a `/do` run that halts on purpose, is revised with `/detail`, and resumes. | Not started |
+| 9c | Merge `consolidate` to main; set CHANGELOG heading to `[0.7.0] - date` | After 9b |
 
 Build order for steps 2–5 follows the pattern set by the revised `/charter` (2026-09-22): inline PLANNING.md contract, sequential pre-flight with reasons, explicit gather invocation, template owns section guidance, pacing table using gather's four terms, copy-then-edit with a closed operations list, cancel paths reset PLANNING.md, offer-only post-save, completion gate, honest success message. Review each clone with prompt-engineer + critic + spot in Mode 2 (they hold checklists in agent memory from the charter review). No Mode 3.
 

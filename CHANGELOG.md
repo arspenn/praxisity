@@ -5,6 +5,43 @@ All notable changes to the Praxisity framework will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased] — targeting 0.7.0
+
+Consolidation: the framework becomes five markdown workflow skills plus four support skills, packaged as a Claude Code plugin. Work on branch `consolidate`, 2026-09-22 to 2026-10-08; merges to main after the end-to-end live test.
+
+### Added
+
+- `/describe`, `/design`, `/detail`, `/do` workflow skills, each with a bundled template (except `/do`), each reviewed in two rounds by prompt-engineer, critic, user-advocate, and spot
+- Reference convention shared by every template: cross-document IDs carry a short label, sections are `§number title`, documents are relative links with ID text, removed items keep the ID struck through
+- IDs assigned on approval and never renumbered; coverage gates that withhold save and name their exits; one parent document per child
+- `N/A — [reason]` and `TBD — revisit at [milestone]` markers, and update flows that walk only what changed
+- DIP status lifecycle (`Ready`, `In Progress — Step N passed`, `Halted — Step N: reason`, `Done`) shared by `/detail` and `/do`; user-performed steps in `/do`
+- `/charter` Post-Save checklist offering CLAUDE.md (with `@CHARTER.md` import), README, CHANGELOG, and .gitignore from bundled templates; `/do` appends one line per finished DIP under Unreleased
+- Plugin manifests (`.claude-plugin/plugin.json`, `marketplace.json`); skills install as `/praxisity:<name>`
+- Agent roster as templates in `agent-authoring/templates/roster/`, installed per project; Checklist sections in critic, prompt-engineer, user-advocate, consistency-reviewer; severity levels defined in every agent
+- `skill-forge` platform refresh (tested-vs-documented frontmatter table, plugin packaging) and `praxisity-patterns` rewritten as the skeleton for future skills
+
+### Changed
+
+- Fourth phase renamed `/plan` → `/detail`; workflow is Describe → Design → Detail → Do
+- `/charter` rewritten: template owns section guidance, pacing table, generic Domain Context (three transferable questions), cancel paths reset PLANNING.md
+- `/gather`: defaults instead of calibration questions, four named pacing terms with compounds, two skip states, owns the draft-vs-prompt rule
+- `/agent-authoring`: Install the Roster and Author a New Agent flows; `references/roster.md` replaces `.claude/agents/README.md`
+- `/consult-team` points at `/agent-authoring` when the roster is absent
+- Test project for live runs: `~/Dev/praxisity-test` (sibling repository)
+
+### Removed
+
+- `.claude/commands/` (eight prototype commands: spec, architect, define, build, _prototype-charter, new-project, deliver, breakdown)
+- `.praxisity/templates/` except `adr.template.md`, parked for a future `/decide` skill
+- `.claude/agents/` as tracked files; now an installed, gitignored copy of the roster templates
+- Agent Consultation sections from workflow skills (unreachable where they sat)
+
+### Deferred
+
+- SPEC-009 (HTML output, spec-centric hierarchy, consolidation protocol) shelved
+- `/deliver`, `/breakdown`, `/decide`; instructional-design-specific agents and charter changes
+
 ## [0.6.0] - 2026-03-29
 
 ### Added
