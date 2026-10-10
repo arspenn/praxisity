@@ -6,7 +6,7 @@ Last rebuilt 2026-10-08 after the consolidation rewrite.
 
 ## Two Skill Types
 
-**Workflow skills** drive one phase of Describe → Design → Detail → Do, with `/charter` as the entry point. They are user-invoked only (`disable-model-invocation: true`) and converse with the user throughout, so they must never be given `context: fork`. Four produce a document from a template:
+**Workflow skills** drive one phase of Describe → Devise → Detail → Do, with `/charter` as the entry point. They are user-invoked only (`disable-model-invocation: true`) and converse with the user throughout, so they must never be given `context: fork`. Four produce a document from a template:
 
 ```
 Pre-Flight → Introduction → Gather → Review and Confirm → Generate → Post-Save → Completion Gate → Success Message
@@ -119,7 +119,8 @@ Every produced document is read by people and by the AI, so it must stand alone:
 
 ## Naming
 
-- Workflow skills are named for the verb of their phase: charter, describe, design, detail, do. Avoid "plan" (Claude Code's plan mode) and near-synonyms of an existing phase.
+- Workflow skills are named for the verb of their phase: charter, describe, devise, detail, do. The artifact keeps its own name (`/devise` writes a design, `/detail` writes a DIP).
+- **Before naming any skill, check the built-in command list** at https://code.claude.com/docs/en/commands (and type `/` in a session on the current version). A bare plugin skill name resolves only when no built-in uses it, so a collision sends the user to Anthropic's command, not ours. Two collisions found so far by accident: `plan` (plan mode) and `design` (the bundled mockup skill added in 2.1.265). Also avoid near-synonyms of an existing phase.
 - Support skills are named for what they enable: gather, consult-team, skill-forge, agent-authoring.
 - Artifacts: `SPEC-NNN`, `DESIGN-NNN`, `DIP-NNN`, with files `.plans/specs/NNN-slug.md`, `.plans/designs/NNN-slug.md`, `.plans/prompts/NNN-slug.md`. Element IDs within them: OBJ, REQ-F, REQ-N, UC, AC, Q (spec); COMP, INT, DATA, DEC, DQ (design).
 - Commit messages: `charter:`, `spec(slug):`, `design(slug):`, `dip(slug):`, each naming the artifact ID.

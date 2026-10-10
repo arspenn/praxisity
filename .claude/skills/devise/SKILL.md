@@ -1,17 +1,17 @@
 ---
-name: design
+name: devise
 description: Create or revise a design document (DESIGN-NNN) that defines how a specification will be built. Produces components, interfaces, data entities, and decisions with IDs, each traced to the spec requirements it satisfies.
 disable-model-invocation: true
 argument-hint: "[SPEC-NNN to design for, or DESIGN-NNN to revise]"
 ---
 
-# Design
+# Devise
 
 Create or revise a design. A design defines HOW the work a specification described will be built: the parts, how they connect, what information they handle, and the decisions that shaped them. Every component, interface, data entity, decision, and open question carries an ID so the Detailed Implementation Prompts (DIPs) that follow can cite it exactly, and every element cites the spec requirements it satisfies.
 
 **Template:** `${CLAUDE_SKILL_DIR}/templates/design.template.md`. The template is read-only input shared by every future run; all edits target the design file in `.plans/designs/`.
 
-**Argument:** the text the user typed after `/design`, if any, available as `$ARGUMENTS`. `DESIGN-NNN` means revise that design. `SPEC-NNN` or a bare number means design for that spec.
+**Argument:** the text the user typed after `/devise`, if any, available as `$ARGUMENTS`. `DESIGN-NNN` means revise that design. `SPEC-NNN` or a bare number means design for that spec.
 
 ## Rules
 
@@ -31,7 +31,7 @@ Create or revise a design. A design defines HOW the work a specification describ
 Run these steps in order and finish each before starting the next. Step 2 lands first so that an interrupted run still leaves PLANNING.md accurate, and steps 4 and 5 decide what the rest of the run is about.
 
 1. Read PLANNING.md. If it is missing, create it per the contract above and tell the user you keep it as a session log.
-2. Update PLANNING.md: Last Command `/design`, Status `in progress`, Date today.
+2. Update PLANNING.md: Last Command `/devise`, Status `in progress`, Date today.
 3. Invoke the `gather` skill with the Skill tool so its protocol is in context before the first section is presented.
 4. Revise, if asked. If the argument is `DESIGN-NNN` or the user asks to revise a design, list `.plans/designs/` with `ls` in Bash, read that design in full, read the spec named in its Specification References in full, and go to step 6 for the update flow. Otherwise continue to step 5 for a new design. To cancel here, set PLANNING.md Status to `cancelled` and stop.
 5. Select the spec for a new design. List `.plans/specs/` with `ls` in Bash. If it is empty or missing, say a design needs a spec to design for, set PLANNING.md Status to `cancelled`, and stop with the suggestion to run `/describe` first. If the argument names a spec (`SPEC-NNN` or a bare number), use it; if PLANNING.md's Next Steps names a spec, offer it as the default; otherwise ask once. Read the selected spec in full and hold its requirements (REQ-F, REQ-N with priorities), use cases, acceptance criteria, constraints, Out of Scope, and Open Questions; the whole design is built against them. Then search `.plans/designs/` for the spec's ID with Grep. If a design already implements it, ask once: revise that design (read it and go to step 6 for the update flow) or create an alternative alongside it (the new design's Related Documents will list the existing one as "Alternative to"). A new design's number is the highest existing NNN in `.plans/designs/` plus one.

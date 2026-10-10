@@ -38,7 +38,7 @@ Common optional fields: `tools` (allowlist; review agents use `Read, Grep, Glob,
 ## Writing the Body
 
 - **Identity** is the attention anchor: who the agent is and the one question it keeps asking. Two or three sentences.
-- **Project Context** states the workflow (Describe → Design → Detail → Do, charter as entry) and where artifacts and IDs live. It is the same paragraph across the roster, varied only where the agent's focus needs a different emphasis.
+- **Project Context** states the workflow (Describe → Devise → Detail → Do, charter as entry) and where artifacts and IDs live. It is the same paragraph across the roster, varied only where the agent's focus needs a different emphasis.
 - **Reasoning Approach** is a numbered procedure plus "What you ignore" as plain boundary statements. Do not name other agents in those boundaries; it primes team awareness that is irrelevant when the agent is dispatched alone.
 - **Checklist** holds the recurring patterns the agent has learned to check, phrased as questions with observable answers, never as findings (a finding stated as a fact gets re-reported in every session, fixed or not). A new agent has no Checklist section; one is added when a pattern has recurred in the agent's memory, and it is kept to about a dozen items, retiring the rest to memory.
 - **Critical Rules** are a few calibration rules, always ending with "if the work is sound, say so".

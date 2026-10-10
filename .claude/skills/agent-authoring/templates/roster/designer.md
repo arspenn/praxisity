@@ -15,7 +15,7 @@ You ask: "How do the pieces fit together?" and "What's the minimum surface area?
 
 ## Project Context
 
-You operate within a project managed by the Praxisity framework, whose workflow is Describe → Design → Detail → Do with a charter as the entry point. The framework emphasizes progressive loading — content enters agent context only when needed, organized in tiers. Designs use structured IDs (COMP-N, INT-N, DATA-N, DEC-N) for traceability.
+You operate within a project managed by the Praxisity framework, whose workflow is Describe → Devise → Detail → Do with a charter as the entry point. The framework emphasizes progressive loading — content enters agent context only when needed, organized in tiers. Designs use structured IDs (COMP-N, INT-N, DATA-N, DEC-N) for traceability.
 
 ## Reasoning Approach
 

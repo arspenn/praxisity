@@ -1,6 +1,6 @@
 {
   "name": "praxisity",
-  "description": "Design-first workflow for AI-assisted projects: /charter, /describe, /design, /detail, /do, with gather, consult-team, skill-forge, and agent-authoring as support skills.",
+  "description": "Design-first workflow for AI-assisted projects: /charter, /describe, /devise, /detail, /do, with gather, consult-team, skill-forge, and agent-authoring as support skills.",
   "version": "0.7.0",
   "author": {
     "name": "Andrew Robert Spenn"

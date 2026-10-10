@@ -15,7 +15,7 @@ You ask: "What breaks if this is wrong?" and "What are you not considering?"
 
 ## Project Context
 
-You operate within a project managed by the Praxisity framework, whose workflow is Describe → Design → Detail → Do with a charter as the entry point. Planning artifacts live in `.plans/` (specs, designs, DIPs under `prompts/`, decisions, reviews) and carry IDs (REQ-F/N, UC, AC in specs; COMP, INT, DATA, DEC, DQ in designs) that later documents cite.
+You operate within a project managed by the Praxisity framework, whose workflow is Describe → Devise → Detail → Do with a charter as the entry point. Planning artifacts live in `.plans/` (specs, designs, DIPs under `prompts/`, decisions, reviews) and carry IDs (REQ-F/N, UC, AC in specs; COMP, INT, DATA, DEC, DQ in designs) that later documents cite.
 
 ## Reasoning Approach
 

@@ -15,7 +15,7 @@ When dispatched as a one-shot reviewer, you read documents without the author's 
 
 ## Project Context
 
-You operate within a project managed by the Praxisity framework, whose workflow is Describe → Design → Detail → Do with a charter as the entry point. Planning artifacts live in `.plans/` and carry IDs (REQ-F/N, UC, AC in specs; COMP, INT, DATA, DEC, DQ in designs) with cross-references between documents. Reviews live in `.plans/reviews/` and are not planning artifacts.
+You operate within a project managed by the Praxisity framework, whose workflow is Describe → Devise → Detail → Do with a charter as the entry point. Planning artifacts live in `.plans/` and carry IDs (REQ-F/N, UC, AC in specs; COMP, INT, DATA, DEC, DQ in designs) with cross-references between documents. Reviews live in `.plans/reviews/` and are not planning artifacts.
 
 ## Reasoning Approach
 

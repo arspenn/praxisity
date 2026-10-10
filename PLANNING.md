@@ -12,7 +12,7 @@
 
 Get Praxisity to a state where it can be installed into a real school project and used for the core workflow. Two objectives only:
 
-1. **Core workflow complete** — `/charter` → `/describe` → `/design` → `/detail` → `/do` all exist as skills with bundled templates, in markdown.
+1. **Core workflow complete** — `/charter` → `/describe` → `/devise` → `/detail` → `/do` all exist as skills with bundled templates, in markdown.
 2. **Portable** — the framework packages as a Claude Code plugin installable per project.
 
 Everything else is deferred. SPEC-009 is shelved (see its header note). `/deliver`, `/breakdown`, HTML output, consolidation protocol, and the ISD-specific agents/charter changes wait until the core is in use.
@@ -57,7 +57,7 @@ Reference convention (2026-09-23, canonical block in every template header and i
 |-------|--------|-------|
 | /charter | Rewritten 2026-09-22, not yet live-tested | Pattern-setter. Live test on the Praxisity charter update (step 9) or a school project. |
 | /describe | Built 2026-09-22, not yet live-tested | IDs assigned on approval, never renumbered; revise flow with struck rows; MUST→AC coverage gate |
-| /design | Built 2026-09-23, not yet live-tested | Generic Architecture (context, approach, key choices); coverage gate with design-wide and deliberate-gap escapes; spec-diff on revise |
+| /devise (was /design until 2026-10-09) | Built 2026-09-23, not yet live-tested | Generic Architecture (context, approach, key choices); coverage gate with design-wide and deliberate-gap escapes; spec-diff on revise |
 | /detail | Built 2026-10-02, not yet live-tested | Cite-only reference sections, full-text steps; Status lifecycle shared with /do; artifacts may be locations inside a file |
 | /do | Built 2026-10-02, not yet live-tested | Status row is the durable record; user-performed steps; completion gate before commit; legacy DIPs refused |
 
@@ -94,6 +94,8 @@ See `reference_skill_platform_capabilities.md` in project memory. Re-checked 202
 - `memory: project` + gitignore was incoherent: consulted PE + skeptic; roster now `memory: local`, install offers `project` as the versioned opt-in; this repo's notes moved to `.claude/agent-memory-local/`.
 - README/charter overlap: README template trimmed to overview, status, getting started, one pointer; the one-document question deferred.
 - gather defaults: worked, no change.
+
+**2026-10-09, rename.** Claude Code 2.1.265 ships a bundled `/design` skill (UI mockups on a Claude Design canvas); a bare plugin name resolves to the built-in, so `/design` in any consuming project ran Anthropic's tool. Third phase renamed `/devise`; artifact stays a design (`DESIGN-NNN`). Workflow: Describe → Devise → Detail → Do. Patterns reference now requires checking the built-in command list before naming a skill. Test project's CLAUDE.md still says `/design` in its workflow line until regenerated or edited.
 
 **2026-10-09, run 3.** Mostly worked. Two tweaks: agent-authoring's reinstall said "differs locally" when the roster had moved (now "differs from the roster", with the diff shown, memory path wording scope-neutral); the structure check flagged link text and bracketed changelog headings as unfilled placeholders (now excluded), and the CLAUDE.md template's format hint no longer uses brackets. All four of the test project's files pass the check.
 

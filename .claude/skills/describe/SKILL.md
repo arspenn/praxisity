@@ -99,4 +99,4 @@ Show all of the following:
   1. Read the spec once as a reviewer rather than its author; check that every MUST is something you would refuse to submit or ship without.
   2. Resolve or explicitly defer each Open question before design.
   3. If the Praxisity agent roster is installed in this project, a critic or skeptic pass through `consult-team` catches scope creep and weak requirements before they harden into a design. If it is not, `/agent-authoring` installs it.
-  4. If the `design` skill is installed, start the design with `/design`; it will cite these IDs.
+  4. If the `devise` skill is installed, start the design with `/devise`; it will cite these IDs.

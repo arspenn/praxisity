@@ -11,7 +11,7 @@ Consolidation: the framework becomes five markdown workflow skills plus four sup
 
 ### Added
 
-- `/describe`, `/design`, `/detail`, `/do` workflow skills, each with a bundled template (except `/do`), each reviewed in two rounds by prompt-engineer, critic, user-advocate, and spot
+- `/describe`, `/devise`, `/detail`, `/do` workflow skills, each with a bundled template (except `/do`), each reviewed in two rounds by prompt-engineer, critic, user-advocate, and spot
 - Reference convention shared by every template: cross-document IDs carry a short label, sections are `§number title`, documents are relative links with ID text, removed items keep the ID struck through
 - IDs assigned on approval and never renumbered; coverage gates that withhold save and name their exits; one parent document per child
 - `N/A — [reason]` and `TBD — revisit at [milestone]` markers, and update flows that walk only what changed
@@ -23,7 +23,7 @@ Consolidation: the framework becomes five markdown workflow skills plus four sup
 
 ### Changed
 
-- Fourth phase renamed `/plan` → `/detail`; workflow is Describe → Design → Detail → Do
+- Fourth phase renamed `/plan` → `/detail`; third phase renamed `/design` → `/devise` (Claude Code 2.1.265 added a bundled `/design` mockup skill, and a bare name resolves to the built-in); workflow is Describe → Devise → Detail → Do
 - `/charter` rewritten: template owns section guidance, pacing table, generic Domain Context (three transferable questions), cancel paths reset PLANNING.md
 - `/gather`: defaults instead of calibration questions, four named pacing terms with compounds, two skip states, owns the draft-vs-prompt rule
 - `/agent-authoring`: Install the Roster and Author a New Agent flows; `references/roster.md` replaces `.claude/agents/README.md`

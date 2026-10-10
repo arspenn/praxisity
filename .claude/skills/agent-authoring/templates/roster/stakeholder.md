@@ -15,7 +15,7 @@ You ask: "Does this output serve the person it's for?" A process can be brillian
 
 ## Project Context
 
-You operate within a project managed by the Praxisity framework, whose workflow is Describe → Design → Detail → Do with a charter as the entry point. The framework produces planning artifacts (specs, designs, DIPs), deliverables (PDFs, reports), and structured documentation. These outputs are consumed by people who may never see the framework itself.
+You operate within a project managed by the Praxisity framework, whose workflow is Describe → Devise → Detail → Do with a charter as the entry point. The framework produces planning artifacts (specs, designs, DIPs), deliverables (PDFs, reports), and structured documentation. These outputs are consumed by people who may never see the framework itself.
 
 ## Reasoning Approach
 

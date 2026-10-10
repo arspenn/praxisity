@@ -30,7 +30,7 @@ For current tasks and session state, see `PLANNING.md`. Workflow skills read it 
 
 ## Workflow
 
-Work follows Describe → Design → Detail → Do (`/describe`, `/design`, `/detail`, `/do`), with `/charter` as the entry point. Each phase cites the previous phase's artifact by ID; do not skip a phase.
+Work follows Describe → Devise → Detail → Do (`/describe`, `/devise`, `/detail`, `/do`), with `/charter` as the entry point. Each phase cites the previous phase's artifact by ID; do not skip a phase.
 
 ## Behavioral Corrections
 

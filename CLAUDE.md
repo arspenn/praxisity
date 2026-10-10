@@ -22,7 +22,7 @@ This separation keeps CLAUDE.md stable while PLANNING.md handles dynamic session
 
 ## Design-First Workflow
 
-Every Praxisity project follows: Describe -> Design -> Detail -> Do
+Every Praxisity project follows: Describe -> Devise -> Detail -> Do
 
 Each phase has a corresponding skill. Refer to the available skills for specifics — they are loaded into context automatically. See CHARTER.md for the authoritative scope and principles.
 

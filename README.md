@@ -19,7 +19,7 @@ Every project follows four phases, each driven by a skill, with the charter as t
     ↓
 /describe       Specify what to build (requirements, use cases, acceptance criteria)
     ↓
-/design         Decide how it works (components, interfaces, decisions)
+/devise         Decide how it works (components, interfaces, decisions)
     ↓
 /detail         Turn one design element into a DIP (a self-contained implementation prompt)
     ↓
@@ -38,7 +38,7 @@ Skills are instructions Claude Code follows when you invoke them. Each is a self
 |-------|---------|
 | `/charter` | Create or update the project constitution, and set up CLAUDE.md, README, CHANGELOG, and .gitignore |
 | `/describe` | Write a specification (SPEC-NNN) |
-| `/design` | Write a design for a specification (DESIGN-NNN) |
+| `/devise` | Write a design for a specification (DESIGN-NNN) |
 | `/detail` | Turn one design element into a Detailed Implementation Prompt (DIP-NNN) |
 | `/do` | Execute a DIP with verification after every step and git safety before commit |
 
@@ -90,7 +90,7 @@ Skills from the plugin are namespaced: `/praxisity:charter`, `/praxisity:describ
 
 1. In your project directory, run `/praxisity:charter`. It walks you through the charter one section at a time and offers to set up CLAUDE.md, README, CHANGELOG, and .gitignore.
 2. Run `/praxisity:agent-authoring` to install the agent roster. If this creates `.claude/agents/` for the first time, restart the session so Claude Code loads it.
-3. Follow the phases: `/praxisity:describe`, `/praxisity:design`, `/praxisity:detail`, `/praxisity:do`.
+3. Follow the phases: `/praxisity:describe`, `/praxisity:devise`, `/praxisity:detail`, `/praxisity:do`.
 
 ## Directory Structure
 
